@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1052.3622"
+   height="744.09448"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47pre4 r22446"
+   sodipodi:docname="monitoring-bus.svg">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <inkscape:perspective
+       id="perspective4222"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="463.34885"
+     inkscape:cy="264.99122"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1280"
+     inkscape:window-height="976"
+     inkscape:window-x="0"
+     inkscape:window-y="1"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2816"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       spacingx="1px"
+       spacingy="1px"
+       dotted="false"
+       color="#ff0400"
+       opacity="0.03529412"
+       empcolor="#82f5ff"
+       empopacity="0.50588235" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="280,425"
+       id="guide4231" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="530,385"
+       id="guide4233" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-308.2677)">
+    <rect
+       style="opacity:0;fill:#000000;fill-opacity:1;stroke:none"
+       id="rect2818"
+       width="740"
+       height="200"
+       x="80"
+       y="464.09448"
+       transform="translate(0,308.2677)" />
+    <rect
+       style="opacity:0;fill:none;fill-opacity:1;stroke:#000000;stroke-opacity:1"
+       id="rect2820"
+       width="440"
+       height="120"
+       x="120"
+       y="284.09448"
+       transform="translate(0,308.2677)" />
+    <rect
+       style="opacity:0;fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3594"
+       width="540"
+       height="340"
+       x="140"
+       y="144.09448"
+       transform="translate(0,308.2677)" />
+    <rect
+       style="fill:#ffd42a;fill-opacity:1;stroke:#000000;stroke-width:0.44232586;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3596"
+       width="360"
+       height="35.000008"
+       x="260"
+       y="757.36218"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#d5f6ff;fill-opacity:1;stroke:#000000;stroke-width:0.57735026;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4133"
+       width="40"
+       height="20"
+       x="280"
+       y="822.36218"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="822.36218"
+       x="350"
+       height="20"
+       width="40"
+       id="rect4135"
+       style="fill:#d5f6ff;fill-opacity:1;stroke:#000000;stroke-width:0.57735026;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#d5f6ff;fill-opacity:1;stroke:#000000;stroke-width:0.57735026;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4137"
+       width="40"
+       height="20"
+       x="420"
+       y="822.36218"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       y="822.36218"
+       x="490"
+       height="20"
+       width="40"
+       id="rect4139"
+       style="fill:#d5f6ff;fill-opacity:1;stroke:#000000;stroke-width:0.57735026;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#d5f6ff;fill-opacity:1;stroke:#000000;stroke-width:0.57735026;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4141"
+       width="40"
+       height="20"
+       x="560"
+       y="822.36218"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:9px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="618"
+       y="835.36218"
+       id="text4164"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan4166"
+         x="618"
+         y="835.36218">consumers</tspan></text>
+    <text
+       id="text4168"
+       y="800.36218"
+       x="617"
+       style="font-size:9px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       xml:space="preserve"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         y="800.36218"
+         x="617"
+         id="tspan4170"
+         sodipodi:role="line">out ports</tspan><tspan
+         y="811.61218"
+         x="617"
+         sodipodi:role="line"
+         id="tspan4422">(topics)</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 300,514.09448 0,-20"
+       id="path4174"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect4133"
+       transform="translate(0,308.2677)"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 440,494.09448 0,20"
+       id="path4178"
+       inkscape:connector-type="polyline"
+       inkscape:connection-end="#rect4137"
+       transform="translate(0,308.2677)"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 510,494.09448 0,20"
+       id="path4180"
+       inkscape:connector-type="polyline"
+       inkscape:connection-end="#rect4139"
+       transform="translate(0,308.2677)"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 580,494.09448 0,20"
+       id="path4182"
+       inkscape:connector-type="polyline"
+       inkscape:connection-end="#rect4141"
+       transform="translate(0,308.2677)"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 370,494.09448 0,20"
+       id="path4188"
+       inkscape:connector-type="polyline"
+       inkscape:connection-end="#rect4135"
+       transform="translate(0,308.2677)"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#d5f6ff;fill-opacity:1;stroke:#000000;stroke-width:1.11219585000000021;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4190"
+       width="250.00003"
+       height="95"
+       x="280"
+       y="627.36218"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#ff6600;fill-opacity:1;stroke:#000000;stroke-width:1.21303092999999995;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4192"
+       width="219.99998"
+       height="47.142864"
+       x="295"
+       y="650.2193"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#ffd42a;fill-opacity:1;stroke:#000000;stroke-width:0.73854898999999985;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4194"
+       width="120"
+       height="20"
+       x="345"
+       y="692.36218"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:bold;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans Bold"
+       x="384"
+       y="705.57648"
+       id="text4196"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan4198"
+         x="384"
+         y="705.57648">Probe</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:bold;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans Bold"
+       x="322.07144"
+       y="672.36218"
+       id="text4200"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         x="322.07144"
+         y="672.36218"
+         id="tspan4204">Synthesised Protocol Mediator</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="291.07144"
+       y="637.36218"
+       id="text4208"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan4210"
+         x="291.07144"
+         y="637.36218"><tspan
+   style="font-weight:bold;-inkscape-font-specification:Bitstream Vera Sans Bold"
+   id="tspan4212">CONNECT</tspan>or</tspan></text>
+    <rect
+       rx="5"
+       ry="5"
+       y="742.36218"
+       x="385"
+       height="20"
+       width="40"
+       id="rect4227"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       id="path4239"
+       d="m 400,745.36218 5,5 5,-5 -10,0 z"
+       style="fill:#000000;stroke:#000000;stroke-width:0.70710695000000001px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#dbe2e3;fill-opacity:1;stroke:#000000;stroke-width:1.16774857000000010;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4251"
+       width="45"
+       height="75"
+       x="190"
+       y="637.36218"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       ry="5"
+       rx="5"
+       y="637.36218"
+       x="575"
+       height="75"
+       width="45"
+       id="rect4253"
+       style="fill:#dbe2e3;fill-opacity:1;stroke:#000000;stroke-width:1.16774844999999994;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="212.96289"
+       y="622.36218"
+       id="text4255"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan4257"
+         x="212.96289"
+         y="622.36218">Networked</tspan><tspan
+         sodipodi:role="line"
+         x="212.96289"
+         y="634.86218"
+         id="tspan4297">System</tspan></text>
+    <path
+       sodipodi:type="arc"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4263"
+       sodipodi:cx="247.5"
+       sodipodi:cy="371.59448"
+       sodipodi:rx="7.5"
+       sodipodi:ry="7.5"
+       d="m 255,371.59448 a 7.5,7.5 0 1 1 -15,0 7.5,7.5 0 1 1 15,0 z"
+       transform="translate(2.5,303.2677)"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 235,366.59448 7.5,0"
+       id="path4265"
+       transform="translate(0,308.2677)"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect4251"
+       inkscape:connection-end="#path4263"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       transform="translate(312.5,303.2677)"
+       d="m 255,371.59448 a 7.5,7.5 0 1 1 -15,0 7.5,7.5 0 1 1 15,0 z"
+       sodipodi:ry="7.5"
+       sodipodi:rx="7.5"
+       sodipodi:cy="371.59448"
+       sodipodi:cx="247.5"
+       id="path4267"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 567.5,366.59448 7.5,0"
+       id="path4271"
+       transform="translate(0,308.2677)"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#path4267"
+       inkscape:connection-end="#rect4253"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 248.92864,664.96042 c 15,0 15,20 0,20"
+       id="path4273"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 260,366.09448 35,0"
+       id="path4283"
+       transform="translate(0,308.2677)"
+       inkscape:connector-type="polyline"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="cc"
+       id="path4285"
+       d="m 560.9375,665.04716 c -14.92253,0 -14.92253,20.00252 0,20.00252"
+       style="fill:none;stroke:#000000;stroke-width:0.99747735px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 549,366.09448 c -34,0 -34,0 -34,0"
+       id="path4289"
+       transform="translate(0,308.2677)"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="475"
+       y="772.36218"
+       id="text4291"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan4293"
+         x="475"
+         y="772.36218"><tspan
+   style="font-weight:bold;-inkscape-font-specification:Bitstream Vera Sans Bold"
+   id="tspan4295">CONNECT</tspan> Monitoring Bus</tspan></text>
+    <text
+       id="text4299"
+       y="622.36218"
+       x="596.96289"
+       style="font-size:10px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       xml:space="preserve"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         y="622.36218"
+         x="596.96289"
+         id="tspan4301"
+         sodipodi:role="line">Networked</tspan><tspan
+         id="tspan4303"
+         y="634.86218"
+         x="596.96289"
+         sodipodi:role="line">System</tspan></text>
+    <rect
+       rx="5"
+       ry="5"
+       y="782.36218"
+       x="285"
+       height="20"
+       width="30"
+       id="rect4311"
+       style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0.86602539000000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       id="path4313"
+       d="m 295,795.36218 5,5 5,-5 -10,0 z"
+       style="fill:#000000;stroke:#000000;stroke-width:0.70710682999999996px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0.86602539;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4326"
+       width="30"
+       height="20"
+       x="355"
+       y="782.36218"
+       ry="5"
+       rx="5"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#000000;stroke:#000000;stroke-width:0.70710682999999996px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 365,795.36218 5,5 5,-5 -10,0 z"
+       id="path4328"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       rx="5"
+       ry="5"
+       y="782.36218"
+       x="425"
+       height="20"
+       width="30"
+       id="rect4332"
+       style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0.86602539000000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       id="path4334"
+       d="m 435,795.36218 5,5 5,-5 -10,0 z"
+       style="fill:#000000;stroke:#000000;stroke-width:0.70710682999999996px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0.86602539000000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4338"
+       width="30"
+       height="20"
+       x="495"
+       y="782.36218"
+       ry="5"
+       rx="5"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#000000;stroke:#000000;stroke-width:0.70710682999999996px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 505,795.36218 5,5 5,-5 -10,0 z"
+       id="path4340"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       rx="5"
+       ry="5"
+       y="782.36218"
+       x="565"
+       height="20"
+       width="30"
+       id="rect4344"
+       style="fill:#f9f9f9;fill-opacity:1;stroke:#000000;stroke-width:0.86602539000000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       id="path4346"
+       d="m 575,795.36218 5,5 5,-5 -10,0 z"
+       style="fill:#000000;stroke:#000000;stroke-width:0.70710682999999996px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#ffd42a;fill-opacity:1;stroke:#000000;stroke-width:0.89871705000000002;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4360"
+       width="60"
+       height="35"
+       x="190"
+       y="757.36218"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 220,449.09448 0,-15 150,0 0,-30"
+       id="path4362"
+       transform="translate(0,308.2677)"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g4390"
+       transform="matrix(0.66949153,0,0,0.66666672,94.449152,259.12068)"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         y="822.36218"
+         x="174.75"
+         height="40"
+         width="30"
+         id="rect4388"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect4386"
+         width="30"
+         height="40"
+         x="172.5"
+         y="819.86218" />
+      <rect
+         transform="translate(0,308.2677)"
+         y="509.09448"
+         x="170"
+         height="40"
+         width="30"
+         id="rect4368"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         transform="translate(0,308.2677)"
+         id="path4372"
+         d="m 175,514.09448 20,0"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="translate(0,308.2677)"
+         id="path4374"
+         d="m 174.75,519.09448 20.25,0"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="translate(0,308.2677)"
+         id="path4376"
+         d="m 174.75,523.84448 20.25,0.25"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="translate(0,308.2677)"
+         id="path4378"
+         d="m 174.75,528.84448 20.25,0.25"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="translate(0,308.2677)"
+         id="path4380"
+         d="m 174.5,533.59448 20.5,0.5"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="translate(0,308.2677)"
+         id="path4382"
+         d="m 174.75,538.59448 20.25,0.5"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         transform="translate(0,308.2677)"
+         id="path4384"
+         d="m 175.25,544.34448 19.75,-0.25"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 405,404.09448 0,30"
+       id="path4402"
+       transform="translate(0,308.2677)"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect4194"
+       inkscape:connection-end="#rect4227"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:9;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="221.46484"
+       y="847.36218"
+       id="text4404"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         x="221.46484"
+         y="847.36218"
+         id="tspan4408">properties/event</tspan><tspan
+         sodipodi:role="line"
+         x="221.46484"
+         y="859.86218"
+         id="tspan4412">specification</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 220,496.09448 -0.0415,-12"
+       id="path4414"
+       inkscape:connector-type="polyline"
+       sodipodi:nodetypes="cc"
+       transform="translate(0,308.2677)"
+       inkscape:connection-end="#rect4360"
+       inkscape:connection-start="#g4390"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="219.74805"
+       y="772.36218"
+       id="text4416"
+       inkscape:export-filename="/home/as/Desktop/connect-monitoring.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan4418"
+         x="219.74805"
+         y="772.36218">Monitoring</tspan><tspan
+         sodipodi:role="line"
+         x="219.74805"
+         y="784.86218"
+         id="tspan4420">Manager</tspan></text>
+  </g>
+</svg>
