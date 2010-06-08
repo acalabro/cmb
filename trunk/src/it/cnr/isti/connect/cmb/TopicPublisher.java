@@ -14,6 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package it.cnr.isti.connect.cmb;
+
 import java.util.Arrays;
 
 import javax.jms.BytesMessage;
@@ -28,6 +30,9 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.console.command.store.amq.CommandLineSupport;
+
+import it.cnr.isti.connect.cmb.Configuration;
 
 /**
  * Use in conjunction with TopicListener to test the performance of ActiveMQ
