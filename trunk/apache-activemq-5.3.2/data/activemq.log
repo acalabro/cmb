@@ -1,0 +1,22 @@
+2010-06-08 17:00:00,583 | INFO  | Using Persistence Adapter: org.apache.activemq.store.kahadb.KahaDBPersistenceAdapter@435db13f | org.apache.activemq.broker.BrokerService | main
+2010-06-08 17:00:00,720 | INFO  | ActiveMQ 5.3.2 JMS Message Broker (localhost) is starting | org.apache.activemq.broker.BrokerService | main
+2010-06-08 17:00:00,720 | INFO  | For help or more information please see: http://activemq.apache.org/ | org.apache.activemq.broker.BrokerService | main
+2010-06-08 17:00:01,046 | INFO  | Listening for connections at: tcp://pc-sabetta2:61616 | org.apache.activemq.transport.TransportServerThreadSupport | main
+2010-06-08 17:00:01,048 | INFO  | Connector openwire Started | org.apache.activemq.broker.TransportConnector | main
+2010-06-08 17:00:01,053 | INFO  | ActiveMQ JMS Message Broker (localhost, ID:pc-sabetta2-34409-1276009200761-0:0) started | org.apache.activemq.broker.BrokerService | main
+2010-06-08 17:00:01,152 | INFO  | Logging to org.slf4j.impl.JCLLoggerAdapter(org.mortbay.log) via org.mortbay.log.Slf4jLog | org.mortbay.log | main
+2010-06-08 17:00:01,241 | INFO  | jetty-6.1.9 | org.mortbay.log | main
+2010-06-08 17:00:02,718 | INFO  | ActiveMQ WebConsole initialized. | org.apache.activemq.web.WebConsoleStarter | main
+2010-06-08 17:00:03,168 | INFO  | Initializing Spring FrameworkServlet 'dispatcher' | /admin | main
+2010-06-08 17:00:03,453 | INFO  | ActiveMQ Console at http://0.0.0.0:8161/admin | org.mortbay.log | main
+2010-06-08 17:00:04,093 | INFO  | Initializing Spring root WebApplicationContext | /camel | main
+2010-06-08 17:00:09,565 | INFO  | Successfully connected to tcp://localhost:61616 | org.apache.activemq.transport.failover.FailoverTransport | ActiveMQ Failover Worker: 395440162
+2010-06-08 17:00:12,753 | INFO  | Camel Console at http://0.0.0.0:8161/camel | org.mortbay.log | main
+2010-06-08 17:00:12,994 | INFO  | ActiveMQ Web Demos at http://0.0.0.0:8161/demo | org.mortbay.log | main
+2010-06-08 17:00:13,273 | INFO  | RESTful file access application at http://0.0.0.0:8161/fileserver | org.mortbay.log | main
+2010-06-08 17:00:13,299 | INFO  | Started SelectChannelConnector@0.0.0.0:8161 | org.mortbay.log | main
+2010-06-08 17:00:33,822 | INFO  | Connector vm://localhost Started | org.apache.activemq.broker.TransportConnector | btpool0-5
+2010-06-08 17:01:27,613 | INFO  | Successfully connected to tcp://localhost:61616 | org.apache.activemq.transport.failover.FailoverTransport | ActiveMQ Failover Worker: 1320194849
+2010-06-08 17:12:14,485 | INFO  | Slow KahaDB access: cleanup took 1301 | org.apache.activemq.store.kahadb.MessageDatabase | ActiveMQ Journal Checkpoint Worker
+2010-06-08 17:12:34,137 | INFO  | Slow KahaDB access: cleanup took 1135 | org.apache.activemq.store.kahadb.MessageDatabase | ActiveMQ Journal Checkpoint Worker
+2010-06-08 17:12:39,038 | INFO  | Slow KahaDB access: cleanup took 900 | org.apache.activemq.store.kahadb.MessageDatabase | ActiveMQ Journal Checkpoint Worker
