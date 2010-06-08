@@ -14,8 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package it.cnr.isti.connect.cmb;
+
 import java.util.Arrays;
 
+import javax.jms.BytesMessage;
 import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -27,6 +30,7 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.console.command.store.amq.CommandLineSupport;
 
 /**
  * Use in conjunction with TopicPublisher to test the performance of ActiveMQ
@@ -34,6 +38,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
  */
 public class TopicListener implements MessageListener {
 
+	
     private Connection connection;
     private MessageProducer producer;
     private Session session;
@@ -58,8 +63,8 @@ public class TopicListener implements MessageListener {
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(url);
         connection = factory.createConnection();
         session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        topic = session.createTopic("topictest.messages");
-        control = session.createTopic("topictest.control");
+        topic = session.createTopic(Configuration.TOPIC_MESSAGES);
+        control = session.createTopic(Configuration.TOPIC_CONTROL);
 
         MessageConsumer consumer = session.createConsumer(topic);
         consumer.setMessageListener(this);
@@ -108,6 +113,14 @@ public class TopicListener implements MessageListener {
             if (++count % 1000 == 0) {
                 System.out.println("Received " + count + " messages.");
             }
+            try {
+				System.out.println("message.getJMSMessageID()" + message.getJMSMessageID());
+				long msgLen = ((BytesMessage) message).getBodyLength();
+				System.out.println("payload: " + (char)((BytesMessage)message).readByte());
+			} catch (JMSException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
 
