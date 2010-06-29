@@ -56,7 +56,16 @@ public class TopicListener implements MessageListener {
             System.out.println("Unknown options: " + Arrays.toString(unknown));
             System.exit(-1);
         }
+        try{
         l.run();
+        }
+        catch (JMSException e) {
+			System.err.println("There was a problem connecting to the JMS broker");
+			System.err.println(e.getMessage());
+			System.err.println("Please, make sure the broker is running and properly configured");
+			System.err.println("then try again.");
+			return;
+		}
     }
 
     public void run() throws JMSException {
@@ -67,11 +76,15 @@ public class TopicListener implements MessageListener {
         control = session.createTopic(Configuration.TOPIC_CONTROL);
 
         MessageConsumer consumer = session.createConsumer(topic);
+        // this will cause onMessage to be called when a message
+        // arrives about the 'topic'
         consumer.setMessageListener(this);
 
         connection.start();
-
+		
+		// this is used to send acknowledgments when requested
         producer = session.createProducer(control);
+        
         System.out.println("Waiting for messages...");
     }
 
