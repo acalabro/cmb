@@ -122,6 +122,7 @@ public class TopicPublisher implements MessageListener {
         msg.writeBytes(payload);
         for (int i = 0; i < messages; i++) {
             publisher.send(msg);
+            Thread.sleep(10);
             if ((i + 1) % 1000 == 0) {
                 System.out.println("Sent " + (i + 1) + " messages");
             }
