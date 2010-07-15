@@ -1,4 +1,4 @@
-package it.cnr.isti.connect.cmb.events;
+package it.cnr.isti.connect.cmb.eventprocessing;
 
 public class SimpleEvent{// implements ConnectBaseEvent<String> {
 
@@ -17,8 +17,8 @@ public class SimpleEvent{// implements ConnectBaseEvent<String> {
 		return data;
 	}
 
-	public Long getTimestamp() {
-		return 10L;
-	}
+//	public Long getTimestamp() {
+//		return 10L;
+//	}
 	
 }

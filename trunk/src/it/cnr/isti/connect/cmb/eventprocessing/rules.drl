@@ -9,9 +9,10 @@ declare SimpleEvent
 end
 
 rule "test entry point"
+dialect "mvel"
 when
-	$e : SimpleEvent( data == "default payload" ) from entry-point EventStream
+	e : SimpleEvent( data = "default payload" ) from entry-point "EventStream"
 then
-	//results.add( $e )
+	//results.add( e )
 	System.out.println("ciao");
 end
