@@ -1,5 +1,7 @@
 package com.sample;
 
+import java.util.Calendar;
+
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -25,7 +27,8 @@ public class DroolsTest {
 			KnowledgeRuntimeLogger logger = KnowledgeRuntimeLoggerFactory.newFileLogger(ksession, "test");
 			// go !
 			Message message = new Message();
-			message.setMessage("Messaggio da filtrare");
+			message.setMessage("Message to filter");
+			message.setTimeStamp(Calendar.getInstance().getTimeInMillis());
 			ksession.insert(message);
 			ksession.fireAllRules();
 			logger.close();
