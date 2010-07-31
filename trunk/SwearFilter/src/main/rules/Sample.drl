@@ -1,17 +1,8 @@
-import com.sample.Message;
+import javax.jms.TextMessage;
  
 rule "Filter"
 	when
-		m : Message(Message.getMessage == "Message to filter");
+		m : TextMessage(this.getText == "Urgent");
 	then
-		m.setMessage( "Filtered message" );
-		System.out.println(m.getMessage());
-end
-
-rule "Time"
-	when
-		m : Message(Message.getTimeStamp != null);
-	then
-		System.out.println("Message sent at: " + m.getTimeStamp());
-		System.out.println("Latency: " + (m.getTimeNow() - m.getTimeStamp()));
+		System.out.println(m.getText());
 end
