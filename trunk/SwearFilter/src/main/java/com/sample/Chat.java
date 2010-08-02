@@ -81,15 +81,24 @@ public class Chat implements MessageListener {
 	
 	
 	public void onMessage(Message arg0) {
-		TextMessage msg = (TextMessage) arg0;
-		ksession.insert(msg);
+		TextMessage msg = (TextMessage) arg0; 
+		ConnectBaseEvent<String>  evt = new MyEvent();
+		try {
+			evt.setTimestamp(msg.getJMSTimestamp());
+			evt.setData(msg.getText());
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ksession.insert(evt);
 		ksession.fireAllRules();
 	}
 	
 	protected void WriteMessage(String msg)
 	{
 		try {
-			TextMessage sendMessage = publishSession.createTextMessage(msg);
+			TextMessage sendMessage = publishSession.createTextMessage();
+			sendMessage.setText(msg);
 			tPubb.publish(sendMessage);
 		} catch (JMSException e) {
 			// TODO Auto-generated catch block

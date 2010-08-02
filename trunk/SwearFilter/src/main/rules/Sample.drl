@@ -1,8 +1,16 @@
-import javax.jms.TextMessage;
- 
-rule "Filter"
-	when
-		m : TextMessage(this.getText == "Urgent");
-	then
-		System.out.println(m.getText());
+import com.sample.MyEvent;
+
+declare MyEvent
+	@role( event )
+	@timestamp( timestamp )
 end
+
+rule "Filter"
+	dialect "java"
+	when
+		$m1 : MyEvent();
+	then
+		System.out.println($m1.getData());
+		System.out.println($m1.getTimestamp());
+end
+

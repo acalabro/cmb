@@ -17,7 +17,7 @@ public class Main {
 
 		Chat localChat;
 		try {
-			localChat = new Chat("TopicCF","topic1", "Batman");
+			localChat = new Chat("TopicCF","topic1", "userName");
 			
 		BufferedReader commandLine = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("\n> Ready - write a message and press Return to evaluate <");
