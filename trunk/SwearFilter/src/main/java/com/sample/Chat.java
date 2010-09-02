@@ -92,6 +92,7 @@ public class Chat implements MessageListener {
 		}
 		ksession.insert(evt);
 		ksession.fireAllRules();
+		ksession.dispose();
 	}
 	
 	protected void WriteMessage(String msg)
