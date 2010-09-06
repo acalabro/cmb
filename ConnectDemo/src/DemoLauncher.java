@@ -1,5 +1,8 @@
 import java.util.Properties;
 
+import org.Connect.Probe.MyProbe;
+import org.Connect.Settings.Manager;
+
 import javax.jms.JMSException;
 import javax.jms.Session;
 import javax.jms.TopicConnection;
@@ -24,6 +27,7 @@ public class DemoLauncher {
 
 	//start settings
 	protected static String ENVIRONMENTPARAMETERSFILE = "/home/acalabro/workspace/ConnectDemo/src/environmentFile";
+	protected static String PROBEPARAMETERSFILE = 		"/home/acalabro/workspace/ConnectDemo/src/probeFile";
 	//end settings
 	
 	private static KnowledgeBase kbase;
@@ -40,7 +44,7 @@ public class DemoLauncher {
 		
 		if (DemoLauncher.init())
 		{
-			//MyProbe testingProbe = new MyProbe(Settings.Manager.Read(args[0]));
+			MyProbe testingProbe = new MyProbe(Manager.Read(PROBEPARAMETERSFILE));
 		}
 	}
 	
