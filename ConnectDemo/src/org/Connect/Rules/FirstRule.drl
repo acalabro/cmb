@@ -1,0 +1,16 @@
+import org.Connect.Event.MyEvent;
+
+declare MyEvent
+	@role( event )
+	@timestamp( timestamp )
+end
+
+rule "Filter"
+	dialect "java"
+	when
+		$m1 : MyEvent();
+	then
+		System.out.println($m1.getData());
+		System.out.println($m1.getTimestamp());
+end
+
