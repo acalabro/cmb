@@ -19,7 +19,7 @@ import org.Connect.Buffer.EventsBuffer;
 import org.Connect.Event.ConnectBaseEvent;
 import org.Connect.Event.MyEvent;
 
-public class DroolsListener extends Thread implements MessageListener{
+public class DroolsListener implements MessageListener{
 
 	private String topic;
 	private TopicConnection connection;

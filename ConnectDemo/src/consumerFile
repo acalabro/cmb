@@ -1,3 +1,3 @@
-topic = topic1
-request = none
+serviceTopic = serviceTopic
+request = drools,java,A happens before B,notify me
 consumerName = consumatore1

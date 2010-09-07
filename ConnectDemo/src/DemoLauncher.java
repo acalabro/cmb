@@ -1,6 +1,8 @@
 import java.util.Properties;
 
 import org.Connect.Buffer.EventsBuffer;
+import org.Connect.Buffer.MyBuffer;
+import org.Connect.Consumer.ConsumerManager;
 import org.Connect.Consumer.MyConsumer;
 import org.Connect.Listener.DroolsListener;
 import org.Connect.Probe.MyProbe;
@@ -31,6 +33,7 @@ public class DemoLauncher {
 	protected static String CONSUMERPARAMETERSFILE = 	"/home/antonello/workspace/ConnectDemo/src/consumerFile";
 	protected static String RULEPATH = 					"org/Connect/Rules/FirstRule.drl";
 	protected static String DROOLSPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/droolsFile";
+	protected static String MANAGERPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/managerFile";
 	//end settings
 	
 	private static KnowledgeBase kbase;
@@ -44,16 +47,19 @@ public class DemoLauncher {
 		{
 			
 			MyProbe testingProbe1 = new MyProbe(Manager.Read(PROBEPARAMETERSFILE1), connFact, initConn);
-			MyProbe testingProbe2 = new MyProbe(Manager.Read(PROBEPARAMETERSFILE2), connFact, initConn);
+			testingProbe1.start();
 			
-			EventsBuffer buffer = new EventsBuffer();
+			MyProbe testingProbe2 = new MyProbe(Manager.Read(PROBEPARAMETERSFILE2), connFact, initConn);
+			testingProbe2.start();
+			
+			EventsBuffer buffer = new MyBuffer();
+			
+			ConsumerManager manager = new ConsumerManager(Manager.Read(MANAGERPARAMETERFILE), connFact, initConn);
 			
 			DroolsListener listener = new DroolsListener(Manager.Read(DROOLSPARAMETERFILE), connFact, initConn, buffer);
 			
 			MyConsumer testingConsumer = new MyConsumer(Manager.Read(CONSUMERPARAMETERSFILE), connFact, initConn);
 			
-			testingProbe1.start();
-			testingProbe2.start();
 		}
 	}
 	
@@ -76,7 +82,7 @@ public class DemoLauncher {
 			kbase = readKnowledgeBase();
 			ksession = kbase.newStatefulKnowledgeSession();
 			System.out.println("				[ OK ]");
-			System.out.println("-----------------------------------------------------");
+			System.out.println("------------------------------------------------------");
 			System.out.println();
 			successfullInit = true;
 

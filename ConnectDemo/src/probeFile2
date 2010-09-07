@@ -1,4 +1,4 @@
-topic = topic1
+topic = probeTopic
 filter = none
 eventFile = /home/antonello/EventFile
 probeName = sonda2
