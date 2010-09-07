@@ -1,0 +1,4 @@
+topic = topic1
+filter = none
+eventFile = /home/antonello/EventFile
+probeName = sonda2

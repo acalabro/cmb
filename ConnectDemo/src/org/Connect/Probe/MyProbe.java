@@ -7,31 +7,73 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.jms.JMSException;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.jms.Topic;
+import javax.jms.TopicConnection;
+import javax.jms.TopicConnectionFactory;
+import javax.jms.TopicPublisher;
+import javax.jms.TopicSession;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+
 public class MyProbe extends Thread
 {
 	public static MyProbe myProbeInstance = null;
 	private String filter;
 	private String topic;
-	private String connectionFactory;
 	private String eventFile;
+	private String probeName;
+	private TopicConnection connection;
 	
-	public static MyProbe getInstance(Properties settings)
+	private TopicSession publishSession;
+	private TopicPublisher tPubb;
+	
+	private Topic connectionTopic;
+	
+	public static MyProbe getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		if (myProbeInstance == null)
 		{
-			return new MyProbe(settings);
+			return new MyProbe(settings, connectionFact, initConn);
 		}
 		else
 			return myProbeInstance;
 				
 	}
 	
-	public MyProbe(Properties settings)
+	public MyProbe(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		this.filter = settings.getProperty("filter");
 		this.topic = settings.getProperty("topic");
-		this.connectionFactory = settings.getProperty("connectionFactory");
 		this.eventFile = settings.getProperty("eventFile");
+		this.probeName = settings.getProperty("probeName");
+
+		try {
+			System.out.print(probeName + ": Creating connection object ");
+			connection = connectionFact.createTopicConnection();
+			System.out.println("		[ OK ]");
+			
+			System.out.print(probeName + ": Creating public session object ");
+			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+			System.out.println("		[ OK ]");
+			
+			System.out.print(probeName + ": Setting up destination topic ");
+			connectionTopic = (Topic)initConn.lookup(topic);
+			tPubb = publishSession.createPublisher(connectionTopic);
+			System.out.println("		[ OK ]");
+			
+			System.out.print(probeName + ": Starting connection ");
+			connection.start();
+			System.out.println("			[ OK ]");
+			System.out.println();
+		} catch (JMSException e) {
+			e.printStackTrace();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void run()
@@ -42,6 +84,7 @@ public class MyProbe extends Thread
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void read(String eventFileToRead)
 	{
 		File file = new File(eventFileToRead);
@@ -65,12 +108,8 @@ public class MyProbe extends Thread
 			{
 	    	message = dis.readLine().trim();
 	    	event = message.substring(0,message.indexOf(","));
-	    	timeout = Integer.parseInt(message.substring(message.indexOf(",")+1,message.length()));
-			Thread.sleep(timeout*10);
-
-			//CONNECT TO THE SESSION AND SEND MESSAGES
-			//publishsession.WriteMessage(event);	
-			//**/
+	    	timeout = Integer.parseInt(message.substring(message.indexOf(",")+1,message.length()));		
+			sendMessage(createMessage(event), timeout);
 			}
 
 			// dispose all the resources after using them.
@@ -78,6 +117,37 @@ public class MyProbe extends Thread
 			bis.close();
 			dis.close();
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private TextMessage createMessage(String msg)
+	{
+		//START FILTER
+		if (filter.compareTo(msg) != 0)
+		{
+			try 
+			{
+				TextMessage sendMessage = publishSession.createTextMessage();
+				sendMessage.setText(msg);
+				return sendMessage;
+			} catch (JMSException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+	
+	private void sendMessage(TextMessage msg, int timeout)
+	{
+		try {
+			if (msg != null)
+			{
+				Thread.sleep(timeout*50);
+				System.out.println(probeName + ": INVIA " + msg.getText());
+				tPubb.publish(msg);
+			}
+		} catch (JMSException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();

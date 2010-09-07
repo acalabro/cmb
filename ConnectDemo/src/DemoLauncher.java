@@ -1,21 +1,20 @@
 import java.util.Properties;
 
+import org.Connect.Buffer.EventsBuffer;
+import org.Connect.Consumer.MyConsumer;
+import org.Connect.Listener.DroolsListener;
 import org.Connect.Probe.MyProbe;
 import org.Connect.Settings.Manager;
+import org.Connect.Settings.SplashScreen;
 
 import javax.jms.JMSException;
-import javax.jms.Session;
-import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
-import javax.jms.TopicPublisher;
-import javax.jms.TopicSession;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderConfiguration;
 import org.drools.builder.KnowledgeBuilderError;
 import org.drools.builder.KnowledgeBuilderErrors;
 import org.drools.builder.KnowledgeBuilderFactory;
@@ -26,25 +25,35 @@ import org.drools.runtime.StatefulKnowledgeSession;
 public class DemoLauncher {
 
 	//start settings
-	protected static String ENVIRONMENTPARAMETERSFILE = "/home/acalabro/workspace/ConnectDemo/src/environmentFile";
-	protected static String PROBEPARAMETERSFILE = 		"/home/acalabro/workspace/ConnectDemo/src/probeFile";
+	protected static String ENVIRONMENTPARAMETERSFILE = "/home/antonello/workspace/ConnectDemo/src/environmentFile";
+	protected static String PROBEPARAMETERSFILE1 = 		"/home/antonello/workspace/ConnectDemo/src/probeFile1";
+	protected static String PROBEPARAMETERSFILE2 = 		"/home/antonello/workspace/ConnectDemo/src/probeFile2";
+	protected static String CONSUMERPARAMETERSFILE = 	"/home/antonello/workspace/ConnectDemo/src/consumerFile";
+	protected static String RULEPATH = 					"org/Connect/Rules/FirstRule.drl";
+	protected static String DROOLSPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/droolsFile";
 	//end settings
 	
 	private static KnowledgeBase kbase;
-	private static TopicConnection connection;
-	private static TopicSession publishSession;
-	private static TopicSession subscribeSession;
+	private static TopicConnectionFactory connFact;
 	private static InitialContext initConn;
-	private static TopicPublisher tPubb;
 	private static StatefulKnowledgeSession ksession;
-	
-	
-	
+
 	public static void main(String[] args) {
 		
 		if (DemoLauncher.init())
 		{
-			MyProbe testingProbe = new MyProbe(Manager.Read(PROBEPARAMETERSFILE));
+			
+			MyProbe testingProbe1 = new MyProbe(Manager.Read(PROBEPARAMETERSFILE1), connFact, initConn);
+			MyProbe testingProbe2 = new MyProbe(Manager.Read(PROBEPARAMETERSFILE2), connFact, initConn);
+			
+			EventsBuffer buffer = new EventsBuffer();
+			
+			DroolsListener listener = new DroolsListener(Manager.Read(DROOLSPARAMETERFILE), connFact, initConn, buffer);
+			
+			MyConsumer testingConsumer = new MyConsumer(Manager.Read(CONSUMERPARAMETERSFILE), connFact, initConn);
+			
+			testingProbe1.start();
+			testingProbe2.start();
 		}
 	}
 	
@@ -55,38 +64,28 @@ public class DemoLauncher {
 		
 		try 
 		{
+			SplashScreen.Show();
 			Properties environmentParameters = org.Connect.Settings.Manager.Read(ENVIRONMENTPARAMETERSFILE);
 			initConn = new InitialContext(environmentParameters);
 			
 			System.out.print("Setting up TopicConnectionFactory ");
-			TopicConnectionFactory connFact = (TopicConnectionFactory)initConn.lookup("TopicCF");
-			connection = connFact.createTopicConnection();
-			System.out.println("	[ OK ]");
+			connFact = (TopicConnectionFactory)initConn.lookup("TopicCF");
+			System.out.println("		[ OK ]");
 			
 			System.out.print("Reading knowledge base ");
 			kbase = readKnowledgeBase();
 			ksession = kbase.newStatefulKnowledgeSession();
-			System.out.println("			[ OK ]");
-			
-			System.out.print("Creating public session object ");
-			publishSession = connection.createTopicSession(false,Session.AUTO_ACKNOWLEDGE);
-			System.out.println("         [ OK ]");
-			
-			System.out.print("Creating subscribe session object ");
-			subscribeSession = connection.createTopicSession(false,Session.AUTO_ACKNOWLEDGE);
-			System.out.println("      [ OK ]");
-			
+			System.out.println("				[ OK ]");
+			System.out.println("-----------------------------------------------------");
+			System.out.println();
 			successfullInit = true;
 
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			successfullInit = false;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			successfullInit = false;
 		}
@@ -97,7 +96,7 @@ public class DemoLauncher {
 	
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 
-		kbuilder.add(ResourceFactory.newClassPathResource("org/Connect/Rules/FirstRule.drl", DemoLauncher.class.getClassLoader()), ResourceType.DRL);
+		kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, DemoLauncher.class.getClassLoader()), ResourceType.DRL);
 		KnowledgeBuilderErrors errors = kbuilder.getErrors();
 		if (errors.size() > 0) {
 			for (KnowledgeBuilderError error: errors) {
