@@ -6,13 +6,10 @@ declare SimpleEvent
 end
 
 rule "Filter"
-	dialect "java"
 	when
-		$m1 : SimpleEvent();
-		$m2 : SimpleEvent();
-		
+		$objA : SimpleEvent();
+		$objB : SimpleEvent($objA.data == $objB.data);
 	then
-		System.out.println($m1.getData());
-		System.out.println($m1.getTimestamp());
+		System.out.println($objA.getData() + " E' UGUALE A " + $objB.getData());
 end
 

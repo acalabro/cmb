@@ -6,6 +6,9 @@ import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.rules.ConnectBaseRule;
 import it.cnr.isti.labse.cmb.rules.RuleConverter;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 import javax.jms.JMSException;
@@ -32,6 +35,8 @@ import org.drools.builder.ResourceType;
 import org.drools.conf.EventProcessingOption;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.conf.ClockTypeOption;
+import org.drools.runtime.rule.WorkingMemoryEntryPoint;
 
 public class EventsEvaluator implements MessageListener{
 
@@ -43,6 +48,8 @@ public class EventsEvaluator implements MessageListener{
 	private ConnectBaseRule listenerRule;
 	private KnowledgeBase kbase;
 	private StatefulKnowledgeSession ksession;
+	private WorkingMemoryEntryPoint eventStream;
+	private final List results = new ArrayList();
 	protected static String RULEPATH = 					"it/cnr/isti/labse/cmb/rules/FirstRule.drl";
 
 
@@ -67,8 +74,6 @@ public class EventsEvaluator implements MessageListener{
 			tSub = subscribeSession.createSubscriber(connectionTopic, null, true);
 			System.out.println("	[ OK ]");
 			
-			tSub.setMessageListener(this);
-			
 			System.out.print("EVENTSEVALUATOR: Starting connection ");
 			connection.start();
 			System.out.println("		[ OK ]");
@@ -81,7 +86,10 @@ public class EventsEvaluator implements MessageListener{
 			System.out.print("EVENTSEVALUATOR: Reading knowledge base ");
 			kbase = readKnowledgeBase(ruleConverted);
 			ksession = kbase.newStatefulKnowledgeSession();
+			ksession.setGlobal("EVENTS EntryPoint", eventStream);
+			eventStream = ksession.getWorkingMemoryEntryPoint( "DEFAULT" );
 			System.out.println("				[ OK ]");
+			tSub.setMessageListener(this);
 			
 		} catch (JMSException e) {
 			e.printStackTrace();
@@ -91,6 +99,7 @@ public class EventsEvaluator implements MessageListener{
 
 	}
 		
+	public int i = 0;
 		@Override
 		public void onMessage(Message arg0) {
 			TextMessage msg = (TextMessage) arg0; 
@@ -99,7 +108,8 @@ public class EventsEvaluator implements MessageListener{
 				evt.setTimestamp(msg.getJMSTimestamp());
 				evt.setData(msg.getText());
 				System.out.println("EVENTSEVALUATOR: RICEVE " + msg.getText());
-				//entryPoint = ksession.getWorkingMemoryEntryPoint("entryPoint");
+				eventStream.insert(evt);
+				ksession.fireAllRules();
 			} catch (JMSException e) {
 				e.printStackTrace();
 			}
@@ -110,7 +120,7 @@ public class EventsEvaluator implements MessageListener{
 		try
 		{
 			KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
-			config.setOption(EventProcessingOption.STREAM);					
+			config.setOption(EventProcessingOption.STREAM);
 			KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 			kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, EventsEvaluator.class.getClassLoader()), ResourceType.DRL);
 			KnowledgeBuilderErrors errors = kbuilder.getErrors();
