@@ -1,4 +1,4 @@
-package org.Connect.Probe;
+package it.cnr.isti.labse.cmb.probe;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;

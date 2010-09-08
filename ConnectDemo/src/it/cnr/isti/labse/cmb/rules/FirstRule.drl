@@ -1,4 +1,4 @@
-import org.Connect.Event.MyEvent;
+import it.cnr.isti.labse.cmb.event.MyEvent;
 
 declare MyEvent
 	@role( event )

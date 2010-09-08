@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="src/lib/jms.jar"/>
-	<classpathentry kind="lib" path="src/lib/drools-api-5.1.1.jar" sourcepath="/home/acalabro/Scrivania/Drools 5.1.1/src"/>
-	<classpathentry kind="lib" path="src/lib/javax.jms.jar"/>
-	<classpathentry kind="lib" path="src/lib/activemq-all-5.3.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Drools Library"/>
+	<classpathentry kind="lib" path="src/it/cnr/isti/labse/cmb/lib/activemq-all-5.3.2.jar"/>
+	<classpathentry kind="lib" path="src/it/cnr/isti/labse/cmb/lib/drools-api-5.1.1.jar"/>
+	<classpathentry kind="lib" path="src/it/cnr/isti/labse/cmb/lib/javax.jms.jar"/>
+	<classpathentry kind="lib" path="src/it/cnr/isti/labse/cmb/lib/jms.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,4 +1,4 @@
-package org.Connect.Settings;
+package it.cnr.isti.labse.cmb.settings;
 
 public class SplashScreen {
 	

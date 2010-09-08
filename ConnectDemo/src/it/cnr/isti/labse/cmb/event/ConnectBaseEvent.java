@@ -1,4 +1,4 @@
-package org.Connect.Event;
+package it.cnr.isti.labse.cmb.event;
 
 public interface ConnectBaseEvent <T> {
 	public T getData();

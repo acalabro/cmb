@@ -1,4 +1,4 @@
-package org.Connect.Settings;
+package it.cnr.isti.labse.cmb.settings;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;

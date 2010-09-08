@@ -1,6 +1,6 @@
-package org.Connect.Buffer;
+package it.cnr.isti.labse.cmb.buffer;
 
-import org.Connect.Event.ConnectBaseEvent;
+import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
 
 public interface EventsBuffer <T>{
 	

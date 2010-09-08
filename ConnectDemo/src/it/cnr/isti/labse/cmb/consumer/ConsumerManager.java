@@ -1,4 +1,10 @@
-package org.Connect.Consumer;
+package it.cnr.isti.labse.cmb.consumer;
+
+import it.cnr.isti.labse.cmb.buffer.DroolsEventsBuffer;
+import it.cnr.isti.labse.cmb.buffer.EventsBuffer;
+import it.cnr.isti.labse.cmb.listener.EventsEvaluator;
+import it.cnr.isti.labse.cmb.rules.ConnectBaseRule;
+import it.cnr.isti.labse.cmb.rules.MyRule;
 
 import java.util.Properties;
 
@@ -16,11 +22,6 @@ import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.Connect.Buffer.EventsBuffer;
-import org.Connect.Listener.EventsEvaluator;
-import org.Connect.Rules.ConnectBaseRule;
-import org.Connect.Rules.MyRule;
-import org.Connect.Buffer.DroolsEventsBuffer;
 
 public class ConsumerManager extends Thread implements MessageListener {
 	

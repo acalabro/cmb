@@ -1,4 +1,10 @@
-package org.Connect.Listener;
+package it.cnr.isti.labse.cmb.listener;
+
+import it.cnr.isti.labse.cmb.buffer.EventsBuffer;
+import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
+import it.cnr.isti.labse.cmb.event.MyEvent;
+import it.cnr.isti.labse.cmb.rules.ConnectBaseRule;
+import it.cnr.isti.labse.cmb.rules.RuleConverter;
 
 import java.util.Properties;
 
@@ -15,11 +21,6 @@ import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.Connect.Buffer.EventsBuffer;
-import org.Connect.Event.ConnectBaseEvent;
-import org.Connect.Event.MyEvent;
-import org.Connect.Rules.ConnectBaseRule;
-import org.Connect.Rules.RuleConverter;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -40,7 +41,7 @@ public class EventsEvaluator implements MessageListener{
 	private ConnectBaseRule listenerRule;
 	private KnowledgeBase kbase;
 	private StatefulKnowledgeSession ksession;
-	protected static String RULEPATH = 					"org/Connect/Rules/FirstRule.drl";
+	protected static String RULEPATH = 					"it/cnr/isti/labse/cmb/rules/FirstRule.drl";
 
 
 	public EventsEvaluator(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn, ConnectBaseRule listenerRule, EventsBuffer buffer)

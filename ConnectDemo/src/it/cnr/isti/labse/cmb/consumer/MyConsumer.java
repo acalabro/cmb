@@ -1,5 +1,8 @@
-package org.Connect.Consumer;
+package it.cnr.isti.labse.cmb.consumer;
 
+
+import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
+import it.cnr.isti.labse.cmb.event.MyEvent;
 
 import java.util.Properties;
 
@@ -17,8 +20,6 @@ import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.Connect.Event.ConnectBaseEvent;
-import org.Connect.Event.MyEvent;
 
 public class MyConsumer implements MessageListener{
 

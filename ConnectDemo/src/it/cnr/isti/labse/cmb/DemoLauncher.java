@@ -1,10 +1,13 @@
+package it.cnr.isti.labse.cmb;
+
+import it.cnr.isti.labse.cmb.consumer.ConsumerManager;
+import it.cnr.isti.labse.cmb.consumer.MyConsumer;
+import it.cnr.isti.labse.cmb.probe.MyProbe;
+import it.cnr.isti.labse.cmb.settings.Manager;
+import it.cnr.isti.labse.cmb.settings.SplashScreen;
+
 import java.util.Properties;
 
-import org.Connect.Consumer.ConsumerManager;
-import org.Connect.Consumer.MyConsumer;
-import org.Connect.Probe.MyProbe;
-import org.Connect.Settings.Manager;
-import org.Connect.Settings.SplashScreen;
 
 import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
@@ -14,12 +17,12 @@ import javax.naming.NamingException;
 public class DemoLauncher {
 
 	//start settings
-	protected static String ENVIRONMENTPARAMETERSFILE = "/home/antonello/workspace/ConnectDemo/src/environmentFile";
-	protected static String PROBEPARAMETERSFILE1 = 		"/home/antonello/workspace/ConnectDemo/src/probeFile1";
-	protected static String PROBEPARAMETERSFILE2 = 		"/home/antonello/workspace/ConnectDemo/src/probeFile2";
-	protected static String CONSUMERPARAMETERSFILE = 	"/home/antonello/workspace/ConnectDemo/src/consumerFile";
-	protected static String DROOLSPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/droolsFile";
-	protected static String MANAGERPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/managerFile";
+	protected static String ENVIRONMENTPARAMETERSFILE = "/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/environmentFile";
+	protected static String PROBEPARAMETERSFILE1 = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile1";
+	protected static String PROBEPARAMETERSFILE2 = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile2";
+	protected static String CONSUMERPARAMETERSFILE = 	"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/consumerFile";
+	protected static String DROOLSPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/droolsFile";
+	protected static String MANAGERPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/managerFile";
 	//end settings
 	
 	private static TopicConnectionFactory connFact;
@@ -50,8 +53,8 @@ public class DemoLauncher {
 		
 		try 
 		{
-			SplashScreen.Show();
-			Properties environmentParameters = org.Connect.Settings.Manager.Read(ENVIRONMENTPARAMETERSFILE);
+			//SplashScreen.Show();
+			Properties environmentParameters = it.cnr.isti.labse.cmb.settings.Manager.Read(ENVIRONMENTPARAMETERSFILE);
 			initConn = new InitialContext(environmentParameters);
 			
 			System.out.print("Setting up TopicConnectionFactory ");
