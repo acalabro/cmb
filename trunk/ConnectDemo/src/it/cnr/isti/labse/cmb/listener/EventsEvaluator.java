@@ -99,8 +99,7 @@ public class EventsEvaluator implements MessageListener{
 				evt.setTimestamp(msg.getJMSTimestamp());
 				evt.setData(msg.getText());
 				System.out.println("EVENTSEVALUATOR: RICEVE " + msg.getText());
-				buffer.add(evt);
-				//ksession.insert(arg0)
+				//entryPoint = ksession.getWorkingMemoryEntryPoint("entryPoint");
 			} catch (JMSException e) {
 				e.printStackTrace();
 			}
@@ -111,11 +110,8 @@ public class EventsEvaluator implements MessageListener{
 		try
 		{
 			KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
-			config.setOption(EventProcessingOption.STREAM);
-						
+			config.setOption(EventProcessingOption.STREAM);					
 			KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-			//convertedRule must be provided to the engine.
-			//kbuilder.add(ResourceFactory.newClassPathResource(ruleConverted, EventsEvaluator.class.getClassLoader()), ResourceType.DRL);
 			kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, EventsEvaluator.class.getClassLoader()), ResourceType.DRL);
 			KnowledgeBuilderErrors errors = kbuilder.getErrors();
 			if (errors.size() > 0) {
