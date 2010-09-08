@@ -4,22 +4,22 @@ import java.util.ArrayList;
 
 import org.Connect.Event.ConnectBaseEvent;
 
-public class MyBuffer implements EventsBuffer {
+public class DroolsEventsBuffer <T> implements EventsBuffer<T> {
 
-	public ArrayList<ConnectBaseEvent<String>> myBuffer = new ArrayList<ConnectBaseEvent<String>>(); 
+	public ArrayList<ConnectBaseEvent<T>> myBuffer = new ArrayList<ConnectBaseEvent<T>>(); 
 	
-	public void add(ConnectBaseEvent<String> evt)
+	public void add(ConnectBaseEvent<T> evt)
 	{
 		myBuffer.add(evt);
 		System.out.println("EVENTSBUFFER: Aggiunto al buffer, dimensione buffer = " + myBuffer.size());
 	}
 	
-	public void remove(ConnectBaseEvent<String> evt)
+	public void remove(ConnectBaseEvent<T> evt)
 	{
 		myBuffer.remove(evt);
 	}
 	
-	public ConnectBaseEvent<String> getElementAt(int index)
+	public ConnectBaseEvent<T> getElementAt(int index)
 	{
 		return myBuffer.get(index);
 	}

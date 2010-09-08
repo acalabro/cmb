@@ -56,7 +56,7 @@ public class MyConsumer implements MessageListener{
 			
 			System.out.print(consumerName + ": Creating public session object ");
 			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
-			System.out.println("[ OK ]");
+			System.out.println("	[ OK ]");
 			
 			System.out.print(consumerName + ": Setting up destination topic ");
 			connectionTopic = (Topic)initConn.lookup(serviceTopic);

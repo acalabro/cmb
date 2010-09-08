@@ -1,28 +1,15 @@
 import java.util.Properties;
 
-import org.Connect.Buffer.EventsBuffer;
-import org.Connect.Buffer.MyBuffer;
 import org.Connect.Consumer.ConsumerManager;
 import org.Connect.Consumer.MyConsumer;
-import org.Connect.Listener.DroolsListener;
 import org.Connect.Probe.MyProbe;
 import org.Connect.Settings.Manager;
 import org.Connect.Settings.SplashScreen;
 
-import javax.jms.JMSException;
 import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderError;
-import org.drools.builder.KnowledgeBuilderErrors;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.builder.ResourceType;
-import org.drools.io.ResourceFactory;
-import org.drools.runtime.StatefulKnowledgeSession;
 
 public class DemoLauncher {
 
@@ -31,15 +18,12 @@ public class DemoLauncher {
 	protected static String PROBEPARAMETERSFILE1 = 		"/home/antonello/workspace/ConnectDemo/src/probeFile1";
 	protected static String PROBEPARAMETERSFILE2 = 		"/home/antonello/workspace/ConnectDemo/src/probeFile2";
 	protected static String CONSUMERPARAMETERSFILE = 	"/home/antonello/workspace/ConnectDemo/src/consumerFile";
-	protected static String RULEPATH = 					"org/Connect/Rules/FirstRule.drl";
 	protected static String DROOLSPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/droolsFile";
 	protected static String MANAGERPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/managerFile";
 	//end settings
 	
-	private static KnowledgeBase kbase;
 	private static TopicConnectionFactory connFact;
 	private static InitialContext initConn;
-	private static StatefulKnowledgeSession ksession;
 
 	public static void main(String[] args) {
 		
@@ -51,12 +35,8 @@ public class DemoLauncher {
 			
 			MyProbe testingProbe2 = new MyProbe(Manager.Read(PROBEPARAMETERSFILE2), connFact, initConn);
 			testingProbe2.start();
-			
-			EventsBuffer buffer = new MyBuffer();
-			
+					
 			ConsumerManager manager = new ConsumerManager(Manager.Read(MANAGERPARAMETERFILE), connFact, initConn);
-			
-			DroolsListener listener = new DroolsListener(Manager.Read(DROOLSPARAMETERFILE), connFact, initConn, buffer);
 			
 			MyConsumer testingConsumer = new MyConsumer(Manager.Read(CONSUMERPARAMETERSFILE), connFact, initConn);
 			
@@ -78,16 +58,9 @@ public class DemoLauncher {
 			connFact = (TopicConnectionFactory)initConn.lookup("TopicCF");
 			System.out.println("		[ OK ]");
 			
-			System.out.print("Reading knowledge base ");
-			kbase = readKnowledgeBase();
-			ksession = kbase.newStatefulKnowledgeSession();
-			System.out.println("				[ OK ]");
 			System.out.println("------------------------------------------------------");
 			System.out.println();
 			successfullInit = true;
-
-		} catch (JMSException e) {
-			e.printStackTrace();
 		} catch (NamingException e) {
 			e.printStackTrace();
 			successfullInit = false;
@@ -96,24 +69,6 @@ public class DemoLauncher {
 			successfullInit = false;
 		}
 		return successfullInit;
-	}
-
-	private static KnowledgeBase readKnowledgeBase() throws Exception {
-	
-		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-
-		kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, DemoLauncher.class.getClassLoader()), ResourceType.DRL);
-		KnowledgeBuilderErrors errors = kbuilder.getErrors();
-		if (errors.size() > 0) {
-			for (KnowledgeBuilderError error: errors) {
-				System.err.println(error);
-			}
-			throw new IllegalArgumentException("Could not parse knowledge.");
-		}
-		
-		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
-		kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-		return kbase;
 	}
 	
 }

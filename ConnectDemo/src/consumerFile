@@ -1,3 +1,4 @@
 serviceTopic = serviceTopic
 request = drools,java,A happens before B,notify me
 consumerName = consumatore1
+topic = probeTopic

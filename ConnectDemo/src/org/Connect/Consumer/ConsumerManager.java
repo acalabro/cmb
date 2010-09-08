@@ -16,10 +16,11 @@ import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.Connect.Event.ConnectBaseEvent;
-import org.Connect.Event.MyEvent;
+import org.Connect.Buffer.EventsBuffer;
+import org.Connect.Listener.EventsEvaluator;
 import org.Connect.Rules.ConnectBaseRule;
 import org.Connect.Rules.MyRule;
+import org.Connect.Buffer.DroolsEventsBuffer;
 
 public class ConsumerManager extends Thread implements MessageListener {
 	
@@ -39,9 +40,16 @@ public class ConsumerManager extends Thread implements MessageListener {
 	private TopicPublisher tPub;
 	private TopicSubscriber tSub;
 	private String serviceTopic;
+	private Properties settings;
+	private TopicConnectionFactory connectionFact;
+	private InitialContext initConn;
+	private EventsBuffer buffer;
 	
 	public ConsumerManager(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
+		this.settings = settings;
+		this.connectionFact = connectionFact;
+		this.initConn = initConn;
 		/*
 		 * setting up serviceTopic
 		 * */
@@ -87,7 +95,10 @@ public class ConsumerManager extends Thread implements MessageListener {
 	@Override
 	public void onMessage(Message arg0) {
 		TextMessage msg = (TextMessage) arg0; 
+		
+		//SUPPOSING RECEIVED MESSAGE IS A DROOLS QUERY
 		ConnectBaseRule rule = new MyRule();
+		
 		try {
 			//TODO: CHANGE STRING WITH XML
 			String[] splittedRule = new String[4];
@@ -100,11 +111,22 @@ public class ConsumerManager extends Thread implements MessageListener {
 			System.out.println("CONSUMERMANAGER: RICEVE " + rule.getEngine() + " " +
 					rule.getLanguage() + " " + rule.getWhen() + " " +
 					rule.getThen());
+			
+			System.out.print("CONSUMERMANAGER: Setting up new Buffer to store events.");
+			EventsBuffer<String> buffer = new DroolsEventsBuffer<String>();
+			System.out.println("[ OK ]");
+			
+			System.out.println();
+			System.out.println("----------------------------------------------------------------");
+			System.out.println();
+			System.out.println("CONSUMERMANAGER: Setting up eventsEvaluator with client request. ");
+			System.out.println();
+			System.out.println("----------------------------------------------------------------");
+			EventsEvaluator listener = new EventsEvaluator(settings, connectionFact, initConn, rule, buffer);			
+			
 		} catch (JMSException e) {
 			e.printStackTrace();
-		}
-		ConnectBaseRule myRule = new MyRule("drools", "java", "A happens before B", "notify me");
-		
+		}	
 	}
 
 	private TextMessage createMessage(String msg)
