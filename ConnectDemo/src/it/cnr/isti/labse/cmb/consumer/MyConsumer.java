@@ -2,7 +2,7 @@ package it.cnr.isti.labse.cmb.consumer;
 
 
 import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
-import it.cnr.isti.labse.cmb.event.MyEvent;
+import it.cnr.isti.labse.cmb.event.SimpleEvent;
 
 import java.util.Properties;
 
@@ -93,7 +93,7 @@ public class MyConsumer implements MessageListener{
 	@Override
 	public void onMessage(Message arg0) {
 		TextMessage msg = (TextMessage) arg0; 
-		ConnectBaseEvent<String>  evt = new MyEvent();
+		ConnectBaseEvent<String>  evt = new SimpleEvent();
 		try {
 			evt.setTimestamp(msg.getJMSTimestamp());
 			evt.setData(msg.getText());

@@ -2,7 +2,7 @@ package it.cnr.isti.labse.cmb;
 
 import it.cnr.isti.labse.cmb.consumer.ConsumerManager;
 import it.cnr.isti.labse.cmb.consumer.MyConsumer;
-import it.cnr.isti.labse.cmb.probe.MyProbe;
+import it.cnr.isti.labse.cmb.probe.TestProbe;
 import it.cnr.isti.labse.cmb.settings.Manager;
 import it.cnr.isti.labse.cmb.settings.SplashScreen;
 
@@ -33,10 +33,10 @@ public class DemoLauncher {
 		if (DemoLauncher.init())
 		{
 			
-			MyProbe testingProbe1 = new MyProbe(Manager.Read(PROBEPARAMETERSFILE1), connFact, initConn);
+			TestProbe testingProbe1 = new TestProbe(Manager.Read(PROBEPARAMETERSFILE1), connFact, initConn);
 			testingProbe1.start();
 			
-			MyProbe testingProbe2 = new MyProbe(Manager.Read(PROBEPARAMETERSFILE2), connFact, initConn);
+			TestProbe testingProbe2 = new TestProbe(Manager.Read(PROBEPARAMETERSFILE2), connFact, initConn);
 			testingProbe2.start();
 					
 			ConsumerManager manager = new ConsumerManager(Manager.Read(MANAGERPARAMETERFILE), connFact, initConn);

@@ -2,7 +2,7 @@ package it.cnr.isti.labse.cmb.listener;
 
 import it.cnr.isti.labse.cmb.buffer.EventsBuffer;
 import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
-import it.cnr.isti.labse.cmb.event.MyEvent;
+import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.rules.ConnectBaseRule;
 import it.cnr.isti.labse.cmb.rules.RuleConverter;
 
@@ -22,12 +22,14 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.drools.KnowledgeBase;
+import org.drools.KnowledgeBaseConfiguration;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderError;
 import org.drools.builder.KnowledgeBuilderErrors;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
+import org.drools.conf.EventProcessingOption;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 
@@ -92,7 +94,7 @@ public class EventsEvaluator implements MessageListener{
 		@Override
 		public void onMessage(Message arg0) {
 			TextMessage msg = (TextMessage) arg0; 
-			ConnectBaseEvent<String>  evt = new MyEvent();
+			ConnectBaseEvent<String>  evt = new SimpleEvent();
 			try {
 				evt.setTimestamp(msg.getJMSTimestamp());
 				evt.setData(msg.getText());
@@ -108,8 +110,10 @@ public class EventsEvaluator implements MessageListener{
 		
 		try
 		{
+			KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
+			config.setOption(EventProcessingOption.STREAM);
+						
 			KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-	
 			//convertedRule must be provided to the engine.
 			//kbuilder.add(ResourceFactory.newClassPathResource(ruleConverted, EventsEvaluator.class.getClassLoader()), ResourceType.DRL);
 			kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, EventsEvaluator.class.getClassLoader()), ResourceType.DRL);
@@ -121,7 +125,7 @@ public class EventsEvaluator implements MessageListener{
 				throw new IllegalArgumentException("Could not parse knowledge.");
 			}
 		
-			KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
+			KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
 			kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
 			return kbase;
 		}

@@ -19,9 +19,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 
-public class MyProbe extends Thread
+public class TestProbe extends Thread
 {
-	public static MyProbe myProbeInstance = null;
+	public static TestProbe myProbeInstance = null;
 	private String filter;
 	private String topic;
 	private String eventFile;
@@ -33,18 +33,18 @@ public class MyProbe extends Thread
 	
 	private Topic connectionTopic;
 	
-	public static MyProbe getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
+	public static TestProbe getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		if (myProbeInstance == null)
 		{
-			return new MyProbe(settings, connectionFact, initConn);
+			return new TestProbe(settings, connectionFact, initConn);
 		}
 		else
 			return myProbeInstance;
 				
 	}
 	
-	public MyProbe(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
+	public TestProbe(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		this.filter = settings.getProperty("filter");
 		this.topic = settings.getProperty("topic");

@@ -1,6 +1,6 @@
-import it.cnr.isti.labse.cmb.event.MyEvent;
+import it.cnr.isti.labse.cmb.event.SimpleEvent;
 
-declare MyEvent
+declare SimpleEvent
 	@role( event )
 	@timestamp( timestamp )
 end
@@ -8,7 +8,9 @@ end
 rule "Filter"
 	dialect "java"
 	when
-		$m1 : MyEvent();
+		$m1 : SimpleEvent();
+		$m2 : SimpleEvent();
+		
 	then
 		System.out.println($m1.getData());
 		System.out.println($m1.getTimestamp());

@@ -1,6 +1,6 @@
 package it.cnr.isti.labse.cmb.event;
 
-public class MyEvent implements ConnectBaseEvent<String>
+public class SimpleEvent implements ConnectBaseEvent<String>
 {
 	public Long timestamp = 0L;
 	private String data = "";

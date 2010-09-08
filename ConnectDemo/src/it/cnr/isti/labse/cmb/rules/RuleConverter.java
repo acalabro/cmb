@@ -4,7 +4,7 @@ public class RuleConverter {
 
 	public static String convert(ConnectBaseRule ruleToConvert)
 	{
-		//TODO WITH SWITCH/CASE
+		//TODO conversion WITH SWITCH/CASE
 		return "emptyRule";
 	}
 }
