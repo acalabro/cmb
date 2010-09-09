@@ -1,13 +1,19 @@
 package it.cnr.isti.labse.cmb.probe;
 
+import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
+import it.cnr.isti.labse.cmb.event.SimpleEvent;
+import it.cnr.isti.labse.cmb.settings.DebugMessages;
+
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Properties;
 
 import javax.jms.JMSException;
+import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
@@ -15,8 +21,11 @@ import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
+import javax.mail.search.DateTerm;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import jxl.write.DateTime;
 
 
 public class TestProbe extends Thread
@@ -52,23 +61,23 @@ public class TestProbe extends Thread
 		this.probeName = settings.getProperty("probeName");
 
 		try {
-			System.out.print(probeName + ": Creating connection object ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object");
 			connection = connectionFact.createTopicConnection();
-			System.out.println("		[ OK ]");
+			DebugMessages.ok();
 			
-			System.out.print(probeName + ": Creating public session object ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Creating public session object ");
 			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
-			System.out.println("		[ OK ]");
+			DebugMessages.ok();
 			
-			System.out.print(probeName + ": Setting up destination topic ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Setting up destination topic ");
 			connectionTopic = (Topic)initConn.lookup(topic);
 			tPubb = publishSession.createPublisher(connectionTopic);
-			System.out.println("		[ OK ]");
+			DebugMessages.ok();
 			
-			System.out.print(probeName + ": Starting connection ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Starting connection and wait 8 seconds for system startup");
 			connection.start();
-			System.out.println("			[ OK ]");
-			System.out.println();
+			DebugMessages.ok();
+			DebugMessages.line();
 		} catch (JMSException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
@@ -78,6 +87,15 @@ public class TestProbe extends Thread
 	
 	public void run()
 	{
+		try {
+			Thread.sleep(10000);
+			System.out.println();
+			DebugMessages.line();
+			System.out.println(this.getClass().getSimpleName() + ": Starts sending events");
+			DebugMessages.line();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		while(true)
 		{
 			read(eventFile);
@@ -106,10 +124,11 @@ public class TestProbe extends Thread
 		 
 			while (dis.available() != 0)
 			{
-	    	message = dis.readLine().trim();
-	    	event = message.substring(0,message.indexOf(","));
-	    	timeout = Integer.parseInt(message.substring(message.indexOf(",")+1,message.length()));		
-			sendMessage(createMessage(event), timeout);
+		    	message = dis.readLine().trim();
+		    	event = message.substring(0,message.indexOf(","));
+		    	timeout = Integer.parseInt(message.substring(message.indexOf(",")+1,message.length()));		
+				System.out.println(this.getClass().getSimpleName() + " send: " + event);
+				sendMessage(prepareMessage(event), timeout);
 			}
 
 			// dispose all the resources after using them.
@@ -121,16 +140,21 @@ public class TestProbe extends Thread
 		}
 	}
 
-	private TextMessage createMessage(String msg)
+	private ObjectMessage prepareMessage(String msg)
 	{
 		//START FILTER
 		if (filter.compareTo(msg) != 0)
 		{
 			try 
 			{
-				TextMessage sendMessage = publishSession.createTextMessage();
-				sendMessage.setText(msg);
-				return sendMessage;
+				ObjectMessage messageToSend = publishSession.createObjectMessage();
+				
+				//Creo un simple event da spedire
+				ConnectBaseEvent<String> message = new SimpleEvent(this.getClass().getSimpleName() + "#" + probeName + "#" + System.currentTimeMillis(), System.currentTimeMillis());
+				message.setData(msg);
+				
+				messageToSend.setObject(message);
+				return messageToSend;
 			} catch (JMSException e) {
 				e.printStackTrace();
 			}
@@ -138,13 +162,12 @@ public class TestProbe extends Thread
 		return null;
 	}
 	
-	private void sendMessage(TextMessage msg, int timeout)
+	private void sendMessage(ObjectMessage msg, int timeout)
 	{
 		try {
 			if (msg != null)
 			{
-				Thread.sleep(timeout*50);
-				System.out.println(probeName + ": INVIA " + msg.getText());
+				Thread.sleep(timeout*40);
 				tPubb.publish(msg);
 			}
 		} catch (JMSException e) {

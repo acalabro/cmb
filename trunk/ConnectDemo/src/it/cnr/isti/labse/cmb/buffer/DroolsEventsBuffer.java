@@ -12,7 +12,7 @@ public class DroolsEventsBuffer <T> implements EventsBuffer<T> {
 	public void add(ConnectBaseEvent<T> evt)
 	{
 		myBuffer.add(evt);
-		System.out.println("EVENTSBUFFER: Aggiunto al buffer, dimensione buffer = " + myBuffer.size());
+		System.out.println(this.getClass().getSimpleName() + ": New element add to the buffer. New buffer size = " + myBuffer.size());
 	}
 	
 	public void remove(ConnectBaseEvent<T> evt)

@@ -49,7 +49,6 @@ public class Manager
 			bis.close();
 			dis.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return readedProps;

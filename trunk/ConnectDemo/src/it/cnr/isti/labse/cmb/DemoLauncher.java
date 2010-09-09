@@ -1,8 +1,9 @@
 package it.cnr.isti.labse.cmb;
 
 import it.cnr.isti.labse.cmb.consumer.ConsumerManager;
-import it.cnr.isti.labse.cmb.consumer.MyConsumer;
+import it.cnr.isti.labse.cmb.consumer.SimpleConsumer;
 import it.cnr.isti.labse.cmb.probe.TestProbe;
+import it.cnr.isti.labse.cmb.settings.DebugMessages;
 import it.cnr.isti.labse.cmb.settings.Manager;
 import it.cnr.isti.labse.cmb.settings.SplashScreen;
 
@@ -41,8 +42,7 @@ public class DemoLauncher {
 					
 			ConsumerManager manager = new ConsumerManager(Manager.Read(MANAGERPARAMETERFILE), connFact, initConn);
 			
-			MyConsumer testingConsumer = new MyConsumer(Manager.Read(CONSUMERPARAMETERSFILE), connFact, initConn);
-			
+			SimpleConsumer testingConsumer = new SimpleConsumer(Manager.Read(CONSUMERPARAMETERSFILE), connFact, initConn);
 		}
 	}
 	
@@ -57,12 +57,10 @@ public class DemoLauncher {
 			Properties environmentParameters = it.cnr.isti.labse.cmb.settings.Manager.Read(ENVIRONMENTPARAMETERSFILE);
 			initConn = new InitialContext(environmentParameters);
 			
-			System.out.print("Setting up TopicConnectionFactory ");
+			DebugMessages.print(DemoLauncher.class.getSimpleName(),"Setting up TopicConnectionFactory");
 			connFact = (TopicConnectionFactory)initConn.lookup("TopicCF");
-			System.out.println("		[ OK ]");
-			
-			System.out.println("------------------------------------------------------");
-			System.out.println();
+			DebugMessages.ok();
+			DebugMessages.line();
 			successfullInit = true;
 		} catch (NamingException e) {
 			e.printStackTrace();

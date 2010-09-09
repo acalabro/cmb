@@ -1,8 +1,12 @@
 package it.cnr.isti.labse.cmb.event;
 
-public interface ConnectBaseEvent <T> {
-	public T getData();
-	public void setData(T t);
-	public Long getTimestamp();
-	public void setTimestamp(Long ts);
+import java.io.Serializable;
+
+public abstract class ConnectBaseEvent <T> implements Serializable{
+	private static final long serialVersionUID = 1L;
+	public ConnectBaseEvent(String ID, Long ts){};
+	public abstract T getData();
+	public abstract Long getTimestamp();
+	public abstract void setData(T t);
+	public abstract String getID();
 }

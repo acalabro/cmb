@@ -3,6 +3,7 @@ package it.cnr.isti.labse.cmb.consumer;
 
 import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
+import it.cnr.isti.labse.cmb.settings.DebugMessages;
 
 import java.util.Properties;
 
@@ -21,9 +22,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 
-public class MyConsumer implements MessageListener{
+public class SimpleConsumer implements MessageListener{
 
-	public static MyConsumer myConsumerInstance = null;
+	public static SimpleConsumer myConsumerInstance = null;
 	private String serviceTopic;
 	private String request;
 	private TopicConnection connection;
@@ -34,52 +35,51 @@ public class MyConsumer implements MessageListener{
 	private TopicSubscriber tSub;
 	private String consumerName;
 	
-	public static MyConsumer getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
+	public static SimpleConsumer getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		if (myConsumerInstance == null)
 		{
-			return new MyConsumer(settings, connectionFact, initConn);
+			return new SimpleConsumer(settings, connectionFact, initConn);
 		}
 		else
 			return myConsumerInstance;	
 	}
 	
-	public MyConsumer(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
+	public SimpleConsumer(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		this.request = settings.getProperty("request");
 		this.serviceTopic = settings.getProperty("serviceTopic");
 		this.consumerName = settings.getProperty("consumerName");
 
 		try {
-			System.out.print(consumerName + ": Creating connection object ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object ");
 			connection = connectionFact.createTopicConnection();
-			System.out.println("	[ OK ]");
+			DebugMessages.ok();
 			
-			System.out.print(consumerName + ": Creating public session object ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Creating public session object ");
 			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
-			System.out.println("	[ OK ]");
+			DebugMessages.ok();
 			
-			System.out.print(consumerName + ": Setting up destination topic ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Setting up destination topic ");
 			connectionTopic = (Topic)initConn.lookup(serviceTopic);
 			tPub = publishSession.createPublisher(connectionTopic);
-			System.out.println("	[ OK ]");
+			DebugMessages.ok();
 			
-			System.out.print(consumerName + ": Creating subscribe object ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Creating subscribe object ");
 			subscribeSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
-			System.out.println("	[ OK ]");
+			DebugMessages.ok();
 			
-			System.out.print(consumerName + ": Setting up reading topic ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
 			connectionTopic = (Topic)initConn.lookup(serviceTopic);
 			tSub = subscribeSession.createSubscriber(connectionTopic, null, true);
-			System.out.println("		[ OK ]");
+			DebugMessages.ok();
 			
 			tSub.setMessageListener(this);
 			
-			System.out.print(consumerName + ": Starting connection ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Starting connection and wait 5 seconds for system startup");
 			connection.start();
-			System.out.println("		[ OK ]");
-			System.out.println();
-			
+			DebugMessages.ok();
+			DebugMessages.line();
 			/*CUSTOMER SEND REQUEST ON THE SERVICETOPIC*/
 			sendRequest(createMessage(request));
 			
@@ -93,11 +93,10 @@ public class MyConsumer implements MessageListener{
 	@Override
 	public void onMessage(Message arg0) {
 		TextMessage msg = (TextMessage) arg0; 
-		ConnectBaseEvent<String>  evt = new SimpleEvent();
 		try {
-			evt.setTimestamp(msg.getJMSTimestamp());
+			ConnectBaseEvent<String>  evt = new SimpleEvent(consumerName + msg.getJMSMessageID(), msg.getJMSTimestamp());
 			evt.setData(msg.getText());
-			System.out.println(consumerName + ": RICEVE " + msg.getText());
+			System.out.println(consumerName + ": receive " + msg.getText());
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -121,7 +120,7 @@ public class MyConsumer implements MessageListener{
 		try {
 			if (msg != null)
 			{
-				System.out.println(consumerName + ": INVIA " + msg.getText());
+				System.out.println(consumerName + ": send " + msg.getText());
 				tPub.publish(msg);
 			}
 		} catch (JMSException e) {

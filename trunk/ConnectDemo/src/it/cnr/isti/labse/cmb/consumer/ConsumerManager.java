@@ -2,9 +2,12 @@ package it.cnr.isti.labse.cmb.consumer;
 
 import it.cnr.isti.labse.cmb.buffer.DroolsEventsBuffer;
 import it.cnr.isti.labse.cmb.buffer.EventsBuffer;
+import it.cnr.isti.labse.cmb.event.SimpleEvent;
+import it.cnr.isti.labse.cmb.listener.DroolsEventsEvaluator;
 import it.cnr.isti.labse.cmb.listener.EventsEvaluator;
 import it.cnr.isti.labse.cmb.rules.ConnectBaseRule;
 import it.cnr.isti.labse.cmb.rules.MyRule;
+import it.cnr.isti.labse.cmb.settings.DebugMessages;
 
 import java.util.Properties;
 
@@ -57,34 +60,34 @@ public class ConsumerManager extends Thread implements MessageListener {
 		serviceTopic = settings.getProperty("serviceTopic");
 		
 		try {
-			System.out.print("CONSUMERMANAGER: Creating connection object ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object ");
 			connection = connectionFact.createTopicConnection();
-			System.out.println("	[ OK ]");
+			DebugMessages.ok();
 			
-			System.out.print("CONSUMERMANAGER: Creating public session object ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Creating public session object ");
 			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
-			System.out.println("[ OK ]");
+			DebugMessages.ok();
 			
-			System.out.print("CONSUMERMANAGER: Creating subscribe object ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Creating subscribe object");
 			subscribeSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
-			System.out.println("	[ OK ]");
+			DebugMessages.ok();
 			
-			System.out.print("CONSUMERMANAGER: Setting up destination topic ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Setting up destination topic ");
 			connectionTopic = (Topic)initConn.lookup(serviceTopic);
 			tPub = publishSession.createPublisher(connectionTopic);
-			System.out.println("	[ OK ]");
+			DebugMessages.ok();
 
-			System.out.print("CONSUMERMANAGER: Setting up reading topic ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
 			//connectionTopic = subscribeSession.createTopic(serviceTopic);
 			tSub = subscribeSession.createSubscriber(connectionTopic, null, true);
-			System.out.println("	[ OK ]");
+			DebugMessages.ok();
 						
 			tSub.setMessageListener(this);
 			
-			System.out.print("CONSUMERMANAGER: Starting connection ");
+			DebugMessages.print(this.getClass().getSimpleName(), "Starting connection ");
 			connection.start();
-			System.out.println("		[ OK ]");
-			System.out.println();
+			DebugMessages.ok();
+			DebugMessages.line();
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -108,22 +111,18 @@ public class ConsumerManager extends Thread implements MessageListener {
 			rule.setLanguage(splittedRule[1]);
 			rule.setWhen(splittedRule[2]);
 			rule.setThen(splittedRule[3]);
-			
-			System.out.println("CONSUMERMANAGER: RICEVE " + rule.getEngine() + " " +
+			DebugMessages.line();
+			System.out.println(this.getClass().getSimpleName() + ": receive " + rule.getEngine() + " " +
 					rule.getLanguage() + " " + rule.getWhen() + " " +
 					rule.getThen());
-			
-			System.out.print("CONSUMERMANAGER: Setting up new Buffer to store events.");
-			EventsBuffer<String> buffer = new DroolsEventsBuffer<String>();
-			System.out.println("[ OK ]");
-			
-			System.out.println();
-			System.out.println("----------------------------------------------------------------");
-			System.out.println();
-			System.out.println("CONSUMERMANAGER: Setting up eventsEvaluator with client request. ");
-			System.out.println();
-			System.out.println("----------------------------------------------------------------");
-			EventsEvaluator listener = new EventsEvaluator(settings, connectionFact, initConn, rule, buffer);			
+			DebugMessages.line();
+			DebugMessages.print(this.getClass().getSimpleName(), "Setting up new Buffer to store events.");
+			EventsBuffer<SimpleEvent> buffer = new DroolsEventsBuffer<SimpleEvent>();
+			DebugMessages.ok();
+			DebugMessages.print(this.getClass().getSimpleName(), "Launch eventsEvaluator setup with client request.");
+			DebugMessages.ok();
+			DebugMessages.line();
+			EventsEvaluator listener = new DroolsEventsEvaluator(settings, connectionFact, initConn, rule, buffer);	
 			
 		} catch (JMSException e) {
 			e.printStackTrace();
@@ -148,7 +147,7 @@ public class ConsumerManager extends Thread implements MessageListener {
 		try {
 			if (msg != null)
 			{
-				System.out.println("CONSUMERMANAGER: INVIA " + msg.getText());
+				System.out.println(this.getClass().getSimpleName() + ": send " + msg.getText());
 				tPub.publish(msg);
 			}
 		} catch (JMSException e) {

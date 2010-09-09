@@ -1,4 +1,5 @@
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
+import it.cnr.isti.labse.cmb.settings.DebugMessages;
 
 declare SimpleEvent
 	@role( event )
@@ -6,10 +7,17 @@ declare SimpleEvent
 end
 
 rule "Filter"
+no-loop
 	when
 		$objA : SimpleEvent();
-		$objB : SimpleEvent($objA.data == $objB.data);
+		$objB : SimpleEvent(this.data == $objA.data, this.timestamp != $objA.timestamp);
 	then
-		System.out.println($objA.getData() + " E' UGUALE A " + $objB.getData());
+		System.out.println("------------------------------------MATCHING-OCCURS-----------------------------------");
+
+		System.out.println($objA.getID() + " " +
+		$objA.getData() + " con timestamp: " + $objA.getTimestamp()
+		+ " E' UGUALE A " +
+		$objB.getData() + " con timestamp: " + $objB.getTimestamp());
+		DebugMessages.line();
 end
 
