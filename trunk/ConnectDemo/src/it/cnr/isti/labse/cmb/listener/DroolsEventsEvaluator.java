@@ -1,7 +1,6 @@
 package it.cnr.isti.labse.cmb.listener;
 
 import it.cnr.isti.labse.cmb.buffer.EventsBuffer;
-import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.rules.ConnectBaseRule;
 import it.cnr.isti.labse.cmb.rules.RuleConverter;
@@ -14,7 +13,6 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
@@ -42,21 +40,19 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 	private TopicConnection connection;
 	private Topic connectionTopic;
 	private TopicSubscriber tSub;
-	private EventsBuffer buffer;
 	private ConnectBaseRule listenerRule;
 	private KnowledgeBase kbase;
 	private StatefulKnowledgeSession ksession;
 	private WorkingMemoryEntryPoint eventStream;
 	protected static String RULEPATH = "it/cnr/isti/labse/cmb/rules/FirstRule.drl";
 
-	public DroolsEventsEvaluator(Properties settings,
-			TopicConnectionFactory connectionFact, InitialContext initConn,
-			ConnectBaseRule listenerRule, EventsBuffer<SimpleEvent> buffer) {
+	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, ConnectBaseRule listenerRule) {
 		this.listenerRule = listenerRule;
-		this.buffer = buffer;
-
 		this.topic = settings.getProperty("probeTopic");
-
+	}
+	
+	public void setupConnection(TopicConnectionFactory connectionFact, InitialContext initConn)
+	{
 		try {
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object ");
 			connection = connectionFact.createTopicConnection();
@@ -87,24 +83,13 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 			ksession.setGlobal("EVENTS EntryPoint", eventStream);
 			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");
 			DebugMessages.ok();
-			tSub.setMessageListener(this);
-			ksession.fireUntilHalt();
-			DebugMessages.line();
 		} catch (JMSException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * it.cnr.isti.labse.cmb.listener.EventsEvaluator#onMessage(javax.jms.Message
-	 * )
-	 */
 	@Override
 	public void onMessage(Message arg0) {
 		ObjectMessage msg = (ObjectMessage) arg0;
@@ -143,5 +128,16 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public void start() {
+		try {
+			tSub.setMessageListener(this);
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ksession.fireUntilHalt();
+		DebugMessages.line();
 	}
 }

@@ -9,23 +9,18 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Properties;
 
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
-import javax.mail.search.DateTerm;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import jxl.write.DateTime;
 
 
 public class TestProbe extends Thread

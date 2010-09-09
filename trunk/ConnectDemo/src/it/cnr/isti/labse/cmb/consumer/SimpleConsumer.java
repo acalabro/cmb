@@ -22,9 +22,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 
-public class SimpleConsumer implements MessageListener{
+public class SimpleConsumer extends Thread implements MessageListener{
 
-	public static SimpleConsumer myConsumerInstance = null;
 	private String serviceTopic;
 	private String request;
 	private TopicConnection connection;
@@ -35,22 +34,16 @@ public class SimpleConsumer implements MessageListener{
 	private TopicSubscriber tSub;
 	private String consumerName;
 	
-	public static SimpleConsumer getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
-	{
-		if (myConsumerInstance == null)
-		{
-			return new SimpleConsumer(settings, connectionFact, initConn);
-		}
-		else
-			return myConsumerInstance;	
-	}
-	
 	public SimpleConsumer(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		this.request = settings.getProperty("request");
 		this.serviceTopic = settings.getProperty("serviceTopic");
 		this.consumerName = settings.getProperty("consumerName");
-
+		setupConnection(connectionFact, initConn);
+	}
+	
+	private void setupConnection(TopicConnectionFactory connectionFact, InitialContext initConn)
+	{
 		try {
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object ");
 			connection = connectionFact.createTopicConnection();
@@ -80,14 +73,18 @@ public class SimpleConsumer implements MessageListener{
 			connection.start();
 			DebugMessages.ok();
 			DebugMessages.line();
-			/*CUSTOMER SEND REQUEST ON THE SERVICETOPIC*/
-			sendRequest(createMessage(request));
 			
 		} catch (JMSException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
 			e.printStackTrace();
-		}
+		}	
+	}	
+
+	public void run()
+	{
+		/*CUSTOMER SEND REQUEST ON THE SERVICETOPIC*/
+		sendRequest(createMessage(request));
 	}
 	
 	@Override

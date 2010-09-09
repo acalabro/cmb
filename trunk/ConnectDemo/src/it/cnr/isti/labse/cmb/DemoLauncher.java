@@ -5,7 +5,6 @@ import it.cnr.isti.labse.cmb.consumer.SimpleConsumer;
 import it.cnr.isti.labse.cmb.probe.TestProbe;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
 import it.cnr.isti.labse.cmb.settings.Manager;
-import it.cnr.isti.labse.cmb.settings.SplashScreen;
 
 import java.util.Properties;
 
@@ -41,8 +40,16 @@ public class DemoLauncher {
 			testingProbe2.start();
 					
 			ConsumerManager manager = new ConsumerManager(Manager.Read(MANAGERPARAMETERFILE), connFact, initConn);
+			manager.start();
+
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			
 			SimpleConsumer testingConsumer = new SimpleConsumer(Manager.Read(CONSUMERPARAMETERSFILE), connFact, initConn);
+			testingConsumer.start();
 		}
 	}
 	

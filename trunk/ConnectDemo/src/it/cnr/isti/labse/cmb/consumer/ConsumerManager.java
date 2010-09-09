@@ -6,6 +6,7 @@ import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.listener.DroolsEventsEvaluator;
 import it.cnr.isti.labse.cmb.listener.EventsEvaluator;
 import it.cnr.isti.labse.cmb.rules.ConnectBaseRule;
+import it.cnr.isti.labse.cmb.rules.Engines;
 import it.cnr.isti.labse.cmb.rules.MyRule;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
 
@@ -19,12 +20,11 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
-import javax.jms.TopicPublisher;
+//import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
 
 public class ConsumerManager extends Thread implements MessageListener {
 	
@@ -38,26 +38,27 @@ public class ConsumerManager extends Thread implements MessageListener {
 	 * */
 	
 	private TopicConnection connection;
-	private TopicSession publishSession;
+	//private TopicSession publishSession;
 	private TopicSession subscribeSession;
 	private Topic connectionTopic;
-	private TopicPublisher tPub;
+	//private TopicPublisher tPub;
 	private TopicSubscriber tSub;
 	private String serviceTopic;
 	private Properties settings;
 	private TopicConnectionFactory connectionFact;
 	private InitialContext initConn;
-	private EventsBuffer buffer;
 	
 	public ConsumerManager(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		this.settings = settings;
+		serviceTopic = settings.getProperty("serviceTopic");
+		setupConnection(connectionFact, initConn);
+	}
+	
+	public void setupConnection(TopicConnectionFactory connectionFact, InitialContext initConn)
+	{
 		this.connectionFact = connectionFact;
 		this.initConn = initConn;
-		/*
-		 * setting up serviceTopic
-		 * */
-		serviceTopic = settings.getProperty("serviceTopic");
 		
 		try {
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object ");
@@ -65,7 +66,7 @@ public class ConsumerManager extends Thread implements MessageListener {
 			DebugMessages.ok();
 			
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating public session object ");
-			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+			//publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 			DebugMessages.ok();
 			
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating subscribe object");
@@ -74,7 +75,7 @@ public class ConsumerManager extends Thread implements MessageListener {
 			
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up destination topic ");
 			connectionTopic = (Topic)initConn.lookup(serviceTopic);
-			tPub = publishSession.createPublisher(connectionTopic);
+			//tPub = publishSession.createPublisher(connectionTopic);
 			DebugMessages.ok();
 
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
@@ -82,12 +83,6 @@ public class ConsumerManager extends Thread implements MessageListener {
 			tSub = subscribeSession.createSubscriber(connectionTopic, null, true);
 			DebugMessages.ok();
 						
-			tSub.setMessageListener(this);
-			
-			DebugMessages.print(this.getClass().getSimpleName(), "Starting connection ");
-			connection.start();
-			DebugMessages.ok();
-			DebugMessages.line();
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -112,23 +107,73 @@ public class ConsumerManager extends Thread implements MessageListener {
 			rule.setWhen(splittedRule[2]);
 			rule.setThen(splittedRule[3]);
 			DebugMessages.line();
+			
 			System.out.println(this.getClass().getSimpleName() + ": receive " + rule.getEngine() + " " +
 					rule.getLanguage() + " " + rule.getWhen() + " " +
 					rule.getThen());
 			DebugMessages.line();
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up new Buffer to store events.");
-			EventsBuffer<SimpleEvent> buffer = new DroolsEventsBuffer<SimpleEvent>();
+			
 			DebugMessages.ok();
 			DebugMessages.print(this.getClass().getSimpleName(), "Launch eventsEvaluator setup with client request.");
 			DebugMessages.ok();
 			DebugMessages.line();
-			EventsEvaluator listener = new DroolsEventsEvaluator(settings, connectionFact, initConn, rule, buffer);	
-			
+			startListener(Engines.drools, rule, createBuffer(Engines.drools));
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}	
 	}
 
+	public void run()
+	{
+		DebugMessages.print(this.getClass().getSimpleName(), "Starting connection ");
+		try {
+			tSub.setMessageListener(this);
+			connection.start();
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DebugMessages.ok();
+		DebugMessages.line();
+	}
+	
+	private void startListener(Engines engine, ConnectBaseRule rule, EventsBuffer<SimpleEvent> buffer)
+	{
+		switch(engine)
+		{
+			case drools:
+			{
+				EventsEvaluator listener = new DroolsEventsEvaluator(settings, buffer, rule);
+				listener.setupConnection(connectionFact, initConn);
+				listener.start();
+			}
+			case sql:
+			{
+				
+			}
+		}
+	}
+
+	private EventsBuffer<SimpleEvent> createBuffer(Engines engine)
+	{
+		switch(engine)
+		{
+			case drools:
+			{
+				EventsBuffer<SimpleEvent> buffer = new DroolsEventsBuffer<SimpleEvent>();
+				return buffer;
+			}
+			case sql:
+			{
+				return null;
+			}
+		}
+		return null;
+	}
+	
+	
+	/*THOSE METHODS WILL BE USED TO ANSWER TO THE CONSUMER
 	private TextMessage createMessage(String msg)
 	{
 		try 
@@ -154,5 +199,5 @@ public class ConsumerManager extends Thread implements MessageListener {
 			e.printStackTrace();
 		}
 	}
-	
+	*/
 }
