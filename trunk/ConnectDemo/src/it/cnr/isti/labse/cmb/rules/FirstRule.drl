@@ -6,7 +6,7 @@ declare SimpleEvent
 	@timestamp( timestamp )
 end
 
-rule "Filter"
+/*rule "Filter"
 no-loop
 	when
 		$objA : SimpleEvent();
@@ -19,5 +19,13 @@ no-loop
 		+ " E' UGUALE A " +
 		$objB.getData() + " con timestamp: " + $objB.getTimestamp());
 		DebugMessages.line();
-end
+end*/
 
+rule "Time"
+	no-loop
+	when
+		$aEvent : SimpleEvent();
+		$bEvent : SimpleEvent( this before[ 20s, 1m ] $aEvent );
+	then
+	  System.out.println("---------------------------------MATCHING-TIME-OCCURS--------------------------------------");
+end

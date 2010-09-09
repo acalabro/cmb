@@ -43,4 +43,15 @@ public class SimpleEvent extends ConnectBaseEvent<String>
 	public void setData(String t) {
 		this.data = t;
 	}
+
+	@Override
+	public boolean isConsumed() {
+		return false;
+	}
+
+	@Override
+	public void setConsumed(boolean consumed) {
+		// TODO Auto-generated method stub
+		
+	}
 }
