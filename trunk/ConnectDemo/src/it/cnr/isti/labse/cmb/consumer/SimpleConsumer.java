@@ -1,8 +1,5 @@
 package it.cnr.isti.labse.cmb.consumer;
 
-
-import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
-import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
 
 import java.util.Properties;
@@ -32,13 +29,13 @@ public class SimpleConsumer extends Thread implements MessageListener{
 	private Topic connectionTopic;
 	private TopicPublisher tPub;
 	private TopicSubscriber tSub;
-	private String consumerName;
+	private String answerTopic;
 	
 	public SimpleConsumer(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		this.request = settings.getProperty("request");
 		this.serviceTopic = settings.getProperty("serviceTopic");
-		this.consumerName = settings.getProperty("consumerName");
+		//this.consumerName = settings.getProperty("consumerName");
 		setupConnection(connectionFact, initConn);
 	}
 	
@@ -91,14 +88,35 @@ public class SimpleConsumer extends Thread implements MessageListener{
 	public void onMessage(Message arg0) {
 		TextMessage msg = (TextMessage) arg0; 
 		try {
-			ConnectBaseEvent<String>  evt = new SimpleEvent(consumerName + msg.getJMSMessageID(), msg.getJMSTimestamp());
-			evt.setData(msg.getText());
-			System.out.println(consumerName + ": receive " + msg.getText());
+			if (msg.getText().startsWith("AnswerTopic == "))
+			{
+				System.out.println(this.getClass().getSimpleName() + "#" + this.hashCode() + ": receive " + msg.getText());
+				answerTopic = msg.getText().substring(0,14).trim();
+				listenForAnswer(answerTopic);
+				msg.acknowledge();
+			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	private void listenForAnswer(String answerTopic) {
+		
+		DebugMessages.print(this.getClass().getSimpleName(), "Creating subscribe object ");
+		try {
+			subscribeSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+			DebugMessages.ok();
+		
+			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
+			connectionTopic = subscribeSession.createTopic(answerTopic);
+			tSub = subscribeSession.createSubscriber(connectionTopic, null, true);
+			
+			DebugMessages.ok();
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private TextMessage createMessage(String msg)
 	{
 		try 
@@ -117,7 +135,7 @@ public class SimpleConsumer extends Thread implements MessageListener{
 		try {
 			if (msg != null)
 			{
-				System.out.println(consumerName + ": send " + msg.getText());
+				System.out.println(this.getClass().getSimpleName() + ": send " + msg.getText());
 				tPub.publish(msg);
 			}
 		} catch (JMSException e) {

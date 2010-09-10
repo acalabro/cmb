@@ -20,7 +20,7 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
-//import javax.jms.TopicPublisher;
+import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
@@ -38,15 +38,16 @@ public class ConsumerManager extends Thread implements MessageListener {
 	 * */
 	
 	private TopicConnection connection;
-	//private TopicSession publishSession;
+	private TopicSession publishSession;
 	private TopicSession subscribeSession;
 	private Topic connectionTopic;
-	//private TopicPublisher tPub;
+	private TopicPublisher tPub;
 	private TopicSubscriber tSub;
 	private String serviceTopic;
 	private Properties settings;
 	private TopicConnectionFactory connectionFact;
 	private InitialContext initConn;
+	private String answerTopic;
 	
 	public ConsumerManager(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
@@ -59,14 +60,14 @@ public class ConsumerManager extends Thread implements MessageListener {
 	{
 		this.connectionFact = connectionFact;
 		this.initConn = initConn;
-		
+	
 		try {
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object ");
 			connection = connectionFact.createTopicConnection();
 			DebugMessages.ok();
 			
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating public session object ");
-			//publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 			DebugMessages.ok();
 			
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating subscribe object");
@@ -75,18 +76,17 @@ public class ConsumerManager extends Thread implements MessageListener {
 			
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up destination topic ");
 			connectionTopic = (Topic)initConn.lookup(serviceTopic);
-			//tPub = publishSession.createPublisher(connectionTopic);
+			tPub = publishSession.createPublisher(connectionTopic);
 			DebugMessages.ok();
 
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
-			//connectionTopic = subscribeSession.createTopic(serviceTopic);
+			connectionTopic = (Topic)initConn.lookup(serviceTopic);
 			tSub = subscribeSession.createSubscriber(connectionTopic, null, true);
 			DebugMessages.ok();
 						
 		} catch (JMSException e) {
 			e.printStackTrace();
-		}
-		catch (NamingException e) {
+		} catch (NamingException e) {
 			e.printStackTrace();
 		}
 	}
@@ -118,7 +118,21 @@ public class ConsumerManager extends Thread implements MessageListener {
 			DebugMessages.print(this.getClass().getSimpleName(), "Launch eventsEvaluator setup with client request.");
 			DebugMessages.ok();
 			DebugMessages.line();
-			startListener(Engines.drools, rule, createBuffer(Engines.drools));
+			
+			//the topic where the listener will give analysis results
+			answerTopic =  "answerTopic" + "#" + this.getName() + "#" + System.nanoTime();
+			
+			//communicate the answerTopic to the consumer
+			sendMessage(createMessage("AnswerTopic == " + answerTopic));
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			startListener(Engines.drools, rule, createBuffer(Engines.drools), answerTopic);
+			
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}	
@@ -131,20 +145,20 @@ public class ConsumerManager extends Thread implements MessageListener {
 			tSub.setMessageListener(this);
 			connection.start();
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		DebugMessages.ok();
 		DebugMessages.line();
 	}
 	
-	private void startListener(Engines engine, ConnectBaseRule rule, EventsBuffer<SimpleEvent> buffer)
+	private void startListener(Engines engine, ConnectBaseRule rule, EventsBuffer<SimpleEvent> buffer, String answerTopic)
 	{
 		switch(engine)
 		{
 			case drools:
-			{
-				EventsEvaluator listener = new DroolsEventsEvaluator(settings, buffer, rule);
+			{		
+				EventsEvaluator listener = new DroolsEventsEvaluator(settings, buffer, rule, answerTopic);
+				
 				listener.setupConnection(connectionFact, initConn);
 				listener.start();
 			}
@@ -153,6 +167,11 @@ public class ConsumerManager extends Thread implements MessageListener {
 				
 			}
 		}
+	}
+	
+	public void answersFromEvaluationEngine(String answer)
+	{
+		
 	}
 
 	private EventsBuffer<SimpleEvent> createBuffer(Engines engine)
@@ -172,8 +191,6 @@ public class ConsumerManager extends Thread implements MessageListener {
 		return null;
 	}
 	
-	
-	/*THOSE METHODS WILL BE USED TO ANSWER TO THE CONSUMER
 	private TextMessage createMessage(String msg)
 	{
 		try 
@@ -193,11 +210,11 @@ public class ConsumerManager extends Thread implements MessageListener {
 			if (msg != null)
 			{
 				System.out.println(this.getClass().getSimpleName() + ": send " + msg.getText());
+				DebugMessages.line();
 				tPub.publish(msg);
 			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
 	}
-	*/
 }

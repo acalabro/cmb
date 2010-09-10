@@ -6,52 +6,45 @@ public class SimpleEvent extends ConnectBaseEvent<String>
 	public Long timestamp = 0L;
 	private String data = "";
 	private String id;
+	private String sourceID;
 	
-	public SimpleEvent(String ID, Long ts)
+	public SimpleEvent(String sourceID, String ID, Long ts)
 	{
-		super(ID, ts);
+		super(sourceID, ID, ts);
 		this.timestamp = ts;
 		this.id = ID;
+		this.sourceID = sourceID;
 	}
-	
-	/* (non-Javadoc)
-	 * @see it.cnr.isti.labse.cmb.event.ConnectBaseEvents#getData()
-	 */
-	@Override
+
 	public String getData() {
 		return data;
 	}
 
-	/* (non-Javadoc)
-	 * @see it.cnr.isti.labse.cmb.event.ConnectBaseEvents#getTimestamp()
-	 */
-	@Override
 	public Long getTimestamp() {
 		return timestamp;
 	}
 
-	/* (non-Javadoc)
-	 * @see it.cnr.isti.labse.cmb.event.ConnectBaseEvents#setData(java.lang.String)
-	 */
-
-	@Override
 	public String getID() {
 		return id;
 	}
 
-	@Override
 	public void setData(String t) {
 		this.data = t;
 	}
 
-	@Override
 	public boolean isConsumed() {
-		return false;
+		return consumed;
 	}
 
-	@Override
 	public void setConsumed(boolean consumed) {
-		// TODO Auto-generated method stub
-		
+		this.consumed = consumed;
+	}
+
+	public void setSourceID(String sourceID) {
+		this.sourceID = sourceID;		
+	}
+
+	public String getSourceID() {
+		return this.sourceID;
 	}
 }

@@ -1,6 +1,7 @@
 package it.cnr.isti.labse.cmb.listener;
 
 import it.cnr.isti.labse.cmb.buffer.EventsBuffer;
+import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.rules.ConnectBaseRule;
 import it.cnr.isti.labse.cmb.rules.RuleConverter;
@@ -13,9 +14,11 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
+import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
@@ -39,16 +42,22 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 	private String topic;
 	private TopicConnection connection;
 	private Topic connectionTopic;
+	private TopicSession publishSession;
+	private TopicSession subscribeSession;
+	private TopicPublisher tPub;
 	private TopicSubscriber tSub;
 	private ConnectBaseRule listenerRule;
 	private KnowledgeBase kbase;
 	private StatefulKnowledgeSession ksession;
 	private WorkingMemoryEntryPoint eventStream;
+	private String answerTopic;
+	private ConnectBaseEvent<String> receivedEvent;
 	protected static String RULEPATH = "it/cnr/isti/labse/cmb/rules/FirstRule.drl";
 
-	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, ConnectBaseRule listenerRule) {
+	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, ConnectBaseRule listenerRule, String answerTopic) {
 		this.listenerRule = listenerRule;
 		this.topic = settings.getProperty("probeTopic");
+		this.answerTopic = answerTopic;
 	}
 	
 	public void setupConnection(TopicConnectionFactory connectionFact, InitialContext initConn)
@@ -58,15 +67,22 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 			connection = connectionFact.createTopicConnection();
 			DebugMessages.ok();
 
+			DebugMessages.print(this.getClass().getSimpleName(), "Creating public session object ");
+			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+			DebugMessages.ok();
+			
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating subscribe object ");
-			TopicSession subscribeSession = connection.createTopicSession(
-					false, Session.AUTO_ACKNOWLEDGE);
+			subscribeSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 			DebugMessages.ok();
 
+			DebugMessages.print(this.getClass().getSimpleName(), "Setting up destination topic ");
+			connectionTopic = publishSession.createTopic(answerTopic);
+			tPub = publishSession.createPublisher(connectionTopic);
+			DebugMessages.ok();
+			
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
 			connectionTopic = (Topic) initConn.lookup(topic);
-			tSub = subscribeSession.createSubscriber(connectionTopic, null,
-					true);
+			tSub = subscribeSession.createSubscriber(connectionTopic, null,true);
 			DebugMessages.ok();
 
 			DebugMessages.print(this.getClass().getSimpleName(), "Starting connection ");
@@ -95,12 +111,17 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 		ObjectMessage msg = (ObjectMessage) arg0;
 		
 		try {
-			SimpleEvent receivedEvent = (SimpleEvent) msg.getObject();
+			receivedEvent = (ConnectBaseEvent<String>) msg.getObject();
 			System.out.println(this.getClass().getSimpleName() + ": receive "
 					+ receivedEvent.getID() + " payload: " + receivedEvent.getData());
+			DebugMessages.line();
 			eventStream.insert(receivedEvent);
 		} catch (JMSException e) {
 			e.printStackTrace();
+		}
+		catch(ClassCastException ex)
+		{
+			
 		}
 	}
 
@@ -134,10 +155,35 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 		try {
 			tSub.setMessageListener(this);
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ksession.fireUntilHalt();
 		DebugMessages.line();
+	}
+	
+	private TextMessage createMessage(String msg)
+	{
+		try 
+		{
+			TextMessage sendMessage = publishSession.createTextMessage();
+			sendMessage.setText(msg);
+			return sendMessage;
+		} catch (JMSException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private void sendMessage(TextMessage msg)
+	{
+		try {
+			if (msg != null)
+			{
+				System.out.println(this.getClass().getSimpleName() + ": send " + msg.getText());
+				tPub.publish(msg);
+			}
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
 	}
 }

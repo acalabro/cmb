@@ -83,7 +83,7 @@ public class TestProbe extends Thread
 	public void run()
 	{
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(13000);
 			System.out.println();
 			DebugMessages.line();
 			System.out.println(this.getClass().getSimpleName() + ": Starts sending events");
@@ -145,7 +145,7 @@ public class TestProbe extends Thread
 				ObjectMessage messageToSend = publishSession.createObjectMessage();
 				
 				//Creo un simple event da spedire
-				ConnectBaseEvent<String> message = new SimpleEvent(this.getClass().getSimpleName() + "#" + probeName + "#" + System.currentTimeMillis(), System.currentTimeMillis());
+				ConnectBaseEvent<String> message = new SimpleEvent(this.probeName, this.getClass().getSimpleName() + "#" + probeName + "#" + System.currentTimeMillis(), System.currentTimeMillis());
 				message.setData(msg);
 				
 				messageToSend.setObject(message);

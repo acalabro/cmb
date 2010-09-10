@@ -18,9 +18,10 @@ public class DemoLauncher {
 
 	//start settings
 	protected static String ENVIRONMENTPARAMETERSFILE = "/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/environmentFile";
-	protected static String PROBEPARAMETERSFILE1 = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile1";
-	protected static String PROBEPARAMETERSFILE2 = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile2";
-	protected static String CONSUMERPARAMETERSFILE = 	"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/consumerFile";
+	protected static String PROBE1PARAMETERSFILE = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile1";
+	protected static String PROBE2PARAMETERSFILE = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile2";
+	protected static String CONSUMER1PARAMETERSFILE = 	"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/consumerFile1";
+	protected static String CONSUMER2PARAMETERSFILE = 	"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/consumerFile2";
 	protected static String DROOLSPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/droolsFile";
 	protected static String MANAGERPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/managerFile";
 	//end settings
@@ -33,11 +34,11 @@ public class DemoLauncher {
 		if (DemoLauncher.init())
 		{
 			
-			TestProbe testingProbe1 = new TestProbe(Manager.Read(PROBEPARAMETERSFILE1), connFact, initConn);
+			TestProbe testingProbe1 = new TestProbe(Manager.Read(PROBE1PARAMETERSFILE), connFact, initConn);
 			testingProbe1.start();
 			
-			TestProbe testingProbe2 = new TestProbe(Manager.Read(PROBEPARAMETERSFILE2), connFact, initConn);
-			testingProbe2.start();
+			//TestProbe testingProbe2 = new TestProbe(Manager.Read(PROBE2PARAMETERSFILE), connFact, initConn);
+			//testingProbe2.start();
 					
 			ConsumerManager manager = new ConsumerManager(Manager.Read(MANAGERPARAMETERFILE), connFact, initConn);
 			manager.start();
@@ -48,8 +49,11 @@ public class DemoLauncher {
 				e.printStackTrace();
 			}
 			
-			SimpleConsumer testingConsumer = new SimpleConsumer(Manager.Read(CONSUMERPARAMETERSFILE), connFact, initConn);
-			testingConsumer.start();
+			SimpleConsumer testingConsumer1 = new SimpleConsumer(Manager.Read(CONSUMER1PARAMETERSFILE), connFact, initConn);
+			testingConsumer1.start();
+	
+			//SimpleConsumer testingConsumer2 = new SimpleConsumer(Manager.Read(CONSUMER1PARAMETERSFILE), connFact, initConn);
+			//testingConsumer2.start();
 		}
 	}
 	

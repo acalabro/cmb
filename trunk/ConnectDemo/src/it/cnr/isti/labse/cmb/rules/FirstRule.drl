@@ -6,6 +6,32 @@ declare SimpleEvent
 	@timestamp( timestamp )
 end
 
+rule "occurrencies A -> C"
+	no-loop
+	when
+		$aEvent : SimpleEvent( this.data == "Evento A");
+		Number( numberA : intValue )
+			from accumulate
+			(occurrenciesC: SimpleEvent( this.data == "Evento C", this after $aEvent ) over window:size(1m),
+			count(occurrenciesC))
+	then
+		System.out.println("Numero di occorrenze A -> C in un minuto: " + numberA);
+end
+
+/*
+rule "occurrencies"
+        no-loop
+        when
+            Number( numberA : intValue > 4)
+            from accumulate
+                (occurrencies: SimpleEvent( this.data == "Evento A" ) over window:size(1m),
+                 count(occurrencies))
+        then
+        System.out.println("ATTENZIONE: Si sono verificati più di " + numberA + " occorrenze");
+end
+*/
+
+
 /*rule "Filter"
 no-loop
 	when
@@ -21,11 +47,19 @@ no-loop
 		DebugMessages.line();
 end*/
 
-rule "Time"
+/*rule "Check if exists sequence of A-> .. -> B -> .. -> C"
 	no-loop
 	when
 		$aEvent : SimpleEvent();
-		$bEvent : SimpleEvent( this before[ 20s, 1m ] $aEvent );
+		$bEvent : SimpleEvent(this after $aEvent ,this.data == "Evento B");
+		$cEvent : SimpleEvent(this after $bEvent, this.data == "Evento C",
+		$bEvent.data == "Evento B", $bEvent.isConsumed == false,
+		$aEvent.data == "Evento A", $aEvent.isConsumed == false,
+		this.isConsumed == false);
+		
 	then
-	  System.out.println("---------------------------------MATCHING-TIME-OCCURS--------------------------------------");
-end
+	  	System.out.println("---------------------------------MATCHING------OCCURS--------------------------------------");
+		$aEvent.setConsumed(true);
+	  	$bEvent.setConsumed(true);
+	  	$cEvent.setConsumed(true);
+end*/
