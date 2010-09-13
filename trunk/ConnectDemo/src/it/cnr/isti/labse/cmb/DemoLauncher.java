@@ -17,13 +17,13 @@ import javax.naming.NamingException;
 public class DemoLauncher {
 
 	//start settings
-	protected static String ENVIRONMENTPARAMETERSFILE = "/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/environmentFile";
-	protected static String PROBE1PARAMETERSFILE = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile1";
-	protected static String PROBE2PARAMETERSFILE = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile2";
-	protected static String CONSUMER1PARAMETERSFILE = 	"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/consumerFile1";
-	protected static String CONSUMER2PARAMETERSFILE = 	"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/consumerFile2";
-	protected static String DROOLSPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/droolsFile";
-	protected static String MANAGERPARAMETERFILE = 		"/home/antonello/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/managerFile";
+	protected static String ENVIRONMENTPARAMETERSFILE = "/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/environmentFile";
+	protected static String PROBE1PARAMETERSFILE = 		"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile1";
+	protected static String PROBE2PARAMETERSFILE = 		"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile2";
+	protected static String CONSUMER1PARAMETERSFILE = 	"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/consumerFile1";
+	protected static String CONSUMER2PARAMETERSFILE = 	"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/consumerFile2";
+	protected static String DROOLSPARAMETERFILE = 		"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/droolsFile";
+	protected static String MANAGERPARAMETERFILE = 		"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/managerFile";
 	//end settings
 	
 	private static TopicConnectionFactory connFact;

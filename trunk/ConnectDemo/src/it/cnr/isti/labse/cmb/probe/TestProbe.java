@@ -83,7 +83,7 @@ public class TestProbe extends Thread
 	public void run()
 	{
 		try {
-			Thread.sleep(13000);
+			Thread.sleep(8000);
 			System.out.println();
 			DebugMessages.line();
 			System.out.println(this.getClass().getSimpleName() + ": Starts sending events");

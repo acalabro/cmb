@@ -1,65 +1,78 @@
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
+import java.util.List;
 
 declare SimpleEvent
 	@role( event )
 	@timestamp( timestamp )
 end
 
-rule "occurrencies A -> C"
+declare Pair
+  first: SimpleEvent
+  second: SimpleEvent
+end
+
+rule "collectCouple"
+	salience 0
 	no-loop
+	when
+		$list : List() from collect(Pair())
+	then
+		System.out.println("A -> B sequences founded: " + $list.size());
+end
+
+rule "occurrencies A -> B"
+	no-loop
+	salience 1000
+	when
+		$aEvent : SimpleEvent( this.data == "Evento A", this.isConsumed == false);
+		$bEvent : SimpleEvent( this.data == "Evento B",	this after $aEvent,	this.isConsumed == false) over window:time(50s);
+	then
+		
+		Pair p = new Pair();
+   		p.setFirst( $aEvent );
+   		p.setSecond( $bEvent );
+   		insert(p);
+   		
+		$aEvent.setConsumed(true);
+		$bEvent.setConsumed(true);
+		update( $aEvent );
+		update( $bEvent );
+end
+
+/* TRIPLA ABC
+
+declare Teir
+  first: SimpleEvent
+  second: SimpleEvent
+  third: SimpleEvent
+end
+
+rule "collectTrio"
+	no-loop
+	when
+		$list : List() from collect(Teir())
+	then
+		System.out.println("A -> B -> C sequences founded: " + $list.size());
+end
+
+
+rule "occurrencies A -> B -> C"
+	no-loop
+	salience 5
 	when
 		$aEvent : SimpleEvent( this.data == "Evento A");
-		Number( numberA : intValue )
-			from accumulate
-			(occurrenciesC: SimpleEvent( this.data == "Evento C", this after $aEvent ) over window:size(1m),
-			count(occurrenciesC))
+		$bEvent : SimpleEvent( this.data == "Evento B", this after $aEvent);
+		$cEvent : SimpleEvent( this.data == "Evento C", this after $aEvent, this after $bEvent);
 	then
-		System.out.println("Numero di occorrenze A -> C in un minuto: " + numberA);
-end
-
-/*
-rule "occurrencies"
-        no-loop
-        when
-            Number( numberA : intValue > 4)
-            from accumulate
-                (occurrencies: SimpleEvent( this.data == "Evento A" ) over window:size(1m),
-                 count(occurrencies))
-        then
-        System.out.println("ATTENZIONE: Si sono verificati più di " + numberA + " occorrenze");
-end
-*/
-
-
-/*rule "Filter"
-no-loop
-	when
-		$objA : SimpleEvent();
-		$objB : SimpleEvent(this.data == $objA.data, this.timestamp != $objA.timestamp);
-	then
-		System.out.println("------------------------------------MATCHING-OCCURS-----------------------------------");
-
-		System.out.println($objA.getID() + " " +
-		$objA.getData() + " con timestamp: " + $objA.getTimestamp()
-		+ " E' UGUALE A " +
-		$objB.getData() + " con timestamp: " + $objB.getTimestamp());
-		DebugMessages.line();
-end*/
-
-/*rule "Check if exists sequence of A-> .. -> B -> .. -> C"
-	no-loop
-	when
-		$aEvent : SimpleEvent();
-		$bEvent : SimpleEvent(this after $aEvent ,this.data == "Evento B");
-		$cEvent : SimpleEvent(this after $bEvent, this.data == "Evento C",
-		$bEvent.data == "Evento B", $bEvent.isConsumed == false,
-		$aEvent.data == "Evento A", $aEvent.isConsumed == false,
-		this.isConsumed == false);
 		
-	then
-	  	System.out.println("---------------------------------MATCHING------OCCURS--------------------------------------");
-		$aEvent.setConsumed(true);
-	  	$bEvent.setConsumed(true);
-	  	$cEvent.setConsumed(true);
+		Teir p = new Teir();
+   		p.setFirst( $aEvent );
+   		p.setSecond( $bEvent );
+   		p.setThird( $cEvent );
+   		insert(p);
+
+		retract ($aEvent);
+		retract ($bEvent);
+		retract ($cEvent);
 end*/

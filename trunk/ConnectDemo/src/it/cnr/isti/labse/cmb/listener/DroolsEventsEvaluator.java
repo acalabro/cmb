@@ -131,11 +131,17 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 			KnowledgeBaseConfiguration config = KnowledgeBaseFactory
 					.newKnowledgeBaseConfiguration();
 			config.setOption(EventProcessingOption.STREAM);
+			
+			/*RuleBaseConfiguration conf = new RuleBaseConfiguration();
+			conf.setSequential(true);
+
+			RuleBase ruleBase = RuleBaseFactory.newRuleBase( conf );*/
+			
 			KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
 					.newKnowledgeBuilder();
 			kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, this
 					.getClass().getClassLoader()), ResourceType.DRL);
-			KnowledgeBuilderErrors errors = kbuilder.getErrors();
+						KnowledgeBuilderErrors errors = kbuilder.getErrors();
 			if (errors.size() > 0) {
 				for (KnowledgeBuilderError error : errors) {
 					System.err.println(error);
@@ -145,6 +151,12 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 
 			KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
 			kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+
+			/*PackageBuilder pb = new PackageBuilder();
+			pb.addPackageFromDrl(ResourceFactory.newClassPathResource(RULEPATH, this
+					.getClass().getClassLoader()));
+			ruleBase.addPackage(pb.getPackage());*/
+			
 			return kbase;
 		} catch (Exception e) {
 			return null;
