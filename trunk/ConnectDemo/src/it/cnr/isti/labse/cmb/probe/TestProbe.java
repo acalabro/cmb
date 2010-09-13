@@ -37,6 +37,8 @@ public class TestProbe extends Thread
 	
 	private Topic connectionTopic;
 	
+	private int eventID = 0;
+	
 	public static TestProbe getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		if (myProbeInstance == null)
@@ -145,7 +147,8 @@ public class TestProbe extends Thread
 				ObjectMessage messageToSend = publishSession.createObjectMessage();
 				
 				//Creo un simple event da spedire
-				ConnectBaseEvent<String> message = new SimpleEvent(this.probeName, this.getClass().getSimpleName() + "#" + probeName + "#" + System.currentTimeMillis(), System.currentTimeMillis());
+				ConnectBaseEvent<String> message = new SimpleEvent(this.probeName, this.getClass().getSimpleName() + "#" + probeName + "#" + System.currentTimeMillis(), eventID,  System.currentTimeMillis());
+				eventID++;
 				message.setData(msg);
 				
 				messageToSend.setObject(message);

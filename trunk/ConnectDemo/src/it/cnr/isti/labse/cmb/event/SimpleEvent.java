@@ -7,13 +7,15 @@ public class SimpleEvent extends ConnectBaseEvent<String>
 	private String data = "";
 	private String id;
 	private String sourceID;
+	private int eventID;
 	
-	public SimpleEvent(String sourceID, String ID, Long ts)
+	public SimpleEvent(String sourceID, String ID, int eventID, Long ts)
 	{
-		super(sourceID, ID, ts);
+		super(sourceID, ID, eventID, ts);
 		this.timestamp = ts;
 		this.id = ID;
 		this.sourceID = sourceID;
+		this.eventID = eventID;
 	}
 
 	public String getData() {
@@ -46,5 +48,15 @@ public class SimpleEvent extends ConnectBaseEvent<String>
 
 	public String getSourceID() {
 		return this.sourceID;
+	}
+
+	@Override
+	public int getEventID() {
+		return this.eventID;
+	}
+
+	@Override
+	public void setEventID(int eventID) {
+		this.eventID = eventID;
 	}
 }
