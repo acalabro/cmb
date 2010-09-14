@@ -1,35 +1,41 @@
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
 import java.util.List;
+import it.cnr.isti.labse.cmb.settings.DroolsUtils;
 
 declare SimpleEvent
 	@role( event )
 	@timestamp( timestamp )
 end
 
-declare Pair
+declare PairAB
   first: SimpleEvent
   second: SimpleEvent
 end
 
-rule "collectCouple"
-	salience 0
-	no-loop
-	when
-		$list : List() from collect(Pair())
-	then
-		System.out.println("A -> B sequences founded: " + $list.size());
+declare PairAC
+  first: SimpleEvent
+  second: SimpleEvent
 end
+
+declare TierABC
+  first: SimpleEvent
+  second: SimpleEvent
+  third: SimpleEvent
+end
+
 
 rule "occurrencies A -> B"
 	no-loop
-	salience 1000
+	salience 0
+	dialect "java"
 	when
-		$aEvent : SimpleEvent( this.data == "Evento A", this.isConsumed == false);
-		$bEvent : SimpleEvent( this.data == "Evento B",	this after $aEvent,	this.isConsumed == false) over window:time(50s);
+		$aEvent : SimpleEvent( this.data == "Event A", this.isConsumed == false);
+		$bEvent : SimpleEvent( this.data == "Event B",	this after $aEvent,	this.isConsumed == false, this.getSourceID == $aEvent.getSourceID);
+		eval( DroolsUtils.strictlyFollows($aEvent.getEventID(), $bEvent.getEventID()));		
 	then
 		
-		Pair p = new Pair();
+		PairAB p = new PairAB();
    		p.setFirst( $aEvent );
    		p.setSecond( $bEvent );
    		insert(p);
@@ -40,39 +46,63 @@ rule "occurrencies A -> B"
 		update( $bEvent );
 end
 
-/* TRIPLA ABC
-
-declare Teir
-  first: SimpleEvent
-  second: SimpleEvent
-  third: SimpleEvent
-end
-
-rule "collectTrio"
+rule "occurrencies A -> C"
 	no-loop
+	salience 0
+	dialect "java"
 	when
-		$list : List() from collect(Teir())
+		$aEvent : SimpleEvent( this.data == "Event A", this.isConsumed == false);
+		$cEvent : SimpleEvent( this.data == "Event C",	this after $aEvent,	this.isConsumed == false, this.getSourceID == $aEvent.getSourceID);
+		eval( DroolsUtils.strictlyFollows($aEvent.getEventID(), $cEvent.getEventID()));		
 	then
-		System.out.println("A -> B -> C sequences founded: " + $list.size());
+		
+		PairAC p = new PairAC();
+   		p.setFirst( $aEvent );
+   		p.setSecond( $cEvent );
+   		insert(p);
+   		
+		$aEvent.setConsumed(true);
+		$cEvent.setConsumed(true);
+		update( $aEvent );
+		update( $cEvent );
 end
-
 
 rule "occurrencies A -> B -> C"
 	no-loop
-	salience 5
+	salience 0
+	dialect "java"
 	when
-		$aEvent : SimpleEvent( this.data == "Evento A");
-		$bEvent : SimpleEvent( this.data == "Evento B", this after $aEvent);
-		$cEvent : SimpleEvent( this.data == "Evento C", this after $aEvent, this after $bEvent);
+		$aEvent : SimpleEvent( this.data == "Event A");
+		$bEvent : SimpleEvent( this.data == "Event B",	this after $aEvent,	this.getSourceID == $aEvent.getSourceID);
+		$cEvent : SimpleEvent( this.data == "Event C",	this after $bEvent,	this.getSourceID == $bEvent.getSourceID);
+		eval( DroolsUtils.strictlyFollows($aEvent.getEventID(), $bEvent.getEventID(), $cEvent.getEventID()));		
 	then
 		
-		Teir p = new Teir();
+		TierABC p = new TierABC();
    		p.setFirst( $aEvent );
    		p.setSecond( $bEvent );
    		p.setThird( $cEvent );
    		insert(p);
+   		
+		$aEvent.setConsumed(true);
+		$bEvent.setConsumed(true);
+		$cEvent.setConsumed(true);
+		update( $aEvent );
+		update( $bEvent );
+		update( $cEvent );
+end
 
-		retract ($aEvent);
-		retract ($bEvent);
-		retract ($cEvent);
-end*/
+rule "collectDataAndAverage"
+	salience 99990
+	no-loop
+	when
+		$listAB : List() from collect(PairAB())
+		$listAC : List() from collect(PairAC())
+		$listABC: List() from collect(TierABC());
+	then
+		System.out.println("/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\Strictly-follow-A -> B sequences found: " + $listAB.size());
+		System.out.println("/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\Strictly-follow-A -> C sequences found: " + $listAC.size());
+		System.out.println("/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\Strictly-follow-A -> B -> C sequences found: " + $listABC.size()); 
+		System.out.println("/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\AB pattern choosed " + DroolsUtils.evaluateProb($listAB.size(), $listAB.size() + $listAC.size()) + "% times");
+		System.out.println("/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\AC pattern choosed " + DroolsUtils.evaluateProb($listAC.size(), $listAB.size() + $listAC.size()) + "% times");
+end

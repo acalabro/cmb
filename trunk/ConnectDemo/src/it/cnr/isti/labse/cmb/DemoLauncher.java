@@ -37,8 +37,8 @@ public class DemoLauncher {
 			TestProbe testingProbe1 = new TestProbe(Manager.Read(PROBE1PARAMETERSFILE), connFact, initConn);
 			testingProbe1.start();
 			
-			//TestProbe testingProbe2 = new TestProbe(Manager.Read(PROBE2PARAMETERSFILE), connFact, initConn);
-			//testingProbe2.start();
+			TestProbe testingProbe2 = new TestProbe(Manager.Read(PROBE2PARAMETERSFILE), connFact, initConn);
+			testingProbe2.start();
 					
 			ConsumerManager manager = new ConsumerManager(Manager.Read(MANAGERPARAMETERFILE), connFact, initConn);
 			manager.start();
