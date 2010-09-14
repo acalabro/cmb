@@ -1,0 +1,19 @@
+import it.cnr.isti.labse.cmb.event.SimpleEvent;
+import it.cnr.isti.labse.cmb.settings.DroolsUtils;
+
+declare SimpleEvent
+	@role( event )
+	@timestamp( timestamp )
+end
+
+rule "countOccurrencies"
+	salience 0
+	no-loop
+	
+	when
+		$aEvent: SimpleEvent (this.isConsumed == false, this.data == "Event A");
+		$bEvent: SimpleEvent (this.isConsumed == false, this.data == "Event B", this after $aEvent);
+		eval( DroolsUtils.strictlyFollows($aEvent.getEventID(), $bEvent.getEventID()) );
+	then
+		System.out.println("Trovata coppia AB");
+end

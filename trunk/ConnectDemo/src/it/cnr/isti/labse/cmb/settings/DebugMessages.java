@@ -22,4 +22,8 @@ public class DebugMessages {
 	public static void line() {
 		System.out.println("--------------------------------------------------------------------------------------");	
 	}
+	
+	public static void asterisks() {
+		System.out.println("**************************************************************************************");	
+	}
 }

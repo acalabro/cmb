@@ -2,9 +2,9 @@ package it.cnr.isti.labse.cmb.settings;
 
 public class DroolsUtils {
 	
-	public static boolean strictlyFollows(int aEventID, int bEventID)
+	public static boolean strictlyFollows(int firstEventID, int secondEventID)
 	{
-		if (bEventID - aEventID == 1)
+		if (secondEventID - firstEventID == 1)
 		{
 			return true;
 		}
@@ -12,9 +12,9 @@ public class DroolsUtils {
 			return false;
 	}
 
-	public static boolean strictlyFollows(int aEventID, int bEventID, int cEventID)
+	public static boolean strictlyFollows(int firstEventID, int secondEventID, int thirdEventID)
 	{
-		if ((bEventID - aEventID == 1) && (cEventID - bEventID == 1))
+		if ((secondEventID - firstEventID == 1) && (thirdEventID - secondEventID == 1))
 		{
 			
 			return true;
