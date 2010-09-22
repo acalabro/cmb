@@ -20,4 +20,5 @@ public abstract class ConnectBaseEvent <T> implements Serializable {
 	public abstract String getSourceID();
 	public abstract int getEventID();
 	public abstract void setEventID(int eventID);
+	//TODO current state (on payload)
 }

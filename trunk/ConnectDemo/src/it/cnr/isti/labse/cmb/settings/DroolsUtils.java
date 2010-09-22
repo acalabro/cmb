@@ -11,7 +11,12 @@ public class DroolsUtils {
 		else
 			return false;
 	}
-
+	
+	public static long latency(long firstEvent, long secondEvent)
+	{
+		return secondEvent-firstEvent;
+	}
+	
 	public static boolean strictlyFollows(int firstEventID, int secondEventID, int thirdEventID)
 	{
 		if ((secondEventID - firstEventID == 1) && (thirdEventID - secondEventID == 1))
@@ -31,5 +36,14 @@ public class DroolsUtils {
 		}
 		else
 			return 0;
+	}
+	
+	public static double ratio (int one, int two)
+	{
+		if (one != 0 && two != 0)
+		{
+			return (double)one/two;
+		}
+		return 0;
 	}
 }

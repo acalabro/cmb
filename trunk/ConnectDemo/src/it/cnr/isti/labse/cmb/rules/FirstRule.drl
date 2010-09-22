@@ -2,7 +2,6 @@ import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
 import java.util.List;
 import it.cnr.isti.labse.cmb.settings.DroolsUtils;
-import it.cnr.isti.labse.cmb.settings.DebugMessages;
 
 declare SimpleEvent
 	@role( event )
@@ -101,12 +100,10 @@ rule "collectDataAndAverage"
 		$listAC : List() from collect(PairAC())
 		$listABC: List() from collect(TierABC());
 	then
-		DebugMessages.asterisks();
-		System.out.println("*\\/\\/\\/\\/\\/\\/\\/\\/\\/\\Strictly-follow-sequences-A -> B found: " + $listAB.size() + "/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\*");
-		System.out.println("*\\/\\/\\/\\/\\/\\/\\/\\/\\/\\Strictly-follow-sequences-A -> C found: " + $listAC.size() + "/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\*");
-		System.out.println("*\\/\\/\\/\\/\\/\\/\\/\\/\\/\\Strictly-follow-sequences-A -> B -> C found: " + $listABC.size() + "/\\/\\/\\/\\/\\/\\/\\/\\/\\/*");
+		System.out.println("Strictly-follow-A -> B sequences found: " + $listAB.size());
+		System.out.println("Strictly-follow-A -> C sequences found: " + $listAC.size());
+		System.out.println("Strictly-follow-A -> B -> C sequences found: " + $listABC.size()); 
+		System.out.println("AB pattern chosen " + DroolsUtils.evaluateProb($listAB.size(), $listAB.size() + $listAC.size()) + "% times");
+		System.out.println("AC pattern chosen " + DroolsUtils.evaluateProb($listAC.size(), $listAB.size() + $listAC.size()) + "% times");
 		DebugMessages.line();
-		System.out.println("*\\/\\/\\/\\/\\/\\/\\/\\/\\/\\AB pattern choosed " + DroolsUtils.evaluateProb($listAB.size(), $listAB.size() + $listAC.size()) + "% times /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\*");
-		System.out.println("*\\/\\/\\/\\/\\/\\/\\/\\/\\/\\AC pattern choosed " + DroolsUtils.evaluateProb($listAC.size(), $listAB.size() + $listAC.size()) + "% times /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\*");
-		DebugMessages.asterisks();
 end
