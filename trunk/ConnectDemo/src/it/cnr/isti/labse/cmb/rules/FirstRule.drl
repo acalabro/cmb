@@ -44,6 +44,8 @@ rule "occurrencies A -> B"
 		$bEvent.setConsumed(true);
 		update( $aEvent );
 		update( $bEvent );
+		retract( $aEvent );
+		retract( $bEvent );
 end
 
 rule "occurrencies A -> C"
@@ -65,6 +67,8 @@ rule "occurrencies A -> C"
 		$cEvent.setConsumed(true);
 		update( $aEvent );
 		update( $cEvent );
+		retract( $aEvent );
+		retract( $cEvent );
 end
 
 rule "occurrencies A -> B -> C"
@@ -90,6 +94,9 @@ rule "occurrencies A -> B -> C"
 		update( $aEvent );
 		update( $bEvent );
 		update( $cEvent );
+		retract( $aEvent );
+		retract( $bEvent );
+		retract( $cEvent );
 end
 
 rule "collectDataAndAverage"

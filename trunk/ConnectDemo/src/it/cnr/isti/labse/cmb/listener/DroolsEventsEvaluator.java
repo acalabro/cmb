@@ -198,4 +198,16 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void setSink(String topicName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMetric() {
+		// TODO Auto-generated method stub
+		
+	}
 }

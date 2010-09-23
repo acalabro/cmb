@@ -13,25 +13,49 @@ import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.omg.CORBA.portable.ApplicationException;
+
 
 public class DemoLauncher {
 
+	private static Properties systemProps = new Properties();
 	//start settings
-	protected static String ENVIRONMENTPARAMETERSFILE = "/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/environmentFile";
-	protected static String PROBE1PARAMETERSFILE = 		"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile1";
-	protected static String PROBE2PARAMETERSFILE = 		"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/probeFile2";
-	protected static String CONSUMER1PARAMETERSFILE = 	"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/consumerFile1";
-	protected static String CONSUMER2PARAMETERSFILE = 	"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/consumerFile2";
-	protected static String DROOLSPARAMETERFILE = 		"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/droolsFile";
-	protected static String MANAGERPARAMETERFILE = 		"/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/managerFile";
+	protected static String ENVIRONMENTPARAMETERSFILE;
+	protected static String PROBE1PARAMETERSFILE;
+	protected static String PROBE2PARAMETERSFILE;
+	protected static String CONSUMER1PARAMETERSFILE;
+	protected static String CONSUMER2PARAMETERSFILE;
+	protected static String DROOLSPARAMETERFILE;
+	protected static String MANAGERPARAMETERFILE;
 	//end settings
 	
 	private static TopicConnectionFactory connFact;
 	private static InitialContext initConn;
 
+	public static boolean initProps()
+	{
+		try
+		{			
+			systemProps = Manager.Read(System.getProperty("user.dir")  + "/src/it/cnr/isti/labse/cmb/settings/systemSettings");
+			
+			ENVIRONMENTPARAMETERSFILE = systemProps.getProperty("ENVIRONMENTPARAMETERSFILE");
+			PROBE1PARAMETERSFILE = systemProps.getProperty("PROBE1PARAMETERSFILE");
+			PROBE2PARAMETERSFILE = systemProps.getProperty("PROBE2PARAMETERSFILE");
+			CONSUMER1PARAMETERSFILE = systemProps.getProperty("CONSUMER1PARAMETERSFILE");
+			CONSUMER2PARAMETERSFILE = systemProps.getProperty("CONSUMER2PARAMETERSFILE");
+			DROOLSPARAMETERFILE = systemProps.getProperty("DROOLSPARAMETERFILE");
+			MANAGERPARAMETERFILE = systemProps.getProperty("MANAGERPARAMETERFILE");
+			return true;
+		}
+		catch(Exception asd)
+		{
+			return false;
+		}
+	}
+	
 	public static void main(String[] args) {
 		
-		if (DemoLauncher.init())
+		if (DemoLauncher.initProps() && DemoLauncher.init())
 		{
 			
 			TestProbe testingProbe1 = new TestProbe(Manager.Read(PROBE1PARAMETERSFILE), connFact, initConn);
