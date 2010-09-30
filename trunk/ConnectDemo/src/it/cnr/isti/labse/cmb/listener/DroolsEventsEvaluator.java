@@ -3,8 +3,6 @@ package it.cnr.isti.labse.cmb.listener;
 import it.cnr.isti.labse.cmb.buffer.EventsBuffer;
 import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
-import it.cnr.isti.labse.cmb.rules.ConnectBaseRule;
-import it.cnr.isti.labse.cmb.rules.RuleConverter;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
 
 import java.util.Properties;
@@ -46,7 +44,7 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 	private TopicSession subscribeSession;
 	private TopicPublisher tPub;
 	private TopicSubscriber tSub;
-	private ConnectBaseRule listenerRule;
+	private String listenerRule;
 	private KnowledgeBase kbase;
 	private StatefulKnowledgeSession ksession;
 	private WorkingMemoryEntryPoint eventStream;
@@ -54,8 +52,8 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 	private ConnectBaseEvent<String> receivedEvent;
 	protected static String RULEPATH = "it/cnr/isti/labse/cmb/rules/FirstRule.drl";
 
-	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, ConnectBaseRule listenerRule, String answerTopic) {
-		this.listenerRule = listenerRule;
+	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, String rule, String answerTopic) {
+		this.listenerRule = rule;
 		this.topic = settings.getProperty("probeTopic");
 		this.answerTopic = answerTopic;
 	}
@@ -90,11 +88,10 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 			DebugMessages.ok();
 
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating rule for the engine ");
-			String ruleConverted = RuleConverter.convert(listenerRule);
 			DebugMessages.ok();
 
 			DebugMessages.print(this.getClass().getSimpleName(), "Reading knowledge base ");
-			kbase = readKnowledgeBase(ruleConverted);
+			kbase = readKnowledgeBase(listenerRule);
 			ksession = kbase.newStatefulKnowledgeSession();
 			ksession.setGlobal("EVENTS EntryPoint", eventStream);
 			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");

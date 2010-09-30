@@ -7,7 +7,8 @@ public abstract class ConnectBaseEvent <T> implements Serializable {
 	protected boolean consumed;
 	protected String sourceID;
 	protected int sequenceID;
-	public ConnectBaseEvent(String sourceID, String ID, int eventID, Long ts) {
+	protected String sourceState;
+	public ConnectBaseEvent(String sourceID, String ID, int eventID, Long ts, String sourceState) {
 		consumed = false;
 	};
 	public abstract T getData();
@@ -20,5 +21,7 @@ public abstract class ConnectBaseEvent <T> implements Serializable {
 	public abstract String getSourceID();
 	public abstract int getSequenceID();
 	public abstract void setSequenceID(int sequenceID);
+	public abstract void setSourceState(String sourceState);
+	public abstract String getSourceState();
 	//TODO current state (on payload)
 }

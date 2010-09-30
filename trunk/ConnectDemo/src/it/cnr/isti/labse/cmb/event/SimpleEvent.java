@@ -8,14 +8,16 @@ public class SimpleEvent extends ConnectBaseEvent<String>
 	private String id;
 	private String sourceID;
 	private int sequenceID;
+	private String sourceState;
 	
-	public SimpleEvent(String sourceID, String ID, int eventID, Long ts)
+	public SimpleEvent(String sourceID, String ID, int eventID, Long ts, String sourceState)
 	{
-		super(sourceID, ID, eventID, ts);
+		super(sourceID, ID, eventID, ts, sourceState);
 		this.timestamp = ts;
 		this.id = ID;
 		this.sourceID = sourceID;
 		this.sequenceID = eventID;
+		this.sourceState = sourceState;
 	}
 
 	public String getData() {
@@ -56,5 +58,13 @@ public class SimpleEvent extends ConnectBaseEvent<String>
 
 	public void setSequenceID(int eventID) {
 		this.sequenceID = eventID;
+	}
+
+	public void setSourceState(String sourceState) {
+		this.sourceState = sourceState;
+	}
+
+	public String getSourceState() {
+		return sourceState;
 	}
 }

@@ -81,6 +81,19 @@ public class SimpleConsumer extends Thread implements MessageListener{
 	public void run()
 	{
 		/*CUSTOMER SEND REQUEST ON THE SERVICETOPIC*/
+		request = "<rule-set name=\"cheese rules\" xmlns=\"http://drools.org/rules\" xmlns:java=\"http://drools.org/semantics/java\"" +
+				" xmlns:xs=\"http://www.w3.org/2001/XMLSchema-instance\" xs:schemaLocation=\"http://drools.org/rules " +
+				"rules.xsd http://drools.org/semantics/java java.xsd\">" +
+				"<rule name=\"occurrencies A -> B\">" +
+				"<parameter identifier=\"eventA\">" +
+				"<class>it.cnr.isti.labse.cmb.event.SimpleEvent</class>" +
+				"</parameter>" +
+				"<java:condition>eventA.getData() == \"EventA\"</java:condition>" +
+				"<java:consequence>" +
+				"System.out.println( \"EventA regola XML\");" +
+				"</java:consequence>" +
+				"</rule>" +
+				"</rule-set>";
 		sendRequest(createMessage(request));
 	}
 	

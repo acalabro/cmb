@@ -32,7 +32,7 @@ rule "occurrencies A -> B"
 	when
 		$aEvent : SimpleEvent( this.data == "Event A", this.isConsumed == false);
 		$bEvent : SimpleEvent( this.data == "Event B",	this after $aEvent,	this.isConsumed == false, this.getSourceID == $aEvent.getSourceID);
-		eval( DroolsUtils.strictlyFollows($aEvent.getEventID(), $bEvent.getEventID()));		
+		eval( DroolsUtils.strictlyFollows($aEvent.getSequenceID(), $bEvent.getSequenceID()));		
 	then
 		
 		PairAB p = new PairAB();
@@ -55,7 +55,7 @@ rule "occurrencies A -> C"
 	when
 		$aEvent : SimpleEvent( this.data == "Event A", this.isConsumed == false);
 		$cEvent : SimpleEvent( this.data == "Event C",	this after $aEvent,	this.isConsumed == false, this.getSourceID == $aEvent.getSourceID);
-		eval( DroolsUtils.strictlyFollows($aEvent.getEventID(), $cEvent.getEventID()));		
+		eval( DroolsUtils.strictlyFollows($aEvent.getSequenceID(), $cEvent.getSequenceID()));		
 	then
 		
 		PairAC p = new PairAC();
@@ -79,7 +79,7 @@ rule "occurrencies A -> B -> C"
 		$aEvent : SimpleEvent( this.data == "Event A");
 		$bEvent : SimpleEvent( this.data == "Event B",	this after $aEvent,	this.getSourceID == $aEvent.getSourceID);
 		$cEvent : SimpleEvent( this.data == "Event C",	this after $bEvent,	this.getSourceID == $bEvent.getSourceID);
-		eval( DroolsUtils.strictlyFollows($aEvent.getEventID(), $bEvent.getEventID(), $cEvent.getEventID()));		
+		eval( DroolsUtils.strictlyFollows($aEvent.getSequenceID(), $bEvent.getSequenceID(), $cEvent.getSequenceID()));		
 	then
 		
 		TierABC p = new TierABC();

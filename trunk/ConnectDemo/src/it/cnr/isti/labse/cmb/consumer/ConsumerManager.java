@@ -5,9 +5,7 @@ import it.cnr.isti.labse.cmb.buffer.EventsBuffer;
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.listener.DroolsEventsEvaluator;
 import it.cnr.isti.labse.cmb.listener.EventsEvaluator;
-import it.cnr.isti.labse.cmb.rules.ConnectBaseRule;
 import it.cnr.isti.labse.cmb.rules.Engines;
-import it.cnr.isti.labse.cmb.rules.MyRule;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
 
 import java.util.Properties;
@@ -94,23 +92,11 @@ public class ConsumerManager extends Thread implements MessageListener {
 	@Override
 	public void onMessage(Message arg0) {
 		TextMessage msg = (TextMessage) arg0; 
-		
-		//SUPPOSING RECEIVED MESSAGE IS A DROOLS QUERY
-		ConnectBaseRule rule = new MyRule();
-		
+				
 		try {
-			//TODO: CHANGE STRING WITH XML
-			String[] splittedRule = new String[4];
-			splittedRule = msg.getText().split(",");
-			rule.setEngine(splittedRule[0]);
-			rule.setLanguage(splittedRule[1]);
-			rule.setWhen(splittedRule[2]);
-			rule.setThen(splittedRule[3]);
 			DebugMessages.line();
 			
-			System.out.println(this.getClass().getSimpleName() + ": receive " + rule.getEngine() + " " +
-					rule.getLanguage() + " " + rule.getWhen() + " " +
-					rule.getThen());
+			System.out.println(this.getClass().getSimpleName() + ": receive " + msg.getText());
 			DebugMessages.line();
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up new Buffer to store events.");
 			
@@ -131,7 +117,7 @@ public class ConsumerManager extends Thread implements MessageListener {
 				e.printStackTrace();
 			}
 			
-			startListener(Engines.drools, rule, createBuffer(Engines.drools), answerTopic);
+			startListener(Engines.drools, msg.getText(), createBuffer(Engines.drools), answerTopic);
 			
 		} catch (JMSException e) {
 			e.printStackTrace();
@@ -151,7 +137,7 @@ public class ConsumerManager extends Thread implements MessageListener {
 		DebugMessages.line();
 	}
 	
-	private void startListener(Engines engine, ConnectBaseRule rule, EventsBuffer<SimpleEvent> buffer, String answerTopic)
+	private void startListener(Engines engine, String rule, EventsBuffer<SimpleEvent> buffer, String answerTopic)
 	{
 		switch(engine)
 		{
