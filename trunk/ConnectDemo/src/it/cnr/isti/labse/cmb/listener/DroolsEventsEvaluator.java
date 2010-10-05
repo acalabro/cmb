@@ -5,6 +5,7 @@ import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
 
+import java.net.URL;
 import java.util.Properties;
 
 import javax.jms.JMSException;
@@ -21,6 +22,8 @@ import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import jxl.read.biff.File;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
@@ -44,7 +47,7 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 	private TopicSession subscribeSession;
 	private TopicPublisher tPub;
 	private TopicSubscriber tSub;
-	private String listenerRule;
+	private String listenerRulePath;
 	private KnowledgeBase kbase;
 	private StatefulKnowledgeSession ksession;
 	private WorkingMemoryEntryPoint eventStream;
@@ -52,8 +55,8 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 	private ConnectBaseEvent<String> receivedEvent;
 	protected static String RULEPATH = "it/cnr/isti/labse/cmb/rules/FirstRule.drl";
 
-	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, String rule, String answerTopic) {
-		this.listenerRule = rule;
+	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, String listenerRulePath, String answerTopic) {
+		this.listenerRulePath = listenerRulePath;
 		this.topic = settings.getProperty("probeTopic");
 		this.answerTopic = answerTopic;
 	}
@@ -91,7 +94,7 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 			DebugMessages.ok();
 
 			DebugMessages.print(this.getClass().getSimpleName(), "Reading knowledge base ");
-			kbase = readKnowledgeBase(listenerRule);
+			kbase = readKnowledgeBase(listenerRulePath);
 			ksession = kbase.newStatefulKnowledgeSession();
 			ksession.setGlobal("EVENTS EntryPoint", eventStream);
 			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");
@@ -129,30 +132,23 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 					.newKnowledgeBaseConfiguration();
 			config.setOption(EventProcessingOption.STREAM);
 			
-			/*RuleBaseConfiguration conf = new RuleBaseConfiguration();
-			conf.setSequential(true);
-
-			RuleBase ruleBase = RuleBaseFactory.newRuleBase( conf );*/
+			
+			//TODO passare la regola fornita dal consumer in xml all'engine di valutazione
 			
 			KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
-					.newKnowledgeBuilder();
-			kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, this
-					.getClass().getClassLoader()), ResourceType.DRL);
-						KnowledgeBuilderErrors errors = kbuilder.getErrors();
-			if (errors.size() > 0) {
-				for (KnowledgeBuilderError error : errors) {
-					System.err.println(error);
-				}
-				throw new IllegalArgumentException("Could not parse knowledge.");
-			}
+			.newKnowledgeBuilder();
+	kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, this
+			.getClass().getClassLoader()), ResourceType.DRL);
+				KnowledgeBuilderErrors errors = kbuilder.getErrors();
+	if (errors.size() > 0) {
+		for (KnowledgeBuilderError error : errors) {
+			System.err.println(error);
+		}
+		throw new IllegalArgumentException("Could not parse knowledge.");
+	}
 
-			KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
-			kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-
-			/*PackageBuilder pb = new PackageBuilder();
-			pb.addPackageFromDrl(ResourceFactory.newClassPathResource(RULEPATH, this
-					.getClass().getClassLoader()));
-			ruleBase.addPackage(pb.getPackage());*/
+	KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
+	kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
 			
 			return kbase;
 		} catch (Exception e) {
@@ -196,13 +192,11 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 		}
 	}
 
-	@Override
 	public void setSink(String topicName) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void setMetric() {
 		// TODO Auto-generated method stub
 		

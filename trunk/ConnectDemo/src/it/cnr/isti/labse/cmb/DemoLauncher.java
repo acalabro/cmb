@@ -13,9 +13,6 @@ import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.omg.CORBA.portable.ApplicationException;
-
-
 public class DemoLauncher {
 
 	private static Properties systemProps = new Properties();
