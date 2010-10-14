@@ -1,11 +1,11 @@
 package it.cnr.isti.labse.cmb.listener;
 
 import it.cnr.isti.labse.cmb.buffer.EventsBuffer;
+import it.cnr.isti.labse.cmb.consumer.ConsumerManager;
 import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
 
-import java.net.URL;
 import java.util.Properties;
 
 import javax.jms.JMSException;
@@ -20,10 +20,9 @@ import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import jxl.read.biff.File;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
@@ -38,7 +37,7 @@ import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.WorkingMemoryEntryPoint;
 
-public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
+public class DroolsEventsEvaluator extends Thread implements MessageListener, EventsEvaluator, Runnable {
 
 	private String topic;
 	private TopicConnection connection;
@@ -47,22 +46,23 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 	private TopicSession subscribeSession;
 	private TopicPublisher tPub;
 	private TopicSubscriber tSub;
-	private String listenerRulePath;
+	private String listenerRule;
 	private KnowledgeBase kbase;
 	private StatefulKnowledgeSession ksession;
 	private WorkingMemoryEntryPoint eventStream;
 	private String answerTopic;
 	private ConnectBaseEvent<String> receivedEvent;
+	private ConsumerManager consumerManager;
 	protected static String RULEPATH = "it/cnr/isti/labse/cmb/rules/FirstRule.drl";
 
-	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, String listenerRulePath, String answerTopic) {
-		this.listenerRulePath = listenerRulePath;
+	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, String listenerRule, String answerTopic, ConsumerManager consumerManager) {
+		this.listenerRule = listenerRule;
 		this.topic = settings.getProperty("probeTopic");
 		this.answerTopic = answerTopic;
+		this.consumerManager = consumerManager;
 	}
 	
-	public void setupConnection(TopicConnectionFactory connectionFact, InitialContext initConn)
-	{
+	public void run(TopicConnectionFactory connectionFact, InitialContext initConn) {
 		try {
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object ");
 			connection = connectionFact.createTopicConnection();
@@ -94,11 +94,18 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 			DebugMessages.ok();
 
 			DebugMessages.print(this.getClass().getSimpleName(), "Reading knowledge base ");
-			kbase = readKnowledgeBase(listenerRulePath);
+			kbase = readKnowledgeBase(listenerRule);
 			ksession = kbase.newStatefulKnowledgeSession();
 			ksession.setGlobal("EVENTS EntryPoint", eventStream);
 			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");
 			DebugMessages.ok();
+			
+			///////
+			sendMessage(createMessage("Risposta di valutazione"));
+			///////
+			
+			
+			
 		} catch (JMSException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
@@ -125,66 +132,66 @@ public class DroolsEventsEvaluator implements MessageListener, EventsEvaluator {
 		}
 	}
 
-	private KnowledgeBase readKnowledgeBase(String ruleConverted) {
-
-		try {
-			KnowledgeBaseConfiguration config = KnowledgeBaseFactory
-					.newKnowledgeBaseConfiguration();
-			config.setOption(EventProcessingOption.STREAM);
-			
-			
-			//TODO passare la regola fornita dal consumer in xml all'engine di valutazione
-			
-			KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
-			.newKnowledgeBuilder();
-	kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, this
-			.getClass().getClassLoader()), ResourceType.DRL);
+	private KnowledgeBase readKnowledgeBase(String rule) {
+		try
+			{
+				KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
+				config.setOption(EventProcessingOption.STREAM);
+				KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+				kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, this.getClass().getClassLoader()), ResourceType.DRL);
 				KnowledgeBuilderErrors errors = kbuilder.getErrors();
-	if (errors.size() > 0) {
-		for (KnowledgeBuilderError error : errors) {
-			System.err.println(error);
-		}
-		throw new IllegalArgumentException("Could not parse knowledge.");
-	}
+				if (errors.size() > 0)
+				{
+					for (KnowledgeBuilderError error : errors)
+					{
+						System.err.println(error);
+					}
+					throw new IllegalArgumentException("Could not parse knowledge.");
+				}
 
-	KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
-	kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-			
-			return kbase;
-		} catch (Exception e) {
+				KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
+				kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+				
+				return kbase;
+			}
+		catch (Exception e)
+		{
 			return null;
 		}
 	}
 
 	public void start() {
-		try {
+		try
+		{
 			tSub.setMessageListener(this);
-		} catch (JMSException e) {
+		}
+		catch (JMSException e)
+		{
 			e.printStackTrace();
 		}
 		ksession.fireUntilHalt();
 		DebugMessages.line();
 	}
 	
-	private TextMessage createMessage(String msg)
-	{
+	private TextMessage createMessage(String msg) {
 		try 
 		{
 			TextMessage sendMessage = publishSession.createTextMessage();
 			sendMessage.setText(msg);
 			return sendMessage;
-		} catch (JMSException e) {
+		}
+		catch (JMSException e)
+		{
 			e.printStackTrace();
 			return null;
 		}
 	}
 	
-	private void sendMessage(TextMessage msg)
-	{
+	private void sendMessage(TextMessage msg) {
 		try {
 			if (msg != null)
 			{
-				System.out.println(this.getClass().getSimpleName() + ": send " + msg.getText());
+				System.out.println(this.getClass().getSimpleName() + ": send on " + tPub.getTopic().getTopicName() + " " + msg.getText());
 				tPub.publish(msg);
 			}
 		} catch (JMSException e) {

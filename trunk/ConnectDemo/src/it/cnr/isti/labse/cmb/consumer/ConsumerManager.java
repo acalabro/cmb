@@ -79,7 +79,9 @@ public class ConsumerManager extends Thread implements MessageListener {
 
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
 			connectionTopic = (Topic)initConn.lookup(serviceTopic);
-			tSub = subscribeSession.createSubscriber(connectionTopic, null, true);
+			
+			//TODO ricordarsi che la destination va modificata
+			tSub = subscribeSession.createSubscriber(connectionTopic, "DESTINATION = 'monitor'", true);
 			DebugMessages.ok();
 						
 		} catch (JMSException e) {
@@ -91,8 +93,16 @@ public class ConsumerManager extends Thread implements MessageListener {
 
 	@Override
 	public void onMessage(Message arg0) {
-		TextMessage msg = (TextMessage) arg0; 
-				
+		TextMessage msg = null;
+		try
+		{
+			msg = (TextMessage) arg0;
+		}
+		catch(Exception a)
+		{
+			
+		}
+		
 		try {
 			DebugMessages.line();
 			
@@ -109,7 +119,10 @@ public class ConsumerManager extends Thread implements MessageListener {
 			answerTopic =  "answerTopic" + "#" + this.getName() + "#" + System.nanoTime();
 			
 			//communicate the answerTopic to the consumer
-			sendMessage(createMessage("AnswerTopic == " + answerTopic));
+			//
+			String sender = msg.getStringProperty("SENDER");
+			
+			sendMessage(createMessage("AnswerTopic == " + answerTopic, sender));
 
 			try {
 				Thread.sleep(2000);
@@ -143,14 +156,11 @@ public class ConsumerManager extends Thread implements MessageListener {
 		{
 			case drools:
 			{		
-				EventsEvaluator listener = new DroolsEventsEvaluator(settings, buffer, rule, answerTopic);
-				
-				listener.setupConnection(connectionFact, initConn);
-				listener.start();
+				EventsEvaluator listener = new DroolsEventsEvaluator(settings, buffer, rule, answerTopic, this);
+				listener.run(connectionFact, initConn);
 			}
 			case sql:
 			{
-				
 			}
 		}
 	}
@@ -177,12 +187,13 @@ public class ConsumerManager extends Thread implements MessageListener {
 		return null;
 	}
 	
-	private TextMessage createMessage(String msg)
+	private TextMessage createMessage(String msg, String sender)
 	{
 		try 
 		{
 			TextMessage sendMessage = publishSession.createTextMessage();
 			sendMessage.setText(msg);
+			sendMessage.setStringProperty("DESTINATION", sender);
 			return sendMessage;
 		} catch (JMSException e) {
 			e.printStackTrace();

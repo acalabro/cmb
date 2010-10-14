@@ -8,7 +8,6 @@ import it.cnr.isti.labse.cmb.settings.Manager;
 
 import java.util.Properties;
 
-
 import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -58,8 +57,8 @@ public class DemoLauncher {
 			TestProbe testingProbe1 = new TestProbe(Manager.Read(PROBE1PARAMETERSFILE), connFact, initConn);
 			testingProbe1.start();
 			
-			TestProbe testingProbe2 = new TestProbe(Manager.Read(PROBE2PARAMETERSFILE), connFact, initConn);
-			testingProbe2.start();
+			//TestProbe testingProbe2 = new TestProbe(Manager.Read(PROBE2PARAMETERSFILE), connFact, initConn);
+			//testingProbe2.start();
 					
 			ConsumerManager manager = new ConsumerManager(Manager.Read(MANAGERPARAMETERFILE), connFact, initConn);
 			manager.start();
@@ -70,17 +69,22 @@ public class DemoLauncher {
 				e.printStackTrace();
 			}
 			
-			SimpleConsumer testingConsumer1 = new SimpleConsumer(Manager.Read(CONSUMER1PARAMETERSFILE), connFact, initConn);
+			/*SimpleConsumer testingConsumer1 = new SimpleConsumer(Manager.Read(CONSUMER1PARAMETERSFILE), connFact, initConn);
 			testingConsumer1.start();
 	
-			//SimpleConsumer testingConsumer2 = new SimpleConsumer(Manager.Read(CONSUMER1PARAMETERSFILE), connFact, initConn);
-			//testingConsumer2.start();
+			try {
+				Thread.sleep(12000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			SimpleConsumer testingConsumer2 = new SimpleConsumer(Manager.Read(CONSUMER1PARAMETERSFILE), connFact, initConn);
+			testingConsumer2.start();*/
 		}
 	}
 	
 	public static boolean init()
 	{
-		
 		boolean successfullInit = false;
 		
 		try 

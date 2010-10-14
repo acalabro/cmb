@@ -1,6 +1,7 @@
 package it.cnr.isti.labse.cmb.consumer;
 
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
+import it.cnr.isti.labse.cmb.settings.Manager;
 
 import java.util.Properties;
 
@@ -61,7 +62,7 @@ public class SimpleConsumer extends Thread implements MessageListener{
 			
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
 			connectionTopic = (Topic)initConn.lookup(serviceTopic);
-			tSub = subscribeSession.createSubscriber(connectionTopic, null, true);
+			tSub = subscribeSession.createSubscriber(connectionTopic, "DESTINATION = 'dependability'", true);
 			DebugMessages.ok();
 			
 			tSub.setMessageListener(this);
@@ -81,7 +82,7 @@ public class SimpleConsumer extends Thread implements MessageListener{
 	public void run()
 	{
 		/*CUSTOMER SEND REQUEST ON THE SERVICETOPIC*/
-		sendRequest(createMessage(requestRulePath));
+		sendRequest(createMessage(Manager.ReadTextFromFile(requestRulePath)));
 	}
 	
 	@Override
@@ -123,6 +124,8 @@ public class SimpleConsumer extends Thread implements MessageListener{
 		{
 			TextMessage sendMessage = publishSession.createTextMessage();
 			sendMessage.setText(msg);
+			sendMessage.setStringProperty("SENDER", "dependability");
+			sendMessage.setStringProperty("DESTINATION", "monitor");
 			return sendMessage;
 		} catch (JMSException e) {
 			e.printStackTrace();

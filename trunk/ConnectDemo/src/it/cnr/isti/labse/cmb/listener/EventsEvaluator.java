@@ -9,6 +9,6 @@ public interface EventsEvaluator {
 	public abstract void start();
 	public abstract void setSink(String topicName);
 	public abstract void setMetric();
-	public abstract void setupConnection(TopicConnectionFactory connectionFact,
+	public abstract void run(TopicConnectionFactory connectionFact,
 			InitialContext initConn);
 }

@@ -167,7 +167,7 @@ public class TestProbe extends Thread
 		try {
 			if (msg != null)
 			{
-				Thread.sleep(timeout);
+				Thread.sleep(timeout*50);
 				tPubb.publish(msg);
 			}
 		} catch (JMSException e) {

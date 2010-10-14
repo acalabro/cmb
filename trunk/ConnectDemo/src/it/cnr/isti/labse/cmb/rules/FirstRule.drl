@@ -31,7 +31,7 @@ rule "occurrencies A -> B"
 	dialect "java"
 	when
 		$aEvent : SimpleEvent( this.data == "Event A", this.isConsumed == false);
-		$bEvent : SimpleEvent( this.data == "Event B",	this after $aEvent,	this.isConsumed == false, this.getSourceID == $aEvent.getSourceID);
+		$bEvent : SimpleEvent( this after $aEvent,	this.isConsumed == false, this.getSourceID == $aEvent.getSourceID);
 		eval( DroolsUtils.strictlyFollows($aEvent.getSequenceID(), $bEvent.getSequenceID()));		
 	then
 		

@@ -1,4 +1,4 @@
 serviceTopic = serviceTopic
-requestRulePath = listenerRule.drl
+requestRulePath = /home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/rules/listenerRule.xml
 consumerName = consumatore1
 topic = probeTopic
