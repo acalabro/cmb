@@ -64,7 +64,6 @@ public class SimpleConsumer extends Thread implements MessageListener{
 			connectionTopic = (Topic)initConn.lookup(serviceTopic);
 			tSub = subscribeSession.createSubscriber(connectionTopic, "DESTINATION = 'dependability'", true);
 			DebugMessages.ok();
-			
 			tSub.setMessageListener(this);
 			
 			DebugMessages.print(this.getClass().getSimpleName(), "Starting connection and wait 5 seconds for system startup");
@@ -92,10 +91,12 @@ public class SimpleConsumer extends Thread implements MessageListener{
 			if (msg.getText().startsWith("AnswerTopic == "))
 			{
 				System.out.println(this.getClass().getSimpleName() + "#" + this.hashCode() + ": receive " + msg.getText());
-				answerTopic = msg.getText().substring(0,14).trim();
+				answerTopic = msg.getText().substring(14,msg.getText().length()).trim();
 				listenForAnswer(answerTopic);
 				msg.acknowledge();
 			}
+			else
+				System.out.println(this.getClass().getSimpleName() + " receive: " + msg.getText());
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -111,7 +112,7 @@ public class SimpleConsumer extends Thread implements MessageListener{
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
 			connectionTopic = subscribeSession.createTopic(answerTopic);
 			tSub = subscribeSession.createSubscriber(connectionTopic, null, true);
-			
+			tSub.setMessageListener(this);
 			DebugMessages.ok();
 		} catch (JMSException e) {
 			e.printStackTrace();
