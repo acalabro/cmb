@@ -99,12 +99,7 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 			ksession.setGlobal("EVENTS EntryPoint", eventStream);
 			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");
 			DebugMessages.ok();
-			
-			///////
-			sendMessage(createMessage("Risposta di valutazione"));
-			///////
-			
-			
+	
 			
 		} catch (JMSException e) {
 			e.printStackTrace();

@@ -32,7 +32,7 @@ public class DemoLauncher {
 	{
 		try
 		{			
-			systemProps = Manager.Read(System.getProperty("user.dir")  + "/src/it/cnr/isti/labse/cmb/settings/systemSettings");
+			systemProps = Manager.Read(System.getProperty("user.dir")  + "/src/it/cnr/isti/labse/cmb/settings/configFiles/systemSettings");
 			
 			ENVIRONMENTPARAMETERSFILE = systemProps.getProperty("ENVIRONMENTPARAMETERSFILE");
 			PROBE1PARAMETERSFILE = systemProps.getProperty("PROBE1PARAMETERSFILE");
@@ -69,10 +69,10 @@ public class DemoLauncher {
 				e.printStackTrace();
 			}
 			
-			/*SimpleConsumer testingConsumer1 = new SimpleConsumer(Manager.Read(CONSUMER1PARAMETERSFILE), connFact, initConn);
+			SimpleConsumer testingConsumer1 = new SimpleConsumer(Manager.Read(CONSUMER1PARAMETERSFILE), connFact, initConn);
 			testingConsumer1.start();
 	
-			try {
+			/*try {
 				Thread.sleep(12000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

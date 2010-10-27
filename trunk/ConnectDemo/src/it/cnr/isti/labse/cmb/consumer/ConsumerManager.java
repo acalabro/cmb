@@ -5,7 +5,7 @@ import it.cnr.isti.labse.cmb.buffer.EventsBuffer;
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.listener.DroolsEventsEvaluator;
 import it.cnr.isti.labse.cmb.listener.EventsEvaluator;
-import it.cnr.isti.labse.cmb.rules.Engines;
+import it.cnr.isti.labse.cmb.rules.XmlManager;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
 
 import java.util.Properties;
@@ -108,6 +108,19 @@ public class ConsumerManager extends Thread implements MessageListener {
 			
 			System.out.println(this.getClass().getSimpleName() + ": receive " + msg.getText());
 			DebugMessages.line();
+			
+			//Call XMLUnmarshaller
+			String XMLRule = msg.getText();
+			//End XMLUnmarshaller
+			
+			XmlManager manager = new XmlManager(XMLRule);
+			
+			//Call DroolsRuleGenerator
+			
+			
+			//End DroolsRuleGenerator
+			
+			
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up new Buffer to store events.");
 			
 			DebugMessages.ok();
@@ -119,7 +132,6 @@ public class ConsumerManager extends Thread implements MessageListener {
 			answerTopic =  "answerTopic" + "#" + this.getName() + "#" + System.nanoTime();
 			
 			//communicate the answerTopic to the consumer
-			//
 			String sender = msg.getStringProperty("SENDER");
 			
 			sendMessage(createMessage("AnswerTopic == " + answerTopic, sender));
@@ -130,7 +142,7 @@ public class ConsumerManager extends Thread implements MessageListener {
 				e.printStackTrace();
 			}
 			
-			startListener(Engines.drools, msg.getText(), createBuffer(Engines.drools), answerTopic);
+			startListener(createBuffer(),XMLRule, answerTopic);
 			
 		} catch (JMSException e) {
 			e.printStackTrace();
@@ -150,19 +162,12 @@ public class ConsumerManager extends Thread implements MessageListener {
 		DebugMessages.line();
 	}
 	
-	private void startListener(Engines engine, String rule, EventsBuffer<SimpleEvent> buffer, String answerTopic)
+	private void startListener(EventsBuffer<SimpleEvent> buffer, String XMLRule, String answerTopic)
 	{
-		switch(engine)
-		{
-			case drools:
-			{		
-				EventsEvaluator listener = new DroolsEventsEvaluator(settings, buffer, rule, answerTopic, this);
-				listener.run(connectionFact, initConn);
-			}
-			case sql:
-			{
-			}
-		}
+		//temporaneo XmlObjectRule
+		
+		EventsEvaluator listener = new DroolsEventsEvaluator(settings, buffer, XMLRule, answerTopic, this);
+		listener.run(connectionFact, initConn);
 	}
 	
 	public void answersFromEvaluationEngine(String answer)
@@ -170,21 +175,10 @@ public class ConsumerManager extends Thread implements MessageListener {
 		
 	}
 
-	private EventsBuffer<SimpleEvent> createBuffer(Engines engine)
+	private EventsBuffer<SimpleEvent> createBuffer()
 	{
-		switch(engine)
-		{
-			case drools:
-			{
-				EventsBuffer<SimpleEvent> buffer = new DroolsEventsBuffer<SimpleEvent>();
-				return buffer;
-			}
-			case sql:
-			{
-				return null;
-			}
-		}
-		return null;
+		EventsBuffer<SimpleEvent> buffer = new DroolsEventsBuffer<SimpleEvent>();
+		return buffer;
 	}
 	
 	private TextMessage createMessage(String msg, String sender)
