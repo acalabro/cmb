@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE rule-set [
-    <!ENTITY rules-block1 SYSTEM "rule.drl" >
-]>
-<rule-set name="xmlRule" xmlns="http://drools.org/rules"
-	xmlns:groovy="http://drools.org/semantics/groovy">
-	&rules-block1;
-</rule-set>
