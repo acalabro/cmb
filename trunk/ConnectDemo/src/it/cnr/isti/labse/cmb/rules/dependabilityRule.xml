@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<request idConnector="xyz">
-	<function id="transitionDuration" action="start">
-		<transition startState="s0" label="selectArea" endState="s1"/>
-   		<transition startState="s2" label="uploadData" endState="s3"/>
-   	</function>
-</request>

@@ -98,6 +98,7 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 			ksession = kbase.newStatefulKnowledgeSession();
 			ksession.setGlobal("EVENTS EntryPoint", eventStream);
 			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");
+			tSub.setMessageListener(this);
 			DebugMessages.ok();
 	
 			

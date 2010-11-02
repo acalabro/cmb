@@ -7,7 +7,12 @@ import it.cnr.isti.labse.cmb.listener.DroolsEventsEvaluator;
 import it.cnr.isti.labse.cmb.listener.EventsEvaluator;
 import it.cnr.isti.labse.cmb.rules.XmlManager;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
+import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionListDocument;
+import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionType;
+import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleType;
+import it.cnr.isti.labse.glimpse.xml.complexEventRule.impl.ComplexEventRuleActionTypeImpl;
 
+import java.io.File;
 import java.util.Properties;
 
 import javax.jms.JMSException;
@@ -23,6 +28,8 @@ import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import org.apache.xmlbeans.XmlException;
 
 public class ConsumerManager extends Thread implements MessageListener {
 	
@@ -111,18 +118,24 @@ public class ConsumerManager extends Thread implements MessageListener {
 			
 			//Call XMLUnmarshaller
 			String XMLRule = msg.getText();
+
+			ComplexEventRuleActionListDocument ruleDoc;
+			try {
+				ruleDoc = ComplexEventRuleActionListDocument.Factory.parse(XMLRule);
+			
+				ComplexEventRuleActionType rules = ruleDoc.getComplexEventRuleActionList();
+			
+				ComplexEventRuleType[] insertRules = rules.getInsertArray();
+			 
+				for (int i = 0; i < insertRules.length; i++) { 
+					System.out.println(insertRules[i]); 
+				}
+			} catch (XmlException e1) {
+				e1.printStackTrace();
+			}
 			//End XMLUnmarshaller
-			
-			XmlManager manager = new XmlManager(XMLRule);
-			
-			//Call DroolsRuleGenerator
-			
-			
-			//End DroolsRuleGenerator
-			
-			
+	
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up new Buffer to store events.");
-			
 			DebugMessages.ok();
 			DebugMessages.print(this.getClass().getSimpleName(), "Launch eventsEvaluator setup with client request.");
 			DebugMessages.ok();
