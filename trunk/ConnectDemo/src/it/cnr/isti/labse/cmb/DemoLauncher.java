@@ -15,6 +15,7 @@ import javax.naming.NamingException;
 public class DemoLauncher {
 
 	private static Properties systemProps = new Properties();
+	
 	//start settings
 	protected static String ENVIRONMENTPARAMETERSFILE;
 	protected static String PROBE1PARAMETERSFILE;
