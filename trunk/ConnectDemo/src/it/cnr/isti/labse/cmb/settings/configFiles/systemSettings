@@ -1,7 +1,0 @@
-ENVIRONMENTPARAMETERSFILE = /home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/configFiles/environmentFile
-PROBE1PARAMETERSFILE = 		/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/configFiles/probeFile1
-PROBE2PARAMETERSFILE = 		/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/configFiles/probeFile2
-CONSUMER1PARAMETERSFILE = 	/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/configFiles/consumerFile1
-CONSUMER2PARAMETERSFILE = 	/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/configFiles/consumerFile2
-DROOLSPARAMETERFILE = 		/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/configFiles/droolsFile
-MANAGERPARAMETERFILE = 		/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/cmb/settings/configFiles/managerFile

@@ -1,4 +1,0 @@
-serviceTopic = serviceTopic
-request = drools,java,A happens before B,notify me
-consumerName = consumatore2
-topic = probeTopic
