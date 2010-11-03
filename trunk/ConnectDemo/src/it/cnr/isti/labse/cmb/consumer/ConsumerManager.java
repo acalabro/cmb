@@ -5,14 +5,11 @@ import it.cnr.isti.labse.cmb.buffer.EventsBuffer;
 import it.cnr.isti.labse.cmb.event.SimpleEvent;
 import it.cnr.isti.labse.cmb.listener.DroolsEventsEvaluator;
 import it.cnr.isti.labse.cmb.listener.EventsEvaluator;
-import it.cnr.isti.labse.cmb.rules.XmlManager;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionListDocument;
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionType;
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleType;
-import it.cnr.isti.labse.glimpse.xml.complexEventRule.impl.ComplexEventRuleActionTypeImpl;
 
-import java.io.File;
 import java.util.Properties;
 
 import javax.jms.JMSException;
@@ -53,6 +50,7 @@ public class ConsumerManager extends Thread implements MessageListener {
 	private TopicConnectionFactory connectionFact;
 	private InitialContext initConn;
 	private String answerTopic;
+	private String firstRule;
 	
 	public ConsumerManager(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
@@ -127,9 +125,7 @@ public class ConsumerManager extends Thread implements MessageListener {
 			
 				ComplexEventRuleType[] insertRules = rules.getInsertArray();
 			 
-				for (int i = 0; i < insertRules.length; i++) { 
-					System.out.println(insertRules[i]); 
-				}
+				firstRule = insertRules[0].getRuleBody().xmlText(); 
 			} catch (XmlException e1) {
 				e1.printStackTrace();
 			}
@@ -155,7 +151,7 @@ public class ConsumerManager extends Thread implements MessageListener {
 				e.printStackTrace();
 			}
 			
-			startListener(createBuffer(),XMLRule, answerTopic);
+			startListener(createBuffer(),firstRule, answerTopic);
 			
 		} catch (JMSException e) {
 			e.printStackTrace();
