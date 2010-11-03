@@ -1,0 +1,7 @@
+ENVIRONMENTPARAMETERSFILE = /home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/environmentFile
+PROBE1PARAMETERSFILE = 		/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/probeFile1
+PROBE2PARAMETERSFILE = 		/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/probeFile2
+CONSUMER1PARAMETERSFILE = 	/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/consumerFile1
+CONSUMER2PARAMETERSFILE = 	/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/consumerFile2
+DROOLSPARAMETERFILE = 		/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/droolsFile
+MANAGERPARAMETERFILE = 		/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/managerFile

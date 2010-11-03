@@ -1,0 +1,5 @@
+topic = probeTopic
+filter = none
+eventFile = /home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/EventFile
+probeName = sonda2
+

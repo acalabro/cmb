@@ -1,0 +1,4 @@
+serviceTopic = serviceTopic
+requestRulePath = /home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/rules/dependabilityRule.xml
+consumerName = consumatore1
+topic = probeTopic
