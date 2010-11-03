@@ -53,7 +53,7 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 	private String answerTopic;
 	private ConnectBaseEvent<String> receivedEvent;
 	private ConsumerManager consumerManager;
-	protected static String RULEPATH = "it/cnr/isti/labse/cmb/rules/FirstRule.drl";
+	protected static String RULEPATH = "it/cnr/isti/labse/glimpse/rules/FirstRule.drl";
 
 	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, String listenerRule, String answerTopic, ConsumerManager consumerManager) {
 		this.listenerRule = listenerRule;
@@ -97,7 +97,7 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 			kbase = readKnowledgeBase(listenerRule);
 			ksession = kbase.newStatefulKnowledgeSession();
 			ksession.setGlobal("EVENTS EntryPoint", eventStream);
-			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");
+			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");			
 			tSub.setMessageListener(this);
 			DebugMessages.ok();	
 		} catch (JMSException e) {
@@ -117,6 +117,7 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 					+ receivedEvent.getID() + " payload: " + receivedEvent.getData());
 			DebugMessages.line();
 			eventStream.insert(receivedEvent);
+			ksession.fireAllRules();
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -125,14 +126,17 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 			
 		}
 	}
-
-	private KnowledgeBase readKnowledgeBase(String rule) {
+	
+	private KnowledgeBase readKnowledgeBase(String listenerRule) {
 		try
 			{
 				KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
 				config.setOption(EventProcessingOption.STREAM);
+
 				KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-				kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, this.getClass().getClassLoader()), ResourceType.DRL);
+				kbuilder.add(ResourceFactory.newByteArrayResource(listenerRule.trim().getBytes()),ResourceType.DRL);
+				
+				//kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, this.getClass().getClassLoader()), ResourceType.DRL);
 				KnowledgeBuilderErrors errors = kbuilder.getErrors();
 				if (errors.size() > 0)
 				{
@@ -145,7 +149,7 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 
 				KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
 				kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-				
+							
 				return kbase;
 			}
 		catch (Exception e)

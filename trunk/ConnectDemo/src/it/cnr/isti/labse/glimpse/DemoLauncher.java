@@ -55,8 +55,8 @@ public class DemoLauncher {
 		if (DemoLauncher.initProps() && DemoLauncher.init())
 		{
 			
-			//TestProbe testingProbe1 = new TestProbe(Manager.Read(PROBE1PARAMETERSFILE), connFact, initConn);
-			//testingProbe1.start();
+			TestProbe testingProbe1 = new TestProbe(Manager.Read(PROBE1PARAMETERSFILE), connFact, initConn);
+			testingProbe1.start();
 			
 			//TestProbe testingProbe2 = new TestProbe(Manager.Read(PROBE2PARAMETERSFILE), connFact, initConn);
 			//testingProbe2.start();
@@ -73,13 +73,13 @@ public class DemoLauncher {
 			//SimpleConsumer testingConsumer1 = new SimpleConsumer(Manager.Read(CONSUMER1PARAMETERSFILE), connFact, initConn);
 			//testingConsumer1.start();
 	
-			/*try {
+			try {
 				Thread.sleep(12000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			SimpleConsumer testingConsumer2 = new SimpleConsumer(Manager.Read(CONSUMER1PARAMETERSFILE), connFact, initConn);
-			testingConsumer2.start();*/
+			testingConsumer2.start();
 		}
 	}
 	

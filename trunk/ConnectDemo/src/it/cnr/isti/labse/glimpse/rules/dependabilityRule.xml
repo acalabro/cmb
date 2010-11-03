@@ -4,99 +4,33 @@
  xsi:schemaLocation="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule ./ComplexEventRule.xsd">
     <Insert RuleType="drools">
         <RuleName>occurrencies a b</RuleName>
-        <RuleBody>declare PairAB
-  first: SimpleEvent
-  second: SimpleEvent
-end
-rule "occurrencies A -> B"
-	no-loop
-	salience 0
-	dialect "java"
-	when
-		$aEvent : SimpleEvent( this.data == "Event A", this.isConsumed == false);
-		$bEvent : SimpleEvent( this after $aEvent,	this.isConsumed == false, this.getSourceID == $aEvent.getSourceID);
-		eval( DroolsUtils.strictlyFollows($aEvent.getSequenceID(), $bEvent.getSequenceID()));		
-	then
-		
-		PairAB p = new PairAB();
-   		p.setFirst( $aEvent );
-   		p.setSecond( $bEvent );
-   		insert(p);
-   		
-		$aEvent.setConsumed(true);
-		$bEvent.setConsumed(true);
-		update( $aEvent );
-		update( $bEvent );
-		retract( $aEvent );
-		retract( $bEvent );
-end
-        </RuleBody>
-    </Insert>
-    <Insert RuleType="drools">
-        <RuleName>occurrencies a c</RuleName>
-        <RuleBody>declare PairAC
-  first: SimpleEvent
-  second: SimpleEvent
-end
-rule "occurrencies A -> C"
-	no-loop
-	salience 0
-	dialect "java"
-	when
-		$aEvent : SimpleEvent( this.data == "Event A", this.isConsumed == false);
-		$cEvent : SimpleEvent( this.data == "Event C",	this after $aEvent,	this.isConsumed == false, this.getSourceID == $aEvent.getSourceID);
-		eval( DroolsUtils.strictlyFollows($aEvent.getSequenceID(), $cEvent.getSequenceID()));		
-	then
-		
-		PairAC p = new PairAC();
-   		p.setFirst( $aEvent );
-   		p.setSecond( $cEvent );
-   		insert(p);
-   		
-		$aEvent.setConsumed(true);
-		$cEvent.setConsumed(true);
-		update( $aEvent );
-		update( $cEvent );
-		retract( $aEvent );
-		retract( $cEvent );
-end
-        </RuleBody>
-    </Insert>
-    <Insert RuleType="drools">
-        <RuleName>tier a b c</RuleName>
-        <RuleBody>declare TierABC
-  first: SimpleEvent
-  second: SimpleEvent
-  third: SimpleEvent
-end
-
-rule "occurrencies A -> B -> C"
-	no-loop
-	salience 0
-	dialect "java"
-	when
-		$aEvent : SimpleEvent( this.data == "Event A");
-		$bEvent : SimpleEvent( this.data == "Event B",	this after $aEvent,	this.getSourceID == $aEvent.getSourceID);
-		$cEvent : SimpleEvent( this.data == "Event C",	this after $bEvent,	this.getSourceID == $bEvent.getSourceID);
-		eval( DroolsUtils.strictlyFollows($aEvent.getSequenceID(), $bEvent.getSequenceID(), $cEvent.getSequenceID()));		
-	then
-		
-		TierABC p = new TierABC();
-   		p.setFirst( $aEvent );
-   		p.setSecond( $bEvent );
-   		p.setThird( $cEvent );
-   		insert(p);
-   		
-		$aEvent.setConsumed(true);
-		$bEvent.setConsumed(true);
-		$cEvent.setConsumed(true);
-		update( $aEvent );
-		update( $bEvent );
-		update( $cEvent );
-		retract( $aEvent );
-		retract( $bEvent );
-		retract( $cEvent );
-end
+        <RuleBody>
+        import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+        import it.cnr.isti.labse.glimpse.settings.DebugMessages;
+        import java.util.List;
+        import it.cnr.isti.labse.glimpse.settings.DroolsUtils;
+        
+        declare SimpleEvent
+        @role( event )
+        @timestamp( timestamp )
+        end
+        
+        rule "occurrencies A -> B"
+        no-loop
+        dialect "java"
+        when
+        $aEvent : SimpleEvent( this.data == "Event A", this.isConsumed == false);
+        $bEvent : SimpleEvent( this.data == "Event B", this.isConsumed == false, this after $aEvent, this.getSourceID == $aEvent.getSourceID);
+        eval( DroolsUtils.strictlyFollows($aEvent.getSequenceID(), $bEvent.getSequenceID()));
+        then
+        $aEvent.setConsumed(true);
+        $bEvent.setConsumed(true);
+        update( $aEvent );
+        update( $bEvent );
+        retract( $aEvent );
+        retract( $bEvent );
+        System.out.println("Latency: " + DroolsUtils.latency($aEvent.timestamp, $bEvent.timestamp));
+        end
         </RuleBody>
     </Insert>
 </ComplexEventRuleActionList>

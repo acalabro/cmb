@@ -23,6 +23,7 @@ import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -120,12 +121,12 @@ public class ConsumerManager extends Thread implements MessageListener {
 			ComplexEventRuleActionListDocument ruleDoc;
 			try {
 				ruleDoc = ComplexEventRuleActionListDocument.Factory.parse(XMLRule);
-			
+
 				ComplexEventRuleActionType rules = ruleDoc.getComplexEventRuleActionList();
-			
 				ComplexEventRuleType[] insertRules = rules.getInsertArray();
-			 
-				firstRule = insertRules[0].getRuleBody().xmlText(); 
+
+				firstRule = insertRules[0].getRuleBody().getDomNode().getFirstChild().getNodeValue();
+				
 			} catch (XmlException e1) {
 				e1.printStackTrace();
 			}
