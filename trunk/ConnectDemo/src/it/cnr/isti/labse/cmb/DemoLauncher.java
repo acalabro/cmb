@@ -4,7 +4,7 @@ import it.cnr.isti.labse.cmb.consumer.ConsumerManager;
 import it.cnr.isti.labse.cmb.consumer.SimpleConsumer;
 import it.cnr.isti.labse.cmb.probe.TestProbe;
 import it.cnr.isti.labse.cmb.settings.DebugMessages;
-import it.cnr.isti.labse.cmb.settings.Manager; 
+import it.cnr.isti.labse.cmb.settings.Manager;
 
 import java.util.Properties;
 

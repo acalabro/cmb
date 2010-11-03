@@ -2,7 +2,7 @@ package it.cnr.isti.labse.cmb.buffer;
 
 import it.cnr.isti.labse.cmb.event.ConnectBaseEvent;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 
 public class DroolsEventsBuffer <T> implements EventsBuffer<T> {
