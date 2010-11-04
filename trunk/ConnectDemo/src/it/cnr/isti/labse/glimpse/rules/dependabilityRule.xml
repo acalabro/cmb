@@ -29,7 +29,7 @@
         update( $bEvent );
         retract( $aEvent );
         retract( $bEvent );
-        System.out.println("Latency: " + DroolsUtils.latency($aEvent.timestamp, $bEvent.timestamp));
+        System.out.println("FROM A to B Latency: " + DroolsUtils.latency($aEvent.timestamp, $bEvent.timestamp));
         end
         </RuleBody>
     </Insert>

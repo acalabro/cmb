@@ -127,33 +127,32 @@ public class ConsumerManager extends Thread implements MessageListener {
 
 				firstRule = insertRules[0].getRuleBody().getDomNode().getFirstChild().getNodeValue();
 				
-			} catch (XmlException e1) {
-				e1.printStackTrace();
-			}
-			//End XMLUnmarshaller
-	
-			DebugMessages.print(this.getClass().getSimpleName(), "Setting up new Buffer to store events.");
-			DebugMessages.ok();
-			DebugMessages.print(this.getClass().getSimpleName(), "Launch eventsEvaluator setup with client request.");
-			DebugMessages.ok();
-			DebugMessages.line();
-			
-			//the topic where the listener will give analysis results
-			answerTopic =  "answerTopic" + "#" + this.getName() + "#" + System.nanoTime();
-			
-			//communicate the answerTopic to the consumer
-			String sender = msg.getStringProperty("SENDER");
-			
-			sendMessage(createMessage("AnswerTopic == " + answerTopic, sender));
+				DebugMessages.print(this.getClass().getSimpleName(), "Setting up new Buffer to store events.");
+				DebugMessages.ok();
+				DebugMessages.print(this.getClass().getSimpleName(), "Launch eventsEvaluator setup with client request.");
+				DebugMessages.ok();
+				DebugMessages.line();
+				
+				//the topic where the listener will give analysis results
+				answerTopic =  "answerTopic" + "#" + this.getName() + "#" + System.nanoTime();
+				
+				//communicate the answerTopic to the consumer
+				String sender = msg.getStringProperty("SENDER");
 
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				sendMessage(createMessage("AnswerTopic == " + answerTopic, sender));
+
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				startListener(createBuffer(),firstRule, answerTopic);
+				
+			} catch (XmlException e1) {
+				String sender = msg.getStringProperty("SENDER");
+				sendMessage(createMessage("PROVIDED XML CONTAINS ERRORS", sender));
 			}
-			
-			startListener(createBuffer(),firstRule, answerTopic);
-			
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}	

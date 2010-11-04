@@ -167,7 +167,7 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 		{
 			e.printStackTrace();
 		}
-		ksession.fireUntilHalt();
+		//ksession.fireUntilHalt();
 		DebugMessages.line();
 	}
 	
