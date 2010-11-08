@@ -4,8 +4,13 @@ import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
 import it.cnr.isti.labse.glimpse.consumer.ConsumerManager;
 import it.cnr.isti.labse.glimpse.event.ConnectBaseEvent;
 import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+import it.cnr.isti.labse.glimpse.exceptions.IncorrectRuleFormatException;
+import it.cnr.isti.labse.glimpse.exceptions.UnknownRuleException;
 import it.cnr.isti.labse.glimpse.settings.DebugMessages;
+import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionType;
+import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleType;
 
+import java.util.HashMap;
 import java.util.Properties;
 
 import javax.jms.JMSException;
@@ -36,6 +41,7 @@ import org.drools.conf.EventProcessingOption;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.WorkingMemoryEntryPoint;
+import org.w3c.dom.DOMException;
 
 public class DroolsEventsEvaluator extends Thread implements MessageListener, EventsEvaluator, Runnable {
 
@@ -46,20 +52,27 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 	private TopicSession subscribeSession;
 	private TopicPublisher tPub;
 	private TopicSubscriber tSub;
-	private String listenerRule;
 	private KnowledgeBase kbase;
 	private StatefulKnowledgeSession ksession;
 	private WorkingMemoryEntryPoint eventStream;
 	private String answerTopic;
 	private ConnectBaseEvent<String> receivedEvent;
 	private ConsumerManager consumerManager;
-	protected static String RULEPATH = "it/cnr/isti/labse/glimpse/rules/FirstRule.drl";
+	//protected static String RULEPATH = "it/cnr/isti/labse/glimpse/rules/FirstRule.drl";
+	private KnowledgeBuilder kbuilder;
+	private HashMap<String, String> loadedRuleMap;
+	private ComplexEventRuleActionType rules;
 
-	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, String listenerRule, String answerTopic, ConsumerManager consumerManager) {
-		this.listenerRule = listenerRule;
+	public DroolsEventsEvaluator(Properties settings, EventsBuffer<SimpleEvent> buffer, ComplexEventRuleActionType rules, String answerTopic, ConsumerManager consumerManager) {
+		this.rules = rules;
 		this.topic = settings.getProperty("probeTopic");
 		this.answerTopic = answerTopic;
 		this.consumerManager = consumerManager;
+	}
+	
+	public void start()
+	{
+		run();
 	}
 	
 	public void run(TopicConnectionFactory connectionFact, InitialContext initConn) {
@@ -94,11 +107,12 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 			DebugMessages.ok();
 
 			DebugMessages.print(this.getClass().getSimpleName(), "Reading knowledge base ");
-			kbase = readKnowledgeBase(listenerRule);
+			kbase = readKnowledgeBase();
 			ksession = kbase.newStatefulKnowledgeSession();
 			ksession.setGlobal("EVENTS EntryPoint", eventStream);
-			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");			
+			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");		
 			tSub.setMessageListener(this);
+			ksession.fireUntilHalt();
 			DebugMessages.ok();	
 		} catch (JMSException e) {
 			e.printStackTrace();
@@ -117,7 +131,6 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 					+ receivedEvent.getID() + " payload: " + receivedEvent.getData());
 			DebugMessages.line();
 			eventStream.insert(receivedEvent);
-			ksession.fireAllRules();
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -127,14 +140,15 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 		}
 	}
 	
-	private KnowledgeBase readKnowledgeBase(String listenerRule) {
+	private KnowledgeBase readKnowledgeBase() {
 		try
-			{
+			{				
 				KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
 				config.setOption(EventProcessingOption.STREAM);
 
-				KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-				kbuilder.add(ResourceFactory.newByteArrayResource(listenerRule.trim().getBytes()),ResourceType.DRL);
+				kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+				
+				loadRules(rules);
 				
 				//kbuilder.add(ResourceFactory.newClassPathResource(RULEPATH, this.getClass().getClassLoader()), ResourceType.DRL);
 				KnowledgeBuilderErrors errors = kbuilder.getErrors();
@@ -149,27 +163,14 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 
 				KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
 				kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-							
+						
 				return kbase;
 			}
 		catch (Exception e)
 		{
 			return null;
 		}
-	}
-
-	public void start() {
-		try
-		{
-			tSub.setMessageListener(this);
-		}
-		catch (JMSException e)
-		{
-			e.printStackTrace();
-		}
-		//ksession.fireUntilHalt();
-		DebugMessages.line();
-	}
+	}	
 	
 	private TextMessage createMessage(String msg) {
 		try 
@@ -202,5 +203,100 @@ public class DroolsEventsEvaluator extends Thread implements MessageListener, Ev
 	}
 
 	public void setMetric() {		
+	}
+
+	@Override
+	public void insertRule(String rule, String ruleName) throws IncorrectRuleFormatException {
+		kbuilder.add(ResourceFactory.newByteArrayResource(rule.trim().getBytes()),ResourceType.DRL);
+		//loadedRuleMap.put("", "");
+		
+	}
+
+	@Override
+	public void deleteRule(String ruleName) throws UnknownRuleException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void startRule(String ruleName) throws UnknownRuleException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void stopRule(String ruleName) throws UnknownRuleException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void restartRule(String ruleName) throws UnknownRuleException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void loadRules(ComplexEventRuleActionType rules) {
+		
+		ComplexEventRuleType[] insertRules = rules.getInsertArray();
+		for(int i = 0; i < insertRules.length; i++)
+		{
+			try {
+				insertRule(insertRules[i].getRuleBody().getDomNode().getFirstChild().getNodeValue(),insertRules[i].getRuleName());
+			} catch (DOMException e) {
+				e.printStackTrace();
+			} catch (IncorrectRuleFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		ComplexEventRuleType[] deleteRules = rules.getDeleteArray();
+		for(int i = 0; i < deleteRules.length; i++)
+		{
+			try {
+				deleteRule(deleteRules[i].getRuleName());
+			} catch (DOMException e) {
+				e.printStackTrace();
+			} catch (UnknownRuleException e) {
+				e.printStackTrace();
+			}
+		}		
+		
+		ComplexEventRuleType[] startRules = rules.getStartArray();
+		for(int i = 0; i < startRules.length; i++)
+		{
+			try {
+				startRule(startRules[i].getRuleName());
+			} catch (DOMException e) {
+				e.printStackTrace();
+			} catch (UnknownRuleException e) {
+				e.printStackTrace();
+			}
+		}	
+		
+		ComplexEventRuleType[] stopRules = rules.getStopArray();
+		for(int i = 0; i < stopRules.length; i++)
+		{
+			try {
+				stopRule(stopRules[i].getRuleName());
+			} catch (DOMException e) {
+				e.printStackTrace();
+			} catch (UnknownRuleException e) {
+				e.printStackTrace();
+			}
+		}	
+		
+		ComplexEventRuleType[] restartRules = rules.getRestartArray();
+		for(int i = 0; i < restartRules.length; i++)
+		{
+			try {
+				restartRule(restartRules[i].getRuleName());
+			} catch (DOMException e) {
+				e.printStackTrace();
+			} catch (UnknownRuleException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

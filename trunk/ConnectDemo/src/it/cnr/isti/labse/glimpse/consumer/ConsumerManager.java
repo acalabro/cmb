@@ -52,6 +52,7 @@ public class ConsumerManager extends Thread implements MessageListener {
 	private InitialContext initConn;
 	private String answerTopic;
 	private String firstRule;
+	private EventsEvaluator listener;
 	
 	public ConsumerManager(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
@@ -123,9 +124,10 @@ public class ConsumerManager extends Thread implements MessageListener {
 				ruleDoc = ComplexEventRuleActionListDocument.Factory.parse(XMLRule);
 
 				ComplexEventRuleActionType rules = ruleDoc.getComplexEventRuleActionList();
-				ComplexEventRuleType[] insertRules = rules.getInsertArray();
+				//ComplexEventRuleType[] insertRules = rules.getInsertArray();
 
-				firstRule = insertRules[0].getRuleBody().getDomNode().getFirstChild().getNodeValue();
+				//firstRule = insertRules[0].getRuleBody().getDomNode().getFirstChild().getNodeValue();
+				
 				
 				DebugMessages.print(this.getClass().getSimpleName(), "Setting up new Buffer to store events.");
 				DebugMessages.ok();
@@ -140,14 +142,18 @@ public class ConsumerManager extends Thread implements MessageListener {
 				String sender = msg.getStringProperty("SENDER");
 
 				sendMessage(createMessage("AnswerTopic == " + answerTopic, sender));
-
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				
-				startListener(createBuffer(),firstRule, answerTopic);
+				if (listener == null)
+				{
+					//creazione dell'engine
+					listener = new DroolsEventsEvaluator(settings, createBuffer(), rules, answerTopic, this);
+					listener.run(connectionFact, initConn);
+					//fine creazione engine
+				}
+				else
+				{
+					listener.loadRules(rules);
+				}
 				
 			} catch (XmlException e1) {
 				String sender = msg.getStringProperty("SENDER");
@@ -169,14 +175,6 @@ public class ConsumerManager extends Thread implements MessageListener {
 		}
 		DebugMessages.ok();
 		DebugMessages.line();
-	}
-	
-	private void startListener(EventsBuffer<SimpleEvent> buffer, String XMLRule, String answerTopic)
-	{
-		//temporaneo XmlObjectRule
-		
-		EventsEvaluator listener = new DroolsEventsEvaluator(settings, buffer, XMLRule, answerTopic, this);
-		listener.run(connectionFact, initConn);
 	}
 	
 	public void answersFromEvaluationEngine(String answer)

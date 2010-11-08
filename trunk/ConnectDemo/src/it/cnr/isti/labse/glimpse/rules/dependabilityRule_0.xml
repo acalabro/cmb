@@ -33,4 +33,37 @@
         end
         </RuleBody>
     </Insert>
+    
+    <Insert RuleType="drools">
+        <RuleName>occurrencies a c</RuleName>
+        <RuleBody>
+        import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+        import it.cnr.isti.labse.glimpse.settings.DebugMessages;
+        import java.util.List;
+        import it.cnr.isti.labse.glimpse.settings.DroolsUtils;
+        
+        declare SimpleEvent
+        @role( event )
+        @timestamp( timestamp )
+        end
+        
+        rule "occurrencies A -> C"
+        no-loop
+        dialect "java"
+        when
+        $aEvent : SimpleEvent( this.data == "Event A", this.isConsumed == false);
+        $cEvent : SimpleEvent( this.data == "Event C", this.isConsumed == false, this after $aEvent, this.getSourceID == $aEvent.getSourceID);
+        eval( DroolsUtils.strictlyFollows($aEvent.getSequenceID(), $cEvent.getSequenceID()));
+        then
+        $aEvent.setConsumed(true);
+        $cEvent.setConsumed(true);
+        update( $aEvent );
+        update( $cEvent );
+        retract( $aEvent );
+        retract( $cEvent );
+        System.out.println("FROM A to C Latency: " + DroolsUtils.latency($aEvent.timestamp, $cEvent.timestamp));
+        end
+        </RuleBody>
+    </Insert>
+    
 </ComplexEventRuleActionList>

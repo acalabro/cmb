@@ -23,7 +23,8 @@ import javax.naming.NamingException;
 public class SimpleConsumer extends Thread implements MessageListener{
 
 	private String serviceTopic;
-	private String requestRulePath;
+	private String requestRulePath_0;
+	private String requestRulePath_1;
 	private TopicConnection connection;
 	private TopicSession publishSession;
 	private TopicSession subscribeSession;
@@ -34,7 +35,8 @@ public class SimpleConsumer extends Thread implements MessageListener{
 	
 	public SimpleConsumer(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
-		this.requestRulePath = settings.getProperty("requestRulePath");
+		this.requestRulePath_0 = settings.getProperty("requestRulePath_0");
+		this.requestRulePath_1 = settings.getProperty("requestRulePath_1");
 		this.serviceTopic = settings.getProperty("serviceTopic");
 		//this.consumerName = settings.getProperty("consumerName");
 		setupConnection(connectionFact, initConn);
@@ -81,7 +83,14 @@ public class SimpleConsumer extends Thread implements MessageListener{
 	public void run()
 	{
 		/*CUSTOMER SEND REQUEST ON THE SERVICETOPIC*/
-		sendRequest(createMessage(Manager.ReadTextFromFile(requestRulePath)));
+		sendRequest(createMessage(Manager.ReadTextFromFile(requestRulePath_0)));
+		/*try {
+			Thread.sleep(15000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sendRequest(createMessage(Manager.ReadTextFromFile(requestRulePath_1)));*/
 	}
 	
 	@Override
