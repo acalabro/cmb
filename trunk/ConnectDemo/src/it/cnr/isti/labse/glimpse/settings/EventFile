@@ -10,7 +10,7 @@ Event36,23
 Event A,20
 Event B,10
 Event D,20
-Event40,20
+transitionToMonitor,40
 Event41,40
 Event A,50
 Event B,10

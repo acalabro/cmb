@@ -27,7 +27,7 @@
     <complexType name="ComplexEventRuleType">
     	<sequence>
     		<element name="RuleName" type="string" maxOccurs="1" minOccurs="1"></element>
-    		<element name="RuleBody" maxOccurs="1" minOccurs="0"></element>
+    		<element name="RuleBody" type="string" maxOccurs="1" minOccurs="0"></element>
     	</sequence>
     	<attribute name="RuleType" type="string"></attribute>
     </complexType>

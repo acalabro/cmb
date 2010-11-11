@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 public class DroolsEventsBuffer <T> implements EventsBuffer<T> {
 
+	/**
+	 * @uml.property  name="myBuffer"
+	 * @uml.associationEnd  multiplicity="(0 -1)" elementType="it.cnr.isti.labse.glimpse.event.ConnectBaseEvent"
+	 */
 	public ArrayList<ConnectBaseEvent<T>> myBuffer = new ArrayList<ConnectBaseEvent<T>>(); 
 	
 	public void add(ConnectBaseEvent<T> evt)

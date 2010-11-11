@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ComplexEventRuleActionList xmlns="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule ./ComplexEventRule.xsd">
+<Insert RuleType="drools">
+        <RuleName>eventsCardinality</RuleName>
+        <RuleBody>
+import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+	
+	declare SimpleEvent
+    @role( event )
+    @timestamp( timestamp )
+    end
+    
+	rule "eventsCardinality"
+	no-loop
+	salience 999
+	dialect "java"
+	when
+		$aEvent : SimpleEvent();
+	then
+		System.out.println("---------EventsCardinality-------------------->catch");
+	end
+        </RuleBody>
+    </Insert>
+    
+</ComplexEventRuleActionList>

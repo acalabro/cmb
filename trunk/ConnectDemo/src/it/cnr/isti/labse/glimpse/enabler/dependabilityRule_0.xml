@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ComplexEventRuleActionList xmlns="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule ./ComplexEventRule.xsd">
+    <Insert RuleType="drools">
+        <RuleName>transitionDurationRule</RuleName>
+        <RuleBody>
+	import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+	
+	declare SimpleEvent
+    @role( event )
+    @timestamp( timestamp )
+    end
+    
+	rule "transitionDuration"
+	no-loop
+	salience 999
+	dialect "java"
+	when
+		$aEvent : SimpleEvent(this.data == "transitionToMonitor",
+								this.getConsumed == false);
+		$bEvent : SimpleEvent(this.getConsumed == false,
+								this.getConnectorID == $aEvent.getConnectorID,
+								this.getConnectorInstanceID == $aEvent.getConnectorInstanceID,
+								this.getConnectorInstanceExecutionID == $aEvent.getConnectorInstanceExecutionID,
+								this after $aEvent);
+	then
+		$aEvent.setConsumed(true);
+		$bEvent.setConsumed(true);
+		update( $aEvent );
+		update( $bEvent );
+		retract( $aEvent );
+		retract( $bEvent );
+		NotifyMe();
+	end
+        </RuleBody>
+    </Insert>
+</ComplexEventRuleActionList>

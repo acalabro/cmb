@@ -4,54 +4,53 @@ public class SimpleEvent extends ConnectBaseEvent<String>
 {
 	private static final long serialVersionUID = 1L;
 	public Long timestamp = 0L;
-	private String data = "";
-	private String id;
-	private String sourceID;
+	private String data;
+	private boolean consumed;
+	private String connectorID;
+	private String connectorInstanceID;
+	private String connectorInstanceExecutionID;
 	private int sequenceID;
 	private String sourceState;
 	
-	public SimpleEvent(String sourceID, String ID, int eventID, Long ts, String sourceState)
+	public SimpleEvent(String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int sequenceID, Long ts, String sourceState)
 	{
-		super(sourceID, ID, eventID, ts, sourceState);
+		super(connectorID, connectorInstanceID, connectorInstanceExecutionID, sequenceID, ts, sourceState);
+		this.connectorID = connectorID;
+		this.connectorInstanceID = connectorInstanceID;
+		this.connectorInstanceExecutionID = connectorInstanceExecutionID;
+		this.sequenceID = sequenceID;
 		this.timestamp = ts;
-		this.id = ID;
-		this.sourceID = sourceID;
-		this.sequenceID = eventID;
 		this.sourceState = sourceState;
 	}
 
 	public String getData() {
-		return data;
+		return this.data;
 	}
-
+	
+	public void setData(String t) {
+		this.data = t;
+	}
+	
 	public Long getTimestamp() {
 		return timestamp;
 	}
 
-	public String getID() {
-		return id;
-	}
-
-	public void setData(String t) {
-		this.data = t;
-	}
-
-	public boolean isConsumed() {
-		return consumed;
+	public boolean getConsumed() {
+		return this.consumed;
 	}
 
 	public void setConsumed(boolean consumed) {
 		this.consumed = consumed;
 	}
-
-	public void setSourceID(String sourceID) {
-		this.sourceID = sourceID;		
+	
+	public String getSourceState() {
+		return this.sourceState;
 	}
-
-	public String getSourceID() {
-		return this.sourceID;
+	
+	public void setSourceState(String sourceState) {
+		this.sourceState = sourceState;
 	}
-
+	
 	public int getSequenceID() {
 		return this.sequenceID;
 	}
@@ -59,12 +58,30 @@ public class SimpleEvent extends ConnectBaseEvent<String>
 	public void setSequenceID(int eventID) {
 		this.sequenceID = eventID;
 	}
-
-	public void setSourceState(String sourceState) {
-		this.sourceState = sourceState;
+	
+	public String getConnectorID() {
+		return this.connectorID;
+	}
+	
+	public void setConnectorID(String connectorID) {
+		this.connectorID = connectorID;		
 	}
 
-	public String getSourceState() {
-		return sourceState;
+	public String getConnectorInstanceID() {
+		return this.connectorInstanceID;
 	}
+
+	public void setConnectorInstanceID(String connectorInstanceID) {
+		this.connectorInstanceID = connectorInstanceID;	
+	}
+	
+	public String getConnectorInstanceExecutionID(){
+		return this.connectorInstanceExecutionID;
+	}
+	
+	public void setConnectorInstanceExecutionID(String connectorInstanceExecutionID){
+		this.connectorInstanceExecutionID = connectorInstanceExecutionID;
+	}
+
+
 }

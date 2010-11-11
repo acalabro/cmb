@@ -31,14 +31,13 @@ public class TestProbe extends Thread
 	private String eventFile;
 	private String probeName;
 	private TopicConnection connection;
-	
 	private TopicSession publishSession;
 	private TopicPublisher tPubb;
-	
 	private Topic connectionTopic;
-	
 	private int eventID = 0;
 	private String sourceState = "startState";
+	private String instance = "istanza A";
+	private int executionValue = 0;
 	
 	public static TestProbe getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
@@ -85,8 +84,6 @@ public class TestProbe extends Thread
 	
 	public void run()
 	{
-			System.out.println();
-			DebugMessages.line();
 			System.out.println(this.getClass().getSimpleName() + ": Starts sending events");
 			DebugMessages.line();
 		while(true)
@@ -144,7 +141,7 @@ public class TestProbe extends Thread
 				
 				//Creo un simple event da spedire
 				
-				ConnectBaseEvent<String> message = new SimpleEvent(this.probeName, this.getClass().getSimpleName() + "#" + probeName + "#" + System.currentTimeMillis(), eventID,  System.currentTimeMillis(), sourceState);
+				ConnectBaseEvent<String> message = new SimpleEvent(this.probeName, this.instance, this.probeName + this.instance + executionValue, eventID,  System.currentTimeMillis(), sourceState);
 				eventID++;
 				message.setData(msg);
 				sourceState = msg;				
