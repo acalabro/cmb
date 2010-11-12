@@ -18,9 +18,10 @@ import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+public class SimpleConnectEnabler extends Thread implements MessageListener,
+		ConnectEnabler {
 
-public class SimpleConnectEnabler extends Thread implements MessageListener, ConnectEnabler{
-
+	private String enablerName;
 	private String serviceTopic;
 	private String requestRulePath_0;
 	private TopicConnection connection;
@@ -30,99 +31,112 @@ public class SimpleConnectEnabler extends Thread implements MessageListener, Con
 	private TopicPublisher tPub;
 	private TopicSubscriber tSub;
 	private String answerTopic;
-	
-	public SimpleConnectEnabler(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
-	{
+
+	public SimpleConnectEnabler(Properties settings,
+			TopicConnectionFactory connectionFact, InitialContext initConn) {
 		this.requestRulePath_0 = settings.getProperty("requestRulePath_0");
 		this.serviceTopic = settings.getProperty("serviceTopic");
-		//this.consumerName = settings.getProperty("consumerName");
+		this.setEnablerName(settings.getProperty("enablerName"));
 		setupConnection(connectionFact, initConn);
 	}
-	
-	public void setupConnection(TopicConnectionFactory connectionFact, InitialContext initConn)
-	{
+
+	public void setupConnection(TopicConnectionFactory connectionFact,
+			InitialContext initConn) {
 		try {
-			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object ");
+			DebugMessages.print(this.getClass().getSimpleName(),
+					"Creating connection object ");
 			connection = connectionFact.createTopicConnection();
 			DebugMessages.ok();
-			
-			DebugMessages.print(this.getClass().getSimpleName(), "Creating public session object ");
-			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+
+			DebugMessages.print(this.getClass().getSimpleName(),
+					"Creating public session object ");
+			publishSession = connection.createTopicSession(false,
+					Session.AUTO_ACKNOWLEDGE);
 			DebugMessages.ok();
-			
-			DebugMessages.print(this.getClass().getSimpleName(), "Setting up destination topic ");
-			connectionTopic = (Topic)initConn.lookup(serviceTopic);
+
+			DebugMessages.print(this.getClass().getSimpleName(),
+					"Setting up destination topic ");
+			connectionTopic = (Topic) initConn.lookup(serviceTopic);
 			tPub = publishSession.createPublisher(connectionTopic);
 			DebugMessages.ok();
-			
-			DebugMessages.print(this.getClass().getSimpleName(), "Creating subscribe object ");
-			subscribeSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+
+			DebugMessages.print(this.getClass().getSimpleName(),
+					"Creating subscribe object ");
+			subscribeSession = connection.createTopicSession(false,
+					Session.AUTO_ACKNOWLEDGE);
 			DebugMessages.ok();
-			
-			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
-			connectionTopic = (Topic)initConn.lookup(serviceTopic);
-			tSub = subscribeSession.createSubscriber(connectionTopic, "DESTINATION = 'dependability'", true);
+
+			DebugMessages.print(this.getClass().getSimpleName(),
+					"Setting up reading topic ");
+			connectionTopic = (Topic) initConn.lookup(serviceTopic);
+			tSub = subscribeSession.createSubscriber(connectionTopic,
+					"DESTINATION = '" + enablerName + "'", true);
 			DebugMessages.ok();
 			tSub.setMessageListener(this);
-			
-			DebugMessages.print(this.getClass().getSimpleName(), "Starting connection and wait 5 seconds for system startup");
+
+			DebugMessages
+					.print(this.getClass().getSimpleName(),
+							"Starting connection and wait 5 seconds for system startup");
 			connection.start();
 			DebugMessages.ok();
 			DebugMessages.line();
-			
+
 		} catch (JMSException e) {
 			e.printStackTrace();
 		} catch (NamingException e) {
 			e.printStackTrace();
-		}	
-	}	
+		}
+	}
 
-	private void sendRequest(TextMessage msg)
-	{
+	private void sendRequest(TextMessage msg) {
 		try {
-			if (msg != null)
-			{
-				System.out.println(this.getClass().getSimpleName() + ": send " + msg.getText());
+			if (msg != null) {
+				System.out.println(this.getClass().getSimpleName() + ": send "
+						+ msg.getText());
 				tPub.publish(msg);
 			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void run()
-	{
-		sendRequest(createMessage(Manager.ReadTextFromFile(requestRulePath_0)));	
+
+	public void run() {
+		sendRequest(createMessage(Manager.ReadTextFromFile(requestRulePath_0)));
 	}
-	
+
 	@Override
 	public void onMessage(Message arg0) {
-		TextMessage msg = (TextMessage) arg0; 
+		TextMessage msg = (TextMessage) arg0;
 		try {
-			if (msg.getText().startsWith("AnswerTopic == "))
-			{
-				System.out.println(this.getClass().getSimpleName() + "#" + this.hashCode() + ": receive " + msg.getText());
-				answerTopic = msg.getText().substring(14,msg.getText().length()).trim();
+			if (msg.getText().startsWith("AnswerTopic == ")) {
+				System.out.println(this.getClass().getSimpleName() + "#"
+						+ this.hashCode() + ": receive " + msg.getText());
+				setAnwerTopic(msg.getText()
+						.substring(14, msg.getText().length()).trim());
 				listenForAnswer(answerTopic);
 				msg.acknowledge();
-			}
-			else
-				System.out.println(this.getClass().getSimpleName() + " receive: " + msg.getText());
+			} else
+				System.out.println(this.getClass().getSimpleName() + " "
+						+ enablerName + " receive: " + msg.getText());
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void listenForAnswer(String answerTopic) {
-		
-		DebugMessages.print(this.getClass().getSimpleName(), "Creating subscribe object ");
+
+		DebugMessages.print(this.getClass().getSimpleName(),
+				"Creating subscribe object ");
 		try {
-			subscribeSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+			subscribeSession = connection.createTopicSession(false,
+					Session.AUTO_ACKNOWLEDGE);
 			DebugMessages.ok();
-		
-			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
+
+			DebugMessages.print(this.getClass().getSimpleName(),
+					"Setting up reading topic ");
 			connectionTopic = subscribeSession.createTopic(answerTopic);
-			tSub = subscribeSession.createSubscriber(connectionTopic, null, true);
+			tSub = subscribeSession.createSubscriber(connectionTopic, null,
+					true);
 			tSub.setMessageListener(this);
 			DebugMessages.ok();
 		} catch (JMSException e) {
@@ -130,32 +144,38 @@ public class SimpleConnectEnabler extends Thread implements MessageListener, Con
 		}
 	}
 
-	private TextMessage createMessage(String msg)
-	{
-		try 
-		{
+	private TextMessage createMessage(String msg) {
+		try {
 			TextMessage sendMessage = publishSession.createTextMessage();
-			
+
 			sendMessage.setText(msg);
-			/*String templateRule1 = "BLA1";
-			String templateRule2 = "bla2";
-			
-			ComplexEventRuleActionListDocument root = ComplexEventRuleActionListDocument.Factory.newInstance();
-			ComplexEventRuleActionType actionList = root.addNewComplexEventRuleActionList();
-			ComplexEventRuleType theInsert = actionList.addNewInsert();
-			theInsert.setRuleName("ciccio");
-			theInsert.setRuleType("drools");
-			theInsert.setRuleBody(templateRule1 + " testo " + templateRule2);			
-			
-			sendMessage.setText(root.xmlText());*/
-			
-			sendMessage.setStringProperty("SENDER", "dependability");
+			sendMessage.setStringProperty("SENDER", this.getEnablerName());
 			sendMessage.setStringProperty("DESTINATION", "monitor");
 			return sendMessage;
-			
+
 		} catch (JMSException e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public String getEnablerName() {
+		return this.enablerName;
+	}
+
+	@Override
+	public void setEnablerName(String enablerName) {
+		this.enablerName = enablerName;
+	}
+
+	@Override
+	public String getAnwerTopic() {
+		return this.answerTopic;
+	}
+
+	@Override
+	public void setAnwerTopic(String answerTopic) {
+		this.answerTopic = answerTopic;
 	}
 }

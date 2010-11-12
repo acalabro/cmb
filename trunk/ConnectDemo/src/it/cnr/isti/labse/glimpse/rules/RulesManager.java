@@ -12,6 +12,6 @@ public abstract class RulesManager {
 	abstract void startRule(String ruleName) throws UnknownRuleException;
 	abstract void stopRule(String ruleName) throws UnknownRuleException;
 	abstract void restartRule(String ruleName) throws UnknownRuleException;
-	public abstract void loadRules(ComplexEventRuleActionType rules);
+	public abstract Object[] loadRules(ComplexEventRuleActionType rules) throws IncorrectRuleFormatException; //it returns a vector contains the knowledge packages created from the request.
 	public abstract void getLoadedRulesInfo();
 }

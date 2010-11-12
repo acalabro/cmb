@@ -6,6 +6,8 @@
         <RuleName>transitionDurationRule</RuleName>
         <RuleBody>
 	import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+	import it.cnr.isti.labse.glimpse.manager.ConnectEnablersManager;
+	import it.cnr.isti.labse.glimpse.settings.DroolsUtils;
 	
 	declare SimpleEvent
     @role( event )
@@ -31,7 +33,7 @@
 		update( $bEvent );
 		retract( $aEvent );
 		retract( $bEvent );
-		NotifyMe();
+		ConnectEnablersManager.NotifyMe(drools.getRule().getName(),"dependability1", (Object)DroolsUtils.latency($aEvent.timestamp, $bEvent.timestamp));
 	end
         </RuleBody>
     </Insert>

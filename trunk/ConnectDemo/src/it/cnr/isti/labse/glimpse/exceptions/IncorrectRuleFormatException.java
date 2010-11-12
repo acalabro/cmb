@@ -5,6 +5,6 @@ public class IncorrectRuleFormatException extends Exception {
 
 	public IncorrectRuleFormatException()
 	{
-		System.out.println("Check rule format, unable to parse it");
+		System.out.println("Check rule format, may contains errors");
 	}
 }

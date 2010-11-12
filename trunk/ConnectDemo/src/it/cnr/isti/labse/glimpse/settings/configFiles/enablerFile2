@@ -1,4 +1,4 @@
 serviceTopic = serviceTopic
 requestRulePath_0 = /home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/enabler/dependabilityRule_1.xml
-consumerName = consumatore2
+enablerName = dependability2
 topic = probeTopic

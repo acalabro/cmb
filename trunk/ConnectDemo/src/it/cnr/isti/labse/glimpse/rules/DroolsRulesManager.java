@@ -1,6 +1,7 @@
 package it.cnr.isti.labse.glimpse.rules;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.drools.KnowledgeBase;
 import org.drools.builder.KnowledgeBuilder;
@@ -33,6 +34,8 @@ public class DroolsRulesManager extends RulesManager {
 	@Override
 	void insertRule(final String rule, final String ruleName) throws IncorrectRuleFormatException {
 		newKnowledgeBuilder.add(ResourceFactory.newByteArrayResource(rule.trim().getBytes()), ResourceType.DRL);
+		if (newKnowledgeBuilder.getErrors().size() > 0)
+				throw new IncorrectRuleFormatException();
 	}
 
 	@Override
@@ -66,7 +69,7 @@ public class DroolsRulesManager extends RulesManager {
 	}
 	
 	@Override
-	public void loadRules(final ComplexEventRuleActionType rules) {
+	public Object[] loadRules(final ComplexEventRuleActionType rules) throws IncorrectRuleFormatException {
 		
 		newKnowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 		
@@ -76,8 +79,6 @@ public class DroolsRulesManager extends RulesManager {
 			try {
 				insertRule(insertRules[i].getRuleBody(),insertRules[i].getRuleName());
 			} catch (final DOMException e) {
-				e.printStackTrace();
-			} catch (final IncorrectRuleFormatException e) {
 				e.printStackTrace();
 			}
 		}
@@ -130,6 +131,7 @@ public class DroolsRulesManager extends RulesManager {
 			}
 		}
 		kbase.addKnowledgePackages(newKnowledgeBuilder.getKnowledgePackages());
+		return newKnowledgeBuilder.getKnowledgePackages().toArray();
 	}
 	
 	public void getLoadedRulesInfo()

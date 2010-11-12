@@ -3,23 +3,38 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule ./ComplexEventRule.xsd">
 <Insert RuleType="drools">
-        <RuleName>eventsCardinality</RuleName>
+        <RuleName>event A and B</RuleName>
         <RuleBody>
-import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+	import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+	import it.cnr.isti.labse.glimpse.manager.ConnectEnablersManager;
+	import it.cnr.isti.labse.glimpse.settings.DroolsUtils;
 	
 	declare SimpleEvent
     @role( event )
     @timestamp( timestamp )
     end
     
-	rule "eventsCardinality"
+	rule "event A and B"
 	no-loop
 	salience 999
 	dialect "java"
 	when
-		$aEvent : SimpleEvent();
+		$aEvent : SimpleEvent(this.data == "Event A",
+								this.getConsumed == false);
+		$bEvent : SimpleEvent(this.data == "Event B",
+								this.getConsumed == false,
+								this.getConnectorID == $aEvent.getConnectorID,
+								this.getConnectorInstanceID == $aEvent.getConnectorInstanceID,
+								this.getConnectorInstanceExecutionID == $aEvent.getConnectorInstanceExecutionID,
+								this after $aEvent);
 	then
-		System.out.println("---------EventsCardinality-------------------->catch");
+		$aEvent.setConsumed(true);
+		$bEvent.setConsumed(true);
+		update( $aEvent );
+		update( $bEvent );
+		retract( $aEvent );
+		retract( $bEvent );
+		ConnectEnablersManager.NotifyMe(drools.getRule().getName(),"dependability2", (Object)DroolsUtils.latency($aEvent.timestamp, $bEvent.timestamp));
 	end
         </RuleBody>
     </Insert>
