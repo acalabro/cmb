@@ -7,7 +7,7 @@ import it.cnr.isti.labse.glimpse.enabler.SimpleConnectEnabler;
 import it.cnr.isti.labse.glimpse.event.SimpleEvent;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 import it.cnr.isti.labse.glimpse.cep.DroolsComplexEventProcessor;
-import it.cnr.isti.labse.glimpse.probe.TestProbe;
+import it.cnr.isti.labse.glimpse.probe.DummyConnector;
 import it.cnr.isti.labse.glimpse.settings.DebugMessages;
 import it.cnr.isti.labse.glimpse.settings.Manager;
 
@@ -23,8 +23,8 @@ public class DemoLauncher {
 
 	// start settings
 	protected static String ENVIRONMENTPARAMETERSFILE;
-	protected static String PROBE1PARAMETERSFILE;
-	protected static String PROBE2PARAMETERSFILE;
+	protected static String CONNECTOR1PARAMETERSFILE;
+	protected static String CONNECTOR2PARAMETERSFILE;
 	protected static String ENABLER1PARAMETERSFILE;
 	protected static String ENABLER2PARAMETERSFILE;
 	protected static String DROOLSPARAMETERFILE;
@@ -42,10 +42,10 @@ public class DemoLauncher {
 
 			ENVIRONMENTPARAMETERSFILE = systemProps
 					.getProperty("ENVIRONMENTPARAMETERSFILE");
-			PROBE1PARAMETERSFILE = systemProps
-					.getProperty("PROBE1PARAMETERSFILE");
-			PROBE2PARAMETERSFILE = systemProps
-					.getProperty("PROBE2PARAMETERSFILE");
+			CONNECTOR1PARAMETERSFILE = systemProps
+					.getProperty("CONNECTOR1PARAMETERSFILE");
+			CONNECTOR2PARAMETERSFILE = systemProps
+					.getProperty("CONNECTOR2PARAMETERSFILE");
 			ENABLER1PARAMETERSFILE = systemProps
 					.getProperty("ENABLER1PARAMETERSFILE");
 			ENABLER2PARAMETERSFILE = systemProps
@@ -88,9 +88,14 @@ public class DemoLauncher {
 				e.printStackTrace();
 			}
 
-			TestProbe testingProbe1 = new TestProbe(
-					Manager.Read(PROBE1PARAMETERSFILE), connFact, initConn);
+			DummyConnector testingProbe1 = new DummyConnector(
+					Manager.Read(CONNECTOR1PARAMETERSFILE), connFact, initConn);
 			testingProbe1.start();
+			
+			DummyConnector testingProbe2 = new DummyConnector(
+					Manager.Read(CONNECTOR2PARAMETERSFILE), connFact, initConn);
+			testingProbe2.start();
+			
 			
 			SimpleConnectEnabler testingConsumer1 = new SimpleConnectEnabler(
 					Manager.Read(ENABLER1PARAMETERSFILE), connFact, initConn);

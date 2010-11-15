@@ -6,7 +6,7 @@
         <RuleName>event A and B</RuleName>
         <RuleBody>
 	import it.cnr.isti.labse.glimpse.event.SimpleEvent;
-	import it.cnr.isti.labse.glimpse.manager.ConnectEnablersManager;
+	import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
 	import it.cnr.isti.labse.glimpse.settings.DroolsUtils;
 	
 	declare SimpleEvent
@@ -34,7 +34,7 @@
 		update( $bEvent );
 		retract( $aEvent );
 		retract( $bEvent );
-		ConnectEnablersManager.NotifyMe(drools.getRule().getName(),"dependability2", (Object)DroolsUtils.latency($aEvent.timestamp, $bEvent.timestamp));
+		ResponseDispatcher.NotifyMe(drools.getRule().getName(),"dependability2",DroolsUtils.latency($aEvent.getTimestamp(), $bEvent.getTimestamp()));
 	end
         </RuleBody>
     </Insert>

@@ -119,7 +119,7 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 		
 		try {
 			receivedEvent = (ConnectBaseEvent<String>) msg.getObject();
-			DebugMessages.line();
+			/*DebugMessages.line();
 			/*System.out.println(this.getClass().getSimpleName() + ": receive:"
 					+ "\nconnectorID: " + receivedEvent.getConnectorID()
 					+ "\nconnectorInstanceID: " + receivedEvent.getConnectorInstanceID()
@@ -128,7 +128,7 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 					+ "\nisConsumed: " + receivedEvent.getConsumed()
 					+ "\nsequenceID: " + receivedEvent.getSequenceID()
 					+ "\nsourceState: " + receivedEvent.getSourceState());*/
-			System.out.println(this.getClass().getSimpleName() + ": receive: " + receivedEvent.getData());
+			System.out.println(this.getClass().getSimpleName() + ": receive: " + receivedEvent.getData() + " from: " + receivedEvent.getConnectorID() + " execution: " + receivedEvent.getConnectorInstanceID());
 			DebugMessages.line();
 			if (eventStream != null)
 				eventStream.insert(receivedEvent);	

@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
@@ -23,39 +24,41 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 
-public class TestProbe extends Thread
+public class DummyConnector extends Thread
 {
-	public static TestProbe myProbeInstance = null;
+	public static DummyConnector myConnectorInstance = null;
 	private String filter;
 	private String topic;
 	private String eventFile;
-	private String probeName;
+	private String connectorName;
 	private TopicConnection connection;
 	private TopicSession publishSession;
 	private TopicPublisher tPubb;
 	private Topic connectionTopic;
 	private int eventID = 0;
 	private String sourceState = "startState";
-	private String instance = "istanza A";
+	private String instance;
 	private int executionValue = 0;
+	private Random rand = new Random();
 	
-	public static TestProbe getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
+	public static DummyConnector getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
-		if (myProbeInstance == null)
+		if (myConnectorInstance == null)
 		{
-			return new TestProbe(settings, connectionFact, initConn);
+			return new DummyConnector(settings, connectionFact, initConn);
 		}
 		else
-			return myProbeInstance;
+			return myConnectorInstance;
 				
 	}
 	
-	public TestProbe(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
+	public DummyConnector(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		this.filter = settings.getProperty("filter");
 		this.topic = settings.getProperty("topic");
 		this.eventFile = settings.getProperty("eventFile");
-		this.probeName = settings.getProperty("probeName");
+		this.connectorName = settings.getProperty("connectorName");
+		this.instance = settings.getProperty("instance");
 
 		try {
 			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object");
@@ -117,7 +120,7 @@ public class TestProbe extends Thread
 		    	message = dis.readLine().trim();
 		    	event = message.substring(0,message.indexOf(","));
 		    	timeout = Integer.parseInt(message.substring(message.indexOf(",")+1,message.length()));		
-				System.out.println(this.getClass().getSimpleName() + " send: " + event);
+				System.out.println(this.getClass().getSimpleName() + " " + this.connectorName + " send: " + event + " instanceName = " + this.instance);
 				sendMessage(prepareMessage(event), timeout);
 			}
 
@@ -141,7 +144,7 @@ public class TestProbe extends Thread
 				
 				//Creo un simple event da spedire
 				
-				ConnectBaseEvent<String> message = new SimpleEvent(this.probeName, this.instance, this.probeName + this.instance + executionValue, eventID,  System.currentTimeMillis(), sourceState);
+				ConnectBaseEvent<String> message = new SimpleEvent(this.connectorName, this.instance, this.connectorName + this.instance + executionValue, eventID,  System.currentTimeMillis(), sourceState);
 				eventID++;
 				message.setData(msg);
 				sourceState = msg;				
@@ -159,7 +162,7 @@ public class TestProbe extends Thread
 		try {
 			if (msg != null)
 			{
-				Thread.sleep(timeout*50);
+				Thread.sleep(timeout*rand.nextInt(60));
 				tPubb.publish(msg);
 			}
 		} catch (JMSException e) {

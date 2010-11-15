@@ -1,6 +1,6 @@
 ENVIRONMENTPARAMETERSFILE = /home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/environmentFile
-PROBE1PARAMETERSFILE = 		/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/probeFile1
-PROBE2PARAMETERSFILE = 		/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/probeFile2
+CONNECTOR1PARAMETERSFILE = 	/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/connectorSettings1
+CONNECTOR2PARAMETERSFILE = 	/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/connectorSettings2
 ENABLER1PARAMETERSFILE = 	/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/enablerFile1
 ENABLER2PARAMETERSFILE = 	/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/enablerFile2
 DROOLSPARAMETERFILE = 		/home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/configFiles/droolsFile

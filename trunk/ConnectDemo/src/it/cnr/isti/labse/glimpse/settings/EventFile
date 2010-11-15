@@ -17,9 +17,9 @@ Event B,10
 Event39,50
 Event C,20
 Event43,60
-Event44,88
 Event100,100
 Event36,23
 Event A,20
+transition B,88
 Event B,10
 Event C,20
