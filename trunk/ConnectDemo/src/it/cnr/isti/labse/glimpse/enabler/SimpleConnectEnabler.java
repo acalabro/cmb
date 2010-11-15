@@ -133,7 +133,7 @@ public class SimpleConnectEnabler extends Thread implements MessageListener,
 			DebugMessages.ok();
 
 			DebugMessages.print(this.getClass().getSimpleName(),
-					"Setting up reading topic ");
+					"Setting up answerTopic ");
 			connectionTopic = subscribeSession.createTopic(answerTopic);
 			tSub = subscribeSession.createSubscriber(connectionTopic, null,
 					true);

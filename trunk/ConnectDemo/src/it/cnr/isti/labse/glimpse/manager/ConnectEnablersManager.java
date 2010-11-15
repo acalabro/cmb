@@ -184,32 +184,18 @@ public class ConnectEnablersManager extends Thread implements MessageListener {
 		}
 	}
 	
-	public static void sendMessage(TextMessage msg, String answerTopic)
+	public static void sendResponse(String msg, String enablerName, String answerTopic)
 	{
 		try {
-			if (msg != null)
-			{
-				System.out.println(ConnectEnablersManager.class.getSimpleName() + ": send " + msg.getText());
-				//DebugMessages.line();
-				connectionTopic = publishSession.createTopic(answerTopic);
-				tPub = publishSession.createPublisher(connectionTopic);
-				tPub.publish(msg);
-			}
-		} catch (JMSException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private static TextMessage createMessage(String msg, String sender, String answerTopic)
-	{
-		try {
+			connectionTopic = publishSession.createTopic(answerTopic);
+			tPub = publishSession.createPublisher(connectionTopic);
 			TextMessage sendMessage = publishSession.createTextMessage();
 			sendMessage.setText(msg);
-			sendMessage.setStringProperty("DESTINATION", sender);
-			return sendMessage;
+			sendMessage.setStringProperty("DESTINATION", enablerName);
+			System.out.println(ConnectEnablersManager.class.getSimpleName() + ": send " + sendMessage.getText() + " on channel: " + answerTopic);
+			tPub.publish(sendMessage);
 		} catch (JMSException e) {
 			e.printStackTrace();
-			return null;
 		}
 	}
 	
@@ -217,7 +203,7 @@ public class ConnectEnablersManager extends Thread implements MessageListener {
 	{
 		EnablerProfile enablerMatched = (EnablerProfile)requestMap.get(ruleMatched);
 		
-		ConnectEnablersManager.sendMessage(ConnectEnablersManager.createMessage("The evaluation for request: " + ruleMatched + " is: " + (String)value.toString(), enablerName, enablerMatched.getAnswerTopic()), enablerMatched.getAnswerTopic());
+		ConnectEnablersManager.sendResponse("The evaluation for request: " + ruleMatched + " is: " + (String)value.toString(), enablerName, enablerMatched.getAnswerTopic());
 		System.out.println(ConnectEnablersManager.class.getSimpleName()
 				+ ": ruleMatched: " + ruleMatched
 				+ " - enablerName: " + enablerName

@@ -52,19 +52,16 @@ public class DroolsRulesManager extends RulesManager {
 
 	@Override
 	void startRule(final String ruleName) throws UnknownRuleException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	void stopRule(final String ruleName) throws UnknownRuleException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	void restartRule(final String ruleName) throws UnknownRuleException {
-		// TODO Auto-generated method stub
 		
 	}
 	
