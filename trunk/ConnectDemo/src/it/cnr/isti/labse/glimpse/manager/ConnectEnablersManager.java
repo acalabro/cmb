@@ -32,10 +32,10 @@ import org.drools.definition.rule.*;
 public class ConnectEnablersManager extends Thread implements MessageListener {
 	
 	private TopicConnection connection;
-	private static TopicSession publishSession;
+	private TopicSession publishSession;
+	private TopicPublisher tPub;
+	private Topic connectionTopic;
 	private TopicSession subscribeSession;
-	private static Topic connectionTopic;
-	private static TopicPublisher tPub;
 	private TopicSubscriber tSub;
 	private String serviceTopic;
 	private String answerTopic;
@@ -76,6 +76,10 @@ public class ConnectEnablersManager extends Thread implements MessageListener {
 			tSub = subscribeSession.createSubscriber(connectionTopic, "DESTINATION = 'monitor'", true);
 			tSub.setMessageListener(this);
 			DebugMessages.ok();
+			
+			DebugMessages.print(this.getClass().getSimpleName(),"Creating responde dispatcher ");
+			ResponseDispatcher responder = new ResponseDispatcher(initConn,connectionFact, requestMap);
+			DebugMessages.ok();
 						
 		} catch (JMSException e) {
 			e.printStackTrace();
@@ -108,7 +112,7 @@ public class ConnectEnablersManager extends Thread implements MessageListener {
 
 			DebugMessages.print(this.getClass().getSimpleName(), "Create answerTopic");
 			connectionTopic = publishSession.createTopic(answerTopic);
-			tPub = publishSession.createPublisher(connectionTopic);
+			//tPub = publishSession.createPublisher(connectionTopic);
 			DebugMessages.ok();
 			
 			DebugMessages.print(this.getClass().getSimpleName(), "Setup ComplexEventProcessor with Enabler request.");
@@ -175,38 +179,12 @@ public class ConnectEnablersManager extends Thread implements MessageListener {
 		try {
 			if (msg != null)
 			{
-				System.out.println(this.getClass().getSimpleName() + ": send " + msg.getText());
+				//System.out.println(this.getClass().getSimpleName() + ": send " + msg.getText());
 				//DebugMessages.line();
 				tPub.publish(msg);
 			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static void sendResponse(String msg, String enablerName, String answerTopic)
-	{
-		try {
-			connectionTopic = publishSession.createTopic(answerTopic);
-			tPub = publishSession.createPublisher(connectionTopic);
-			TextMessage sendMessage = publishSession.createTextMessage();
-			sendMessage.setText(msg);
-			sendMessage.setStringProperty("DESTINATION", enablerName);
-			System.out.println(ConnectEnablersManager.class.getSimpleName() + ": send " + sendMessage.getText() + " on channel: " + answerTopic);
-			tPub.publish(sendMessage);
-		} catch (JMSException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static void NotifyMe(String ruleMatched, String enablerName, Object value)
-	{
-		EnablerProfile enablerMatched = (EnablerProfile)requestMap.get(ruleMatched);
-		
-		ConnectEnablersManager.sendResponse("The evaluation for request: " + ruleMatched + " is: " + (String)value.toString(), enablerName, enablerMatched.getAnswerTopic());
-		System.out.println(ConnectEnablersManager.class.getSimpleName()
-				+ ": ruleMatched: " + ruleMatched
-				+ " - enablerName: " + enablerName
-				+ " - evaluationResult: " + value.toString());
 	}
 }

@@ -92,10 +92,10 @@ public class DemoLauncher {
 					Manager.Read(PROBE1PARAMETERSFILE), connFact, initConn);
 			testingProbe1.start();
 			
-			/*SimpleConnectEnabler testingConsumer1 = new SimpleConnectEnabler(
+			SimpleConnectEnabler testingConsumer1 = new SimpleConnectEnabler(
 					Manager.Read(ENABLER1PARAMETERSFILE), connFact, initConn);
 			testingConsumer1.start();
-
+			/*
 			try {
 				Thread.sleep(6000);
 			} catch (InterruptedException e) {

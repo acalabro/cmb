@@ -147,7 +147,6 @@ public class SimpleConnectEnabler extends Thread implements MessageListener,
 	private TextMessage createMessage(String msg) {
 		try {
 			TextMessage sendMessage = publishSession.createTextMessage();
-
 			sendMessage.setText(msg);
 			sendMessage.setStringProperty("SENDER", this.getEnablerName());
 			sendMessage.setStringProperty("DESTINATION", "monitor");
@@ -159,22 +158,18 @@ public class SimpleConnectEnabler extends Thread implements MessageListener,
 		}
 	}
 
-	@Override
 	public String getEnablerName() {
 		return this.enablerName;
 	}
 
-	@Override
 	public void setEnablerName(String enablerName) {
 		this.enablerName = enablerName;
 	}
 
-	@Override
 	public String getAnwerTopic() {
 		return this.answerTopic;
 	}
 
-	@Override
 	public void setAnwerTopic(String answerTopic) {
 		this.answerTopic = answerTopic;
 	}
