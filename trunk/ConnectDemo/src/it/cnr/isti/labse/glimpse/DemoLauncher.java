@@ -92,7 +92,7 @@ public class DemoLauncher {
 					Manager.Read(PROBE1PARAMETERSFILE), connFact, initConn);
 			testingProbe1.start();
 			
-			SimpleConnectEnabler testingConsumer1 = new SimpleConnectEnabler(
+			/*SimpleConnectEnabler testingConsumer1 = new SimpleConnectEnabler(
 					Manager.Read(ENABLER1PARAMETERSFILE), connFact, initConn);
 			testingConsumer1.start();
 
@@ -104,7 +104,7 @@ public class DemoLauncher {
 
 			SimpleConnectEnabler testingConsumer2 = new SimpleConnectEnabler(
 					Manager.Read(ENABLER2PARAMETERSFILE), connFact, initConn);
-			testingConsumer2.start();
+			testingConsumer2.start();*/
 		}
 	}
 	

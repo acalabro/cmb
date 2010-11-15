@@ -174,29 +174,4 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 	public RulesManager getRuleManager() {
 		return this.cepRuleManager;
 	}
-/*	private TextMessage createMessage(String msg) {
-		try 
-		{
-			TextMessage sendMessage = publishSession.createTextMessage();
-			sendMessage.setText(msg);
-			return sendMessage;
-		}
-		catch (JMSException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	private void sendMessage(TextMessage msg) {
-		try {
-			if (msg != null)
-			{
-				System.out.println(this.getClass().getSimpleName() + ": send on " + tPub.getTopic().getTopicName() + " " + msg.getText());
-				tPub.publish(msg);
-			}
-		} catch (JMSException e) {
-			e.printStackTrace();
-		}
-	}*/
 }

@@ -1,7 +1,6 @@
 package it.cnr.isti.labse.glimpse.rules;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.drools.KnowledgeBase;
 import org.drools.builder.KnowledgeBuilder;
@@ -50,22 +49,18 @@ public class DroolsRulesManager extends RulesManager {
 		DebugMessages.line();
 	}
 
-	@Override
 	void startRule(final String ruleName) throws UnknownRuleException {
 		
 	}
 
-	@Override
 	void stopRule(final String ruleName) throws UnknownRuleException {
 		
 	}
 
-	@Override
 	void restartRule(final String ruleName) throws UnknownRuleException {
 		
 	}
 	
-	@Override
 	public Object[] loadRules(final ComplexEventRuleActionType rules) throws IncorrectRuleFormatException {
 		
 		newKnowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
