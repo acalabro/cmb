@@ -81,7 +81,7 @@ public class DemoLauncher {
 					Manager.Read(MANAGERPARAMETERFILE), connFact, initConn,
 					engine.getRuleManager());
 			manager.start();
-/*
+
 			try {
 				Thread.sleep(6000);
 			} catch (InterruptedException e) {
@@ -92,10 +92,10 @@ public class DemoLauncher {
 					Manager.Read(CONNECTOR1PARAMETERSFILE), connFact, initConn);
 			testingProbe1.start();
 			
+			
 			DummyConnector testingProbe2 = new DummyConnector(
 					Manager.Read(CONNECTOR2PARAMETERSFILE), connFact, initConn);
 			testingProbe2.start();
-			/*
 			
 			SimpleConnectEnabler testingConsumer1 = new SimpleConnectEnabler(
 					Manager.Read(ENABLER1PARAMETERSFILE), connFact, initConn);
@@ -109,7 +109,7 @@ public class DemoLauncher {
 
 			SimpleConnectEnabler testingConsumer2 = new SimpleConnectEnabler(
 					Manager.Read(ENABLER2PARAMETERSFILE), connFact, initConn);
-			testingConsumer2.start();*/
+			testingConsumer2.start();
 		}
 	}
 	

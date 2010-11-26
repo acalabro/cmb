@@ -17,6 +17,5 @@
 	<classpathentry exported="true" kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/xmlpublic.jar"/>
 	<classpathentry kind="con" path="com.soyatec.uml.CONTAINER"/>
 	<classpathentry kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/drools-core-5.1.1.jar"/>
-	<classpathentry kind="lib" path="/home/acalabro/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64_3.6.1.v3655c.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
