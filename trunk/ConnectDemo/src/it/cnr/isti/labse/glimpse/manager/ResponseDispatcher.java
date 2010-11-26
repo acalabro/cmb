@@ -13,7 +13,6 @@ import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 public class ResponseDispatcher {
 
@@ -35,7 +34,6 @@ public class ResponseDispatcher {
 			connection = connectionFact.createTopicConnection();
 			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}
@@ -49,7 +47,6 @@ public class ResponseDispatcher {
 			TextMessage sendMessage = publishSession.createTextMessage();
 			sendMessage.setText(msg);
 			sendMessage.setStringProperty("DESTINATION", enablerName);
-			System.out.println(ConnectEnablersManager.class.getSimpleName() + ": send " + sendMessage.getText() + " on channel: " + answerTopic);
 			tPub.publish(sendMessage);
 		} catch (JMSException e) {
 			e.printStackTrace();
