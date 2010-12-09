@@ -15,7 +15,6 @@
 	<classpathentry exported="true" kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/xbean.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/xmlbeans-qname.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/xmlpublic.jar"/>
-	<classpathentry kind="con" path="com.soyatec.uml.CONTAINER"/>
 	<classpathentry kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/drools-core-5.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
