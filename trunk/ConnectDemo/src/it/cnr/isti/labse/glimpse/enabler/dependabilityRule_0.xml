@@ -68,7 +68,7 @@
 		update( $bEvent );
 		retract( $aEvent );
 		retract( $bEvent );		
-		ResponseDispatcher.NotifyMe(drools.getRule().getName(),"dependability1",DroolsUtils.latency($aEvent.getTimestamp(), $bEvent.getTimestamp()));
+		ResponseDispatcher.NotifyMe(drools.getRule().getName(),"DependabilityAnalisysEnabler1",DroolsUtils.latency($aEvent.getTimestamp(), $bEvent.getTimestamp()));
 		end
         </RuleBody>
     </Insert>

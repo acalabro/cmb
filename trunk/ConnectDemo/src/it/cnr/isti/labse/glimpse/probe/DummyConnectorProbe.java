@@ -24,9 +24,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 
-public class DummyConnector extends Thread
+public class DummyConnectorProbe extends Thread
 {
-	public static DummyConnector myConnectorInstance = null;
+	public static DummyConnectorProbe myConnectorInstance = null;
 	private String filter;
 	private String topic;
 	private String eventFile;
@@ -41,18 +41,18 @@ public class DummyConnector extends Thread
 	private int executionValue = 0;
 	private Random rand = new Random();
 	
-	public static DummyConnector getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
+	public static DummyConnectorProbe getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		if (myConnectorInstance == null)
 		{
-			return new DummyConnector(settings, connectionFact, initConn);
+			return new DummyConnectorProbe(settings, connectionFact, initConn);
 		}
 		else
 			return myConnectorInstance;
 				
 	}
 	
-	public DummyConnector(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
+	public DummyConnectorProbe(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
 		this.filter = settings.getProperty("filter");
 		this.topic = settings.getProperty("topic");

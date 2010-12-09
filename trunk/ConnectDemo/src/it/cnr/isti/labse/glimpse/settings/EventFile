@@ -12,7 +12,7 @@ Event B,10
 Event D,20
 transitionToMonitor,40
 Event41,40
-Event A,50
+tpListBrowse,50
 Event B,10
 Event39,50
 Event C,20

@@ -18,7 +18,7 @@ import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-public class SimpleConnectEnabler extends Thread implements MessageListener,
+public class GenericConnectEnabler extends Thread implements MessageListener,
 		ConnectEnabler {
 
 	private String enablerName;
@@ -32,7 +32,7 @@ public class SimpleConnectEnabler extends Thread implements MessageListener,
 	private TopicSubscriber tSub;
 	private String answerTopic;
 
-	public SimpleConnectEnabler(Properties settings,
+	public GenericConnectEnabler(Properties settings,
 			TopicConnectionFactory connectionFact, InitialContext initConn) {
 		this.requestRulePath_0 = settings.getProperty("requestRulePath_0");
 		this.serviceTopic = settings.getProperty("serviceTopic");

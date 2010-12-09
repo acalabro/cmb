@@ -29,7 +29,7 @@ import org.apache.xmlbeans.XmlException;
 import org.drools.definitions.impl.KnowledgePackageImp;
 import org.drools.definition.rule.*;
 
-public class ConnectEnablersManager extends Thread implements MessageListener {
+public class GlimpseManager extends Thread implements MessageListener {
 	
 	private TopicConnection connection;
 	private TopicSession publishSession;
@@ -42,7 +42,7 @@ public class ConnectEnablersManager extends Thread implements MessageListener {
 	private RulesManager rulesManager;
 	public static HashMap<Object, EnablerProfile> requestMap = new HashMap<Object, EnablerProfile>();
 	
-	public ConnectEnablersManager(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn, RulesManager rulesManager)
+	public GlimpseManager(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn, RulesManager rulesManager)
 	{
 		serviceTopic = settings.getProperty("serviceTopic");
 		setupConnection(connectionFact, initConn);
@@ -72,7 +72,6 @@ public class ConnectEnablersManager extends Thread implements MessageListener {
 			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
 			connectionTopic = (Topic)initConn.lookup(serviceTopic);
 			
-			//TODO ricordarsi che la destination va modificata
 			tSub = subscribeSession.createSubscriber(connectionTopic, "DESTINATION = 'monitor'", true);
 			tSub.setMessageListener(this);
 			DebugMessages.ok();
