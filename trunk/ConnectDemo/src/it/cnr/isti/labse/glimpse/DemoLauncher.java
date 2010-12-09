@@ -2,12 +2,12 @@ package it.cnr.isti.labse.glimpse;
 
 import it.cnr.isti.labse.glimpse.buffer.DroolsEventsBuffer;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
-import it.cnr.isti.labse.glimpse.manager.ConnectEnablersManager;
-import it.cnr.isti.labse.glimpse.enabler.SimpleConnectEnabler;
+import it.cnr.isti.labse.glimpse.manager.GlimpseManager;
+import it.cnr.isti.labse.glimpse.enabler.GenericConnectEnabler;
 import it.cnr.isti.labse.glimpse.event.SimpleEvent;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 import it.cnr.isti.labse.glimpse.cep.DroolsComplexEventProcessor;
-import it.cnr.isti.labse.glimpse.probe.DummyConnector;
+import it.cnr.isti.labse.glimpse.probe.DummyConnectorProbe;
 import it.cnr.isti.labse.glimpse.settings.DebugMessages;
 import it.cnr.isti.labse.glimpse.settings.Manager;
 
@@ -77,7 +77,7 @@ public class DemoLauncher {
 				e.printStackTrace();
 			}
 
-			ConnectEnablersManager manager = new ConnectEnablersManager(
+			GlimpseManager manager = new GlimpseManager(
 					Manager.Read(MANAGERPARAMETERFILE), connFact, initConn,
 					engine.getRuleManager());
 			manager.start();
@@ -88,16 +88,16 @@ public class DemoLauncher {
 				e.printStackTrace();
 			}
 
-			DummyConnector testingProbe1 = new DummyConnector(
+			DummyConnectorProbe testingProbe1 = new DummyConnectorProbe(
 					Manager.Read(CONNECTOR1PARAMETERSFILE), connFact, initConn);
 			testingProbe1.start();
 			
 			
-			DummyConnector testingProbe2 = new DummyConnector(
+			DummyConnectorProbe testingProbe2 = new DummyConnectorProbe(
 					Manager.Read(CONNECTOR2PARAMETERSFILE), connFact, initConn);
 			testingProbe2.start();
 			
-			SimpleConnectEnabler testingConsumer1 = new SimpleConnectEnabler(
+			GenericConnectEnabler testingConsumer1 = new GenericConnectEnabler(
 					Manager.Read(ENABLER1PARAMETERSFILE), connFact, initConn);
 			testingConsumer1.start();
 			
@@ -107,7 +107,7 @@ public class DemoLauncher {
 				e.printStackTrace();
 			}
 
-			SimpleConnectEnabler testingConsumer2 = new SimpleConnectEnabler(
+			GenericConnectEnabler testingConsumer2 = new GenericConnectEnabler(
 					Manager.Read(ENABLER2PARAMETERSFILE), connFact, initConn);
 			testingConsumer2.start();
 		}
