@@ -1,5 +1,0 @@
-topic = probeTopic
-filter = none
-eventFile = /home/acalabro/workspace/ConnectDemo/src/it/cnr/isti/labse/glimpse/settings/EventFile
-connectorName = dummyProbe1
-instance = 222;
