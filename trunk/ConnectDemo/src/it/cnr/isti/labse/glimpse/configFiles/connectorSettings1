@@ -1,5 +1,0 @@
-topic = probeTopic
-filter = none
-eventFile = ./EventFile
-connectorName = dummyProbe1
-instance = 222;
