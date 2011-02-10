@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ComplexEventRuleActionList xmlns="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule ./ComplexEventRule.xsd">
+<Insert RuleType="drools">
+        <RuleName>event A and B</RuleName>
+        <RuleBody>
+	import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+	import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
+	import it.cnr.isti.labse.glimpse.settings.DroolsUtils;
+	
+	declare SimpleEvent
+    @role( event )
+    @timestamp( timestamp )
+    end
+    
+	rule "event A and B"
+	no-loop
+	salience 999
+	dialect "java"
+	when
+		$aEvent : SimpleEvent(this.data == "Event A",
+								this.getConsumed == false);
+		$bEvent : SimpleEvent(this.data == "Event B",
+								this.getConsumed == false,
+								this.getConnectorID == $aEvent.getConnectorID,
+								this.getConnectorInstanceID == $aEvent.getConnectorInstanceID,
+								this.getConnectorInstanceExecutionID == $aEvent.getConnectorInstanceExecutionID,
+								this after $aEvent);
+	then
+		$aEvent.setConsumed(true);
+		$bEvent.setConsumed(true);
+		update( $aEvent );
+		update( $bEvent );
+		retract( $aEvent );
+		retract( $bEvent );
+		ResponseDispatcher.NotifyMe(drools.getRule().getName(),"DependabilityAnalisysEnabler2",DroolsUtils.latency($aEvent.getTimestamp(), $bEvent.getTimestamp()));
+	end
+        </RuleBody>
+    </Insert>
+    
+</ComplexEventRuleActionList>
