@@ -76,7 +76,7 @@ public class GlimpseManager extends Thread implements MessageListener {
 			tSub.setMessageListener(this);
 			DebugMessages.ok();
 			
-			DebugMessages.print(this.getClass().getSimpleName(),"Creating responde dispatcher ");
+			DebugMessages.print(this.getClass().getSimpleName(),"Creating response dispatcher ");
 			ResponseDispatcher responder = new ResponseDispatcher(initConn,connectionFact, requestMap);
 			DebugMessages.ok();
 						
@@ -101,6 +101,7 @@ public class GlimpseManager extends Thread implements MessageListener {
 			ComplexEventRuleActionListDocument ruleDoc;			
 			ruleDoc = ComplexEventRuleActionListDocument.Factory.parse(XMLRule);	
 			ComplexEventRuleActionType rules = ruleDoc.getComplexEventRuleActionList();
+			
 			
 			//the topic where the listener will give analysis results
 			answerTopic =  "answerTopic" + "#" + this.getName() + "#" + System.nanoTime();
@@ -157,6 +158,8 @@ public class GlimpseManager extends Thread implements MessageListener {
 			e.printStackTrace();
 		}
 		DebugMessages.ok();
+		DebugMessages.line();
+		System.out.println(this.getClass().getSimpleName() + ": is now ready to accept incoming requests ");
 		DebugMessages.line();
 	}
 

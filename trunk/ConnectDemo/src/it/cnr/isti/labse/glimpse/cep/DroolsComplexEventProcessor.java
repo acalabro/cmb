@@ -107,8 +107,6 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 			tSub.setMessageListener(this);
 			DebugMessages.ok();
 			DebugMessages.line();
-			DebugMessages.print(this.getClass().getSimpleName(), "is now ready to accept incoming requests ");
-			DebugMessages.line();
 			ksession.fireUntilHalt();
 		} catch (JMSException e) {
 			e.printStackTrace();

@@ -8,6 +8,7 @@ import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 import it.cnr.isti.labse.glimpse.cep.DroolsComplexEventProcessor;
 import it.cnr.isti.labse.glimpse.settings.DebugMessages;
 import it.cnr.isti.labse.glimpse.settings.Manager;
+import it.cnr.isti.labse.glimpse.settings.SplashScreen;
 
 import java.util.Properties;
 
@@ -50,6 +51,7 @@ public class MainMonitoring {
 		try{
 			if (MainMonitoring.initProps(args[0]) && MainMonitoring.init()) {
 	
+				SplashScreen.Show();
 				EventsBuffer<SimpleEvent> buffer = new DroolsEventsBuffer<SimpleEvent>();
 	
 				ComplexEventProcessor engine = new DroolsComplexEventProcessor(
