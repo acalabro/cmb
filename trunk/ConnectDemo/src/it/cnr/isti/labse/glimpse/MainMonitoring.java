@@ -81,7 +81,6 @@ public class MainMonitoring {
 		
 		try 
 		{
-			//SplashScreen.Show();
 			Properties environmentParameters = Manager.Read(ENVIRONMENTPARAMETERSFILE);
 			initConn = new InitialContext(environmentParameters);
 			
