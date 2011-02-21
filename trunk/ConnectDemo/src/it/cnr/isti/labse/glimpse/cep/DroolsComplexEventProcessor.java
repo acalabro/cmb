@@ -89,7 +89,7 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 			ksession = kbase.newStatefulKnowledgeSession();
 			ksession.setGlobal("EVENTS EntryPoint", eventStream);
 			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");
-			cepRuleManager = new DroolsRulesManager(kbuilder, kbase);
+			cepRuleManager = new DroolsRulesManager(kbuilder, kbase, ksession);
 			DebugMessages.ok();
 			
 		} catch (JMSException e) {
@@ -128,10 +128,12 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 					+ "\nisConsumed: " + receivedEvent.getConsumed()
 					+ "\nsequenceID: " + receivedEvent.getSequenceID()
 					+ "\nsourceState: " + receivedEvent.getSourceState());*/
-			System.out.println(this.getClass().getSimpleName() + ": receive: " + receivedEvent.getData() + " from: " + receivedEvent.getConnectorID() + " execution: " + receivedEvent.getConnectorInstanceID());
-			DebugMessages.line();
-			if (eventStream != null)
-				eventStream.insert(receivedEvent);	
+			if (eventStream != null && kbase.getKnowledgePackages().size() > 0)
+			{
+				eventStream.insert(receivedEvent);
+				System.out.println(this.getClass().getSimpleName() + ": receive: " + receivedEvent.getData() + " from: " + receivedEvent.getConnectorID() + " execution: " + receivedEvent.getConnectorInstanceID());
+				DebugMessages.line();
+			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -146,8 +148,9 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 				config.setOption(EventProcessingOption.STREAM);
 
 				kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+				System.out.println("PRIMA: " + kbase.getKnowledgePackages().size());
 				kbuilder.add(ResourceFactory.newClassPathResource("startupRule.drl",getClass()), ResourceType.DRL);
-
+				
 				KnowledgeBuilderErrors errors = kbuilder.getErrors();
 				if (errors.size() > 0)
 				{
@@ -159,6 +162,7 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 				}
 				kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
 				kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+				System.out.println("DOPO: " + kbase.getKnowledgePackages().size());
 				return kbase;
 			}
 		catch (Exception e)

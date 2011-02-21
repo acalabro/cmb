@@ -3,12 +3,17 @@ package it.cnr.isti.labse.glimpse.rules;
 import java.util.Collection;
 
 import org.drools.KnowledgeBase;
+import org.drools.WorkingMemoryEntryPoint;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.definition.KnowledgePackage;
 import org.drools.definition.rule.Rule;
 import org.drools.io.ResourceFactory;
+import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.rule.Agenda;
+import org.drools.runtime.rule.AgendaGroup;
+import org.drools.runtime.rule.impl.AgendaGroupImpl;
 import org.w3c.dom.DOMException;
 
 import it.cnr.isti.labse.glimpse.exceptions.IncorrectRuleFormatException;
@@ -23,27 +28,32 @@ public class DroolsRulesManager extends RulesManager {
 	private KnowledgeBuilder kbuilder;
 	private KnowledgeBase kbase;
 	private KnowledgeBuilder newKnowledgeBuilder;
+	private StatefulKnowledgeSession ksession;
+	private Agenda agenda;
 	
-	public DroolsRulesManager(Object knowledgeBuilder, Object knowledgeBase) {
-		super(knowledgeBuilder, knowledgeBase);
+	public DroolsRulesManager(Object knowledgeBuilder, Object knowledgeBase, Object knowledgeSession) {
+		super(knowledgeBuilder, knowledgeBase, knowledgeSession);
 		kbuilder = (KnowledgeBuilder) knowledgeBuilder;
 		kbase = (KnowledgeBase) knowledgeBase;
+		ksession = (StatefulKnowledgeSession) knowledgeSession;
+		agenda = ksession.getAgenda();
 	}
 
 	@Override
 	void insertRule(final String rule, final String ruleName) throws IncorrectRuleFormatException {
+
 		newKnowledgeBuilder.add(ResourceFactory.newByteArrayResource(rule.trim().getBytes()), ResourceType.DRL);
-		if (newKnowledgeBuilder.getErrors().size() > 0)
-				throw new IncorrectRuleFormatException();
+		 if (newKnowledgeBuilder.getErrors().size() > 0)
+			 throw new IncorrectRuleFormatException();
+		 
 	}
 
 	@Override
 	void deleteRule(final String ruleName) throws UnknownRuleException {
-		//TODO REMOVE RULE
-		/*final Collection<KnowledgePackage> pkg = kbase.getKnowledgePackages();
+		final Collection<KnowledgePackage> pkg = kbase.getKnowledgePackages();
 		final Object[] pkgArray = pkg.toArray();
 		final KnowledgePackage pkgPd = (org.drools.definition.KnowledgePackage)pkgArray[0];
-		kbase.removeRule(pkgPd.getName(), ruleName);*/
+		kbase.removeRule(pkgPd.getName(), ruleName);
 		DebugMessages.line();
 		DebugMessages.print(this.getClass().getSimpleName(), "Rule " + ruleName + " successful removed.");
 		DebugMessages.line();
