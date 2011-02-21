@@ -17,11 +17,13 @@ import javax.naming.InitialContext;
 public class ResponseDispatcher {
 
 	private static Topic connectionTopic;
+	@SuppressWarnings("unused")
 	private static InitialContext initConn;
 	private static TopicSession publishSession;
 	private static TopicPublisher tPub;
 	private static HashMap<Object, EnablerProfile> requestMap;
 	private static TopicConnection connection;
+	@SuppressWarnings("unused")
 	private static TopicSession publicSession;
 	
 	public ResponseDispatcher(InitialContext initConn,

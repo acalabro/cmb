@@ -40,6 +40,9 @@ public class GlimpseManager extends Thread implements MessageListener {
 	private String serviceTopic;
 	private String answerTopic;
 	private RulesManager rulesManager;
+	@SuppressWarnings("unused")
+	private ResponseDispatcher responder;
+	
 	public static HashMap<Object, EnablerProfile> requestMap = new HashMap<Object, EnablerProfile>();
 	
 	public GlimpseManager(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn, RulesManager rulesManager)
@@ -77,7 +80,7 @@ public class GlimpseManager extends Thread implements MessageListener {
 			DebugMessages.ok();
 			
 			DebugMessages.print(this.getClass().getSimpleName(),"Creating response dispatcher ");
-			ResponseDispatcher responder = new ResponseDispatcher(initConn,connectionFact, requestMap);
+			responder = new ResponseDispatcher(initConn,connectionFact, requestMap);
 			DebugMessages.ok();
 						
 		} catch (JMSException e) {

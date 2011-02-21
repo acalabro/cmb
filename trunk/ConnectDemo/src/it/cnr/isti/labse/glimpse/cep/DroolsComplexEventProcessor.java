@@ -44,6 +44,7 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 	private Topic connectionTopic;
 	private TopicSession publishSession;
 	private TopicSession subscribeSession;
+	@SuppressWarnings("unused")
 	private TopicPublisher tPub;
 	private TopicSubscriber tSub;
 	private KnowledgeBase kbase;
@@ -113,6 +114,7 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onMessage(Message arg0) {
 		ObjectMessage msg = (ObjectMessage) arg0;
