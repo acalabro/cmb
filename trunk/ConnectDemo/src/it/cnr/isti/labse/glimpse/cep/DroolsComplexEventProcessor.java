@@ -121,16 +121,7 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 		
 		try {
 			receivedEvent = (ConnectBaseEvent<String>) msg.getObject();
-			/*DebugMessages.line();
-			/*System.out.println(this.getClass().getSimpleName() + ": receive:"
-					+ "\nconnectorID: " + receivedEvent.getConnectorID()
-					+ "\nconnectorInstanceID: " + receivedEvent.getConnectorInstanceID()
-					+ "\nconnectorInstanceExecutionID: " + receivedEvent.getConnectorInstanceExecutionID()
-					+ "\npayload: " + receivedEvent.getData()
-					+ "\nisConsumed: " + receivedEvent.getConsumed()
-					+ "\nsequenceID: " + receivedEvent.getSequenceID()
-					+ "\nsourceState: " + receivedEvent.getSourceState());*/
-			if (eventStream != null && kbase.getKnowledgePackages().size() > 0)
+			if (eventStream != null)
 			{
 				eventStream.insert(receivedEvent);
 				System.out.println(this.getClass().getSimpleName() + ": receive: " + receivedEvent.getData() + " from: " + receivedEvent.getConnectorID() + " execution: " + receivedEvent.getConnectorInstanceID());
@@ -150,7 +141,6 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 				config.setOption(EventProcessingOption.STREAM);
 
 				kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-				System.out.println("PRIMA: " + kbase.getKnowledgePackages().size());
 				kbuilder.add(ResourceFactory.newClassPathResource("startupRule.drl",getClass()), ResourceType.DRL);
 				
 				KnowledgeBuilderErrors errors = kbuilder.getErrors();
@@ -164,7 +154,6 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 				}
 				kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
 				kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-				System.out.println("DOPO: " + kbase.getKnowledgePackages().size());
 				return kbase;
 			}
 		catch (Exception e)
