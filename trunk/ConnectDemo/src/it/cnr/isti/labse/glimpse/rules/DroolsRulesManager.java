@@ -141,5 +141,5 @@ public class DroolsRulesManager extends RulesManager {
 			System.out.println("Package: " + pkgPd.getName() + " - RuleName: " + rl.getName());
 		}
 		DebugMessages.line();
-	}
+	}	
 }

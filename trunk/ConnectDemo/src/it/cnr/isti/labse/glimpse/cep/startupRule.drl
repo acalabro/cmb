@@ -1,6 +1,6 @@
-	import it.cnr.isti.labse.glimpse.event.SimpleEvent;
-	
-	declare SimpleEvent
-    @role( event )
-    @timestamp( timestamp )
-    end
+import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+
+declare SimpleEvent
+   @role( event )
+   @timestamp( timestamp )
+end
