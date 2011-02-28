@@ -4,6 +4,7 @@ import it.cnr.isti.labse.connectEnabler.core.GenericConnectEnabler;
 import it.cnr.isti.labse.connectEnabler.utils.DebugMessages;
 import it.cnr.isti.labse.connectEnabler.utils.Manager;
 
+import java.util.List;
 import java.util.Properties;
 
 import javax.jms.TopicConnectionFactory;
@@ -26,12 +27,13 @@ public class MainEnabler {
 		try {
 			systemProps = Manager
 					.Read(systemPropertiesPath);
-
+			
 			ENVIRONMENTPARAMETERSFILE = systemProps
 					.getProperty("ENVIRONMENTPARAMETERSFILE");
 			ENABLER1PARAMETERSFILE = systemProps
 					.getProperty("ENABLER1PARAMETERSFILE");
 			return true;
+			
 		} catch (Exception asd) {
 			return false;
 		}
