@@ -1,64 +1,46 @@
-#created on: Feb 22, 2011
+#list any import classes here.
 import it.cnr.isti.labse.glimpse.event.SimpleEvent;
 import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
 import it.cnr.isti.labse.glimpse.settings.DroolsUtils;
-		
+
+#declare any global variables here
+
 declare SimpleEvent
 	@role( event )
 	@timestamp( timestamp )
 end
-	    
-declare PairSA_AS
-	first : SimpleEvent
-	second : SimpleEvent
+
+declare CommunicationDuration
+	latency : float
 end
-		
-declare TernSA_UD
-	first : PairSA_AS
-	second: SimpleEvent
-end
-	    
-rule "genPair"
-no-loop
-salience 999
-dialect "java"
-when
-	$aEvent : SimpleEvent(this.data == "selectArea",
-							this.getConsumed == false);
-	$bEvent : SimpleEvent(this.data == "areaSelected",
-							this.getConsumed == false,
-							this.getConnectorID == $aEvent.getConnectorID,
-							this.getConnectorInstanceID == $aEvent.getConnectorInstanceID,
-							this.getConnectorInstanceExecutionID == $aEvent.getConnectorInstanceExecutionID,
-							this after $aEvent);
-then
-	PairSA_AS p = new PairSA_AS();
- 	p.setFirst($aEvent);
- 	p.setSecond($bEvent);
-	System.out.println("Generata coppia");
- 	insert(p);
- 	retract($aEvent);
- 	retract($bEvent);
-end
-	
-rule "genTriple"
-no-loop
-salience 999
-dialect "java"
-when
-	$aEvent : PairSA_AS();
-	$bEvent : SimpleEvent(this.data == "uploadData",
-							this.getConsumed == false,
-							this.getConnectorID == $aEvent.getFirst.getConnectorID,
-							this.getConnectorInstanceID == $aEvent.getFirst.getConnectorInstanceID,
-							this.getConnectorInstanceExecutionID == $aEvent.getFirst.getConnectorInstanceExecutionID,
-							this after $aEvent);
-then
- 	TernSA_UD q = new TernSA_UD();
- 	q.setFirst($aEvent);
- 	q.setSecond($bEvent);
-	insert(q);
-	retract($aEvent);
-	retract($bEvent);
-	System.out.println("Generata tripla");
+
+public workload{
+ int numberOfActiveRequests;
+}
+
+rule "eval"
+	no-loop
+	salience 999
+	dialect "java"		
+	when
+		$aEvent : SimpleEvent(this.data == "incomingRequest",
+								this.getConsumed == false);
+		$bEvent : SimpleEvent(this.data == "requestServed",
+								this.getConsumed == false,
+								this.getConnectorID == $aEvent.getConnectorID,
+								this.getConnectorInstanceID == $aEvent.getConnectorInstanceID,
+								this.getConnectorInstanceExecutionID == $aEvent.getConnectorInstanceExecutionID,
+								this after $aEvent);
+								
+		$total : Number() 
+             from accumulate($bEvent : SimpleEvent()
+             				from entry-point "DEFAULT 
+                            sum( $value) )
+		CommunicationDuration p = new CommunicationDuration();
+		p.setLatency(eval(DroolsUtil.latency($aEvent.getTimestamp(), $bEvent.getTimestamp()));
+		$CommunicationDurationList : ArrayList() from collect(CommunicationDuration);
+	the
+		retract( $aEvent );
+		retract( $bEvent );
+		ResponseDispatcher.NotifyMe(drools.getRule().getName(),"DependabilityAnalisysEnabler2",	$CommunicationDurationList.size();));
 end
