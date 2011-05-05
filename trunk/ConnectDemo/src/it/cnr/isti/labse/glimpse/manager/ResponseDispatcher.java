@@ -2,9 +2,11 @@ package it.cnr.isti.labse.glimpse.manager;
 
 import it.cnr.isti.labse.glimpse.enabler.EnablerProfile;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import javax.jms.JMSException;
+import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
@@ -13,6 +15,12 @@ import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.naming.InitialContext;
+
+import org.apache.xmlbeans.XmlAnySimpleType;
+import org.example.complexEventResponse.ComplexEventResponse;
+import org.example.complexEventResponse.ComplexEventResponseListDocument;
+import org.example.complexEventResponse.ComplexEventResponseType;
+import org.example.complexEventResponse.impl.ComplexEventResponseListDocumentImpl;
 
 public class ResponseDispatcher {
 
@@ -40,14 +48,14 @@ public class ResponseDispatcher {
 		}		
 	}
 
-	public static void sendResponse(String msg, String enablerName, String answerTopic)
+	public static void sendResponse(ComplexEventResponseListDocument msg, String enablerName, String answerTopic)
 	{
 		try {
 			publicSession = connection.createTopicSession(false,Session.AUTO_ACKNOWLEDGE);
 			connectionTopic = publishSession.createTopic(answerTopic);
 			tPub = publishSession.createPublisher(connectionTopic);
-			TextMessage sendMessage = publishSession.createTextMessage();
-			sendMessage.setText(msg);
+			ObjectMessage sendMessage = publishSession.createObjectMessage();
+			sendMessage.setObject((Serializable)msg);
 			sendMessage.setStringProperty("DESTINATION", enablerName);
 			tPub.publish(sendMessage);
 		} catch (JMSException e) {
@@ -59,7 +67,16 @@ public class ResponseDispatcher {
 	{
 		EnablerProfile enablerMatched = (EnablerProfile)requestMap.get(ruleMatched);
 		
-		ResponseDispatcher.sendResponse("The evaluation for request: " + ruleMatched + " is: " + (String)value.toString(), enablerName, enablerMatched.getAnswerTopic());
+		ComplexEventResponseListDocument responseList = ComplexEventResponseListDocument.Factory.newInstance();
+
+		ComplexEventResponse theResponse = responseList.addNewComplexEventResponseList();
+		
+		ComplexEventResponseType theResponseType = theResponse.addNewResponseType();
+		theResponseType.setString(value.toString());
+		
+		
+		
+		ResponseDispatcher.sendResponse(responseList, enablerName, enablerMatched.getAnswerTopic());
 		System.out.println(ResponseDispatcher.class.getSimpleName()
 				+ ": ruleMatched: " + ruleMatched
 				+ " - enablerName: " + enablerName

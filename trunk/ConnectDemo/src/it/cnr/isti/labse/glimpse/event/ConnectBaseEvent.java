@@ -12,6 +12,7 @@ public abstract class ConnectBaseEvent <T> implements Serializable {
 	protected String connectorInstanceID;
 	protected String connectorInstanceExecutionID;
 	protected int sequenceID;
+	protected String networkedSystemSource;
 	protected String sourceState;
 	
 	public ConnectBaseEvent(String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int sequenceID, Long ts, String sourceState) {

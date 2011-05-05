@@ -14,7 +14,8 @@
 	<classpathentry exported="true" kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/xbean.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/xmlbeans-qname.jar"/>
 	<classpathentry exported="true" kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/xmlpublic.jar"/>
-	<classpathentry kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/drools-core-5.1.1.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Drools Library"/>
+	<classpathentry exported="true" kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/drools-core-5.1.1.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/Drools Library"/>
+	<classpathentry exported="true" kind="lib" path="src/it/cnr/isti/labse/glimpse/lib/ComplexEventResponse.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
