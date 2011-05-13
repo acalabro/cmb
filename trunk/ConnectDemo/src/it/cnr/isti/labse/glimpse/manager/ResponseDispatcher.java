@@ -8,7 +8,6 @@ import java.util.HashMap;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
@@ -16,11 +15,10 @@ import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.naming.InitialContext;
 
-import org.apache.xmlbeans.XmlAnySimpleType;
 import org.example.complexEventResponse.ComplexEventResponse;
 import org.example.complexEventResponse.ComplexEventResponseListDocument;
 import org.example.complexEventResponse.ComplexEventResponseType;
-import org.example.complexEventResponse.impl.ComplexEventResponseListDocumentImpl;
+
 
 public class ResponseDispatcher {
 
@@ -55,7 +53,7 @@ public class ResponseDispatcher {
 			connectionTopic = publishSession.createTopic(answerTopic);
 			tPub = publishSession.createPublisher(connectionTopic);
 			ObjectMessage sendMessage = publishSession.createObjectMessage();
-			sendMessage.setObject((Serializable)msg);
+			sendMessage.setObject((Serializable) msg);
 			sendMessage.setStringProperty("DESTINATION", enablerName);
 			tPub.publish(sendMessage);
 		} catch (JMSException e) {
@@ -73,8 +71,6 @@ public class ResponseDispatcher {
 		
 		ComplexEventResponseType theResponseType = theResponse.addNewResponseType();
 		theResponseType.setString(value.toString());
-		
-		
 		
 		ResponseDispatcher.sendResponse(responseList, enablerName, enablerMatched.getAnswerTopic());
 		System.out.println(ResponseDispatcher.class.getSimpleName()

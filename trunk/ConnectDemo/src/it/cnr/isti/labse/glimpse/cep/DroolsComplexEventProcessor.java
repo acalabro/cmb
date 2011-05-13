@@ -156,8 +156,7 @@ public class DroolsComplexEventProcessor extends ComplexEventProcessor implement
 				kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
 				return kbase;
 			}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			return null;
 		}
 	}
