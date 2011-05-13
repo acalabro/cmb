@@ -5,77 +5,71 @@
 <Insert RuleType="drools">
 	<RuleName>Upload time</RuleName>
         <RuleBody>
-		import it.cnr.isti.labse.glimpse.event.SimpleEvent;
-		import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
-		import it.cnr.isti.labse.glimpse.settings.DroolsUtils;
+			import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+			import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
+			import it.cnr.isti.labse.glimpse.settings.DroolsUtils;
+			
+			declare SimpleEvent
+			    @role( event )
+			    @timestamp( timestamp )
+		    end
 		
-		declare SimpleEvent
-	    @role( event )
-	    @timestamp( timestamp )
-	    end
-	    
-		rule "Upload time"
-		no-loop
-		salience 999
-		dialect "java"
-		when
-			$aEvent : SimpleEvent(this.data == "uploadData",
-									this.getConsumed == false);
-			$bEvent : SimpleEvent(this.data == "uploadSuccess",
-									this.getConsumed == false,
-									this.getConnectorID == $aEvent.getConnectorID,
-									this.getConnectorInstanceID == $aEvent.getConnectorInstanceID,
-									this.getConnectorInstanceExecutionID == $aEvent.getConnectorInstanceExecutionID,
-									this after $aEvent);
-		then
-			$aEvent.setConsumed(true);
-			$bEvent.setConsumed(true);
-			update( $aEvent );
-			update( $bEvent );
-			retract( $aEvent );
-			retract( $bEvent );
-			ResponseDispatcher.NotifyMe(drools.getRule().getName(),"DependabilityAnalisysEnabler2",DroolsUtils.latency($aEvent.getTimestamp(), $bEvent.getTimestamp()));
-		end
-        </RuleBody>
-	</Insert>
-	<Insert RuleType="drools">
-    <RuleName>Tuple matching</RuleName>
-    <RuleBody>
-		import it.cnr.isti.labse.glimpse.event.SimpleEvent;
-		import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
-		import it.cnr.isti.labse.glimpse.settings.DroolsUtils;
+			declare SatisfiedRequest
+				duration : float
+				incoming : SimpleEvent
+				outcoming: SimpleEvent
+			end
 		
-		declare SimpleEvent
-	    @role( event )
-	    @timestamp( timestamp )
-	    end
-	    
-	    declare PairSA_AS
-			first : SimpleEvent
-			second : SimpleEvent
-		end
-		
-	    rule "Tuple matching"
-	    no-loop
-	    salience 999
-	    dialect "java"
-	    when
-	    	$aEvent : SimpleEvent(this.data == "selectArea",
-									this.getConsumed == false);
-			$bEvent : SimpleEvent(this.data == "areaSelected",
-									this.getConsumed == false,
-									this.getConnectorID == $aEvent.getConnectorID,
-									this.getConnectorInstanceID == $aEvent.getConnectorInstanceID,
-									this.getConnectorInstanceExecutionID == $aEvent.getConnectorInstanceExecutionID,
-									this after $aEvent);
-	    then
-	 		PairSA_AS p = new PairSA_AS();
-	 		p.setFirst($aEvent);
-	 		p.setSecond($bEvent);
-	 		insert(p);
-	 		retract($aEvent);
-	 		retract($bEvent);
-	    end
+			rule "countIncoming"
+			no-loop
+			salience 999
+			dialect "java"
+			when
+				$total : Number() 
+		             from accumulate($bEvent : SimpleEvent(data == "selectArea",
+		            					this.getConsumed == false)
+		             				from entry-point "DEFAULT",
+		                            count ($bEvent))
+			then
+				ResponseDispatcher.NotifyMe(drools.getRule().getName(),"DePer Module", "Incoming request total number: " $total);
+			end
+				
+			rule "checkCompleted"
+			no-loop
+			salience 999
+			dialect "java"
+			when
+				$aEvent : SimpleEvent(this.data == "selectArea", this.getConsumed == false);
+				$bEvent : SimpleEvent(this.data == "uploadData",
+										this.getConsumed == false,
+										this.getConnectorID == $aEvent.getConnectorID,
+										this.getConnectorInstanceID == $aEvent.getConnectorInstanceID,
+										this.getConnectorInstanceExecutionID == $aEvent.getConnectorInstanceExecutionID,
+										this after $aEvent);
+			then
+				$aEvent.setConsumed(true);
+				$bEvent.setConsumed(true);
+				SatisfiedRequest sr = new SatisfiedRequest();
+				sr.setIncoming($aEvent);
+				sr.setOutcoming($bEvent);
+				sr.setDuration(DroolsUtils.latency($aEvent.getTimestamp(),$bEvent.getTimestamp()));
+				insert(sr);
+				$aEvent.setConsumed(true);
+				$bEvent.setConsumed(true);
+			end
+			
+			rule "average request completion time"
+			no-loop
+			salience 999
+			dialect "java"
+			when
+				$totalCompleted : Number() 
+		             from accumulate($aCompleted : SatisfiedRequest()
+		             				from entry-point "DEFAULT",
+		                            average($aCompleted.getDuration()))
+			then
+				ResponseDispatcher.NotifyMe(drools.getRule().getName(),"DePer Module", "Average completion time: " $totalCompleted);
+			end	
         </RuleBody>
     </Insert> 
 </ComplexEventRuleActionList>

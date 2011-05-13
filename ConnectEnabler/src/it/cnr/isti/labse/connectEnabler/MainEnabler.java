@@ -4,7 +4,6 @@ import it.cnr.isti.labse.connectEnabler.core.GenericConnectEnabler;
 import it.cnr.isti.labse.connectEnabler.utils.DebugMessages;
 import it.cnr.isti.labse.connectEnabler.utils.Manager;
 
-import java.util.List;
 import java.util.Properties;
 
 import javax.jms.TopicConnectionFactory;
@@ -61,7 +60,6 @@ public class MainEnabler {
 		
 		try 
 		{
-			//SplashScreen.Show();
 			Properties environmentParameters = Manager.Read(ENVIRONMENTPARAMETERSFILE);
 			initConn = new InitialContext(environmentParameters);
 			

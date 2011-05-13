@@ -1,5 +1,6 @@
 package it.cnr.isti.labse.connectEnabler.core;
 
+
 import it.cnr.isti.labse.connectEnabler.utils.DebugMessages;
 import it.cnr.isti.labse.connectEnabler.utils.Manager;
 
@@ -8,6 +9,7 @@ import java.util.Properties;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
@@ -18,6 +20,9 @@ import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import org.example.complexEventResponse.ComplexEventResponseListDocument;
+import org.example.complexEventResponse.impl.ComplexEventResponseListDocumentImpl;
 
 public class GenericConnectEnabler extends Thread implements MessageListener,
 		ConnectEnabler {
@@ -117,13 +122,27 @@ public class GenericConnectEnabler extends Thread implements MessageListener,
 				listenForAnswer(answerTopic);
 				msg.acknowledge();
 			} else
-				System.out.println(this.getClass().getSimpleName() + " "
-						+ enablerName + " receive: " + msg.getText());
+			{
+				exploitIncomingResponse(arg0);
+			}
+				
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
 	}
 
+	private void exploitIncomingResponse(Message incomingResponseList)
+	{
+		ObjectMessage responseListObj = (ObjectMessage)incomingResponseList;
+		try {
+			ComplexEventResponseListDocument responseListDocument = (ComplexEventResponseListDocument)responseListObj.getObject();
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//TODOTODOTODO
+	}
+	
 	private void listenForAnswer(String answerTopic) {
 
 		DebugMessages.print(this.getClass().getSimpleName(),
