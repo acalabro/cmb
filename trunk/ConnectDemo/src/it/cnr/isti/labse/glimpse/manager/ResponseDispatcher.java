@@ -2,11 +2,8 @@ package it.cnr.isti.labse.glimpse.manager;
 
 import it.cnr.isti.labse.glimpse.enabler.EnablerProfile;
 
-import java.io.Serializable;
 import java.util.HashMap;
-
 import javax.jms.JMSException;
-import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
@@ -15,11 +12,6 @@ import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.naming.InitialContext;
-
-import org.example.complexEventResponse.ComplexEventResponse;
-import org.example.complexEventResponse.ComplexEventResponseListDocument;
-import org.example.complexEventResponse.ComplexEventResponseType;
-
 
 public class ResponseDispatcher {
 
