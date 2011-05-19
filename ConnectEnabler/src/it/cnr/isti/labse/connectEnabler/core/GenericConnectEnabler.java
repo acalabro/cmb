@@ -123,7 +123,8 @@ public class GenericConnectEnabler extends Thread implements MessageListener,
 				msg.acknowledge();
 			} else
 			{
-				exploitIncomingResponse(arg0);
+				System.out.println(msg.getText());
+				//exploitIncomingResponse(arg0);
 			}
 				
 		} catch (JMSException e) {
