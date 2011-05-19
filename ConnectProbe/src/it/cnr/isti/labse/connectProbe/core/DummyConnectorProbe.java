@@ -40,6 +40,7 @@ public class DummyConnectorProbe extends Thread
 	private String instance;
 	private int executionValue = 0;
 	private Random rand = new Random();
+	private String networkedSystemSource;
 	
 	public static DummyConnectorProbe getInstance(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn)
 	{
@@ -117,11 +118,15 @@ public class DummyConnectorProbe extends Thread
 		 
 			while (dis.available() != 0)
 			{
+				//this code really sucks
 		    	message = dis.readLine().trim();
 		    	event = message.substring(0,message.indexOf(","));
-		    	timeout = Integer.parseInt(message.substring(message.indexOf(",")+1,message.length()));		
+		    	timeout = Integer.parseInt(message.substring(message.indexOf(",")+1,message.indexOf(",")+3));
+		    	String newStringToSplit = message.substring(message.indexOf(",")+3,message.length());
+		    	networkedSystemSource = newStringToSplit.substring(1,newStringToSplit.length());
 				System.out.println(this.getClass().getSimpleName() + " " + this.connectorName + " send: " + event + " instanceName = " + this.instance);
-				sendMessage(prepareMessage(event), timeout);
+				sendMessage(prepareMessage(event,networkedSystemSource), timeout);
+				//..really
 			}
 
 			// dispose all the resources after using them.
@@ -133,7 +138,7 @@ public class DummyConnectorProbe extends Thread
 		}
 	}
 
-	private ObjectMessage prepareMessage(String msg)
+	private ObjectMessage prepareMessage(String msg, String networkedSystemSource)
 	{
 		//START FILTER
 		if (filter.compareTo(msg) != 0)
@@ -144,9 +149,11 @@ public class DummyConnectorProbe extends Thread
 				
 				//Creo un simple event da spedire
 				
-				ConnectBaseEvent<String> message = new SimpleEvent(this.connectorName, this.instance, this.connectorName + this.instance + executionValue, eventID,  System.currentTimeMillis(), sourceState);
+				ConnectBaseEvent<String> message = new SimpleEvent(this.connectorName, this.instance, this.connectorName + this.instance + executionValue, eventID, System.currentTimeMillis(), sourceState, this.networkedSystemSource);
 				eventID++;
 				message.setData(msg);
+				message.setNetworkedSystemSource(this.networkedSystemSource);
+				System.out.println("Message " + message.getData() + " NetworkedSystemSource " + message.getNetworkedSystemSource());
 				sourceState = msg;				
 				messageToSend.setObject(message);
 				return messageToSend;

@@ -11,10 +11,11 @@ public class SimpleEvent extends ConnectBaseEvent<String>
 	private String connectorInstanceExecutionID;
 	private int sequenceID;
 	private String sourceState;
+	private String networkedSystemSource;
 	
-	public SimpleEvent(String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int sequenceID, Long ts, String sourceState)
+	public SimpleEvent(String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int sequenceID, Long ts, String sourceState, String networkedSystemSource)
 	{
-		super(connectorID, connectorInstanceID, connectorInstanceExecutionID, sequenceID, ts, sourceState);
+		super(connectorID, connectorInstanceID, connectorInstanceExecutionID, sequenceID, ts, sourceState, networkedSystemSource);
 		this.connectorID = connectorID;
 		this.connectorInstanceID = connectorInstanceID;
 		this.connectorInstanceExecutionID = connectorInstanceExecutionID;
@@ -83,5 +84,12 @@ public class SimpleEvent extends ConnectBaseEvent<String>
 		this.connectorInstanceExecutionID = connectorInstanceExecutionID;
 	}
 
+	public String getNetworkedSystemSource() {
+		return networkedSystemSource;
+	}
 
+	@Override
+	public void setNetworkedSystemSource(String networkedSystemSource) {
+		this.networkedSystemSource = networkedSystemSource;
+	}
 }
