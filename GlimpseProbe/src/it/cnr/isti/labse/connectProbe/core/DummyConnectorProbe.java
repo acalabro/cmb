@@ -1,8 +1,8 @@
 package it.cnr.isti.labse.connectProbe.core;
 
 import it.cnr.isti.labse.connectProbe.utils.DebugMessages;
-import it.cnr.isti.labse.glimpse.event.ConnectBaseEvent;
-import it.cnr.isti.labse.glimpse.event.SimpleEvent;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
+import it.cnr.isti.labse.glimpse.impl.GlimpseBaseEventImpl;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -36,7 +36,7 @@ public class DummyConnectorProbe extends Thread
 	private TopicPublisher tPubb;
 	private Topic connectionTopic;
 	private int eventID = 0;
-	private String sourceState = "startState";
+	private int eventInResponseToID = 0;
 	private String instance;
 	private int executionValue = 0;
 	private Random rand = new Random();
@@ -149,12 +149,11 @@ public class DummyConnectorProbe extends Thread
 				
 				//Creo un simple event da spedire
 				
-				ConnectBaseEvent<String> message = new SimpleEvent(this.connectorName, this.instance, this.connectorName + this.instance + executionValue, eventID, System.currentTimeMillis(), sourceState, this.networkedSystemSource);
+				GlimpseBaseEvent<String> message = new GlimpseBaseEventImpl(this.connectorName, this.instance, this.connectorName + this.instance + executionValue, eventID, eventInResponseToID, System.currentTimeMillis(), this.networkedSystemSource);
 				eventID++;
 				message.setData(msg);
 				message.setNetworkedSystemSource(this.networkedSystemSource);
-				System.out.println("Message " + message.getData() + " NetworkedSystemSource " + message.getNetworkedSystemSource());
-				sourceState = msg;				
+				System.out.println("Message " + message.getData() + " NetworkedSystemSource " + message.getNetworkedSystemSource());			
 				messageToSend.setObject(message);
 				return messageToSend;
 			} catch (JMSException e) {
