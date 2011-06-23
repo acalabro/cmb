@@ -1,3 +1,0 @@
-ENVIRONMENTPARAMETERSFILE = ./configFiles/environmentFile
-DROOLSPARAMETERFILE = 		./configFiles/droolsFile
-MANAGERPARAMETERFILE = 		./configFiles/managerFile
