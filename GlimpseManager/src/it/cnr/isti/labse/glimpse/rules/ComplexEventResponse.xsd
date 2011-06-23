@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.example.org/ComplexEventResponse/" targetNamespace="http://www.example.org/ComplexEventResponse/" attributeFormDefault="qualified">
+    <element name="ComplexEventResponseList" type="tns:ComplexEventResponse" />
+    
+    <complexType name="ComplexEventResponse">
+		<sequence>
+			<element name="RuleName" type="string" maxOccurs="unbounded" minOccurs="1" />
+			<element name="ResponseValue" type="string" maxOccurs="unbounded" minOccurs="1" />
+			<element name="ResponseType" type="tns:ComplexEventResponseType" />
+		</sequence>
+	</complexType>
+	
+	<complexType name="ComplexEventResponseType">
+		<sequence>
+			<choice>
+     			<element name="integer" type="integer"/>
+     			<element name="boolean" type="boolean"/>
+     			<element name="float" type="float"/>
+     			<element name="date" type="date"/>
+     			<element name="string" type="string"/>
+     			<element name="any" type="anySimpleType" />
+	   		</choice>
+   		</sequence>
+	</complexType>
+</schema>
