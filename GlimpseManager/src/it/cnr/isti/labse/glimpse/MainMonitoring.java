@@ -36,6 +36,16 @@ import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+/**
+ * @author Antonello Calabr&ograve;
+ * 
+ * This class is the launcher of the glimpse infrastructure
+ * It setup the environment. It is possible to configure
+ * different engine for complex event recognition.
+ * 
+ * It also provide the setup of all the connection to the ESB
+ */
+
 public class MainMonitoring {
 
 	private static Properties systemProps = new Properties();
@@ -49,6 +59,13 @@ public class MainMonitoring {
 	private static TopicConnectionFactory connFact;
 	private static InitialContext initConn;
 
+	/**
+	 * This method reads parameters from text files
+	 * Parameters are relative to environment, cep engine
+	 * 
+	 * @param systemSettings
+	 * @return true if operations are completed correctly
+	 */
 	public static boolean initProps(String systemSettings) {
 		try {
 			systemProps = Manager
@@ -67,13 +84,20 @@ public class MainMonitoring {
 		}
 	}
 
+	/**
+	 * Read the properties and init the connections to the enterprise service bus
+	 * 
+	 * @param is the systemSettings file
+	 */
 	public static void main(String[] args) {
 		try{
 			if (MainMonitoring.initProps(args[0]) && MainMonitoring.init()) {
 	
 				SplashScreen.Show();
+				//the buffer where the events are stored to be analyzed
 				EventsBuffer<GlimpseBaseEventImpl> buffer = new EventsBufferImpl<GlimpseBaseEventImpl>();
 	
+				//The complex event engine that will be used (in this case drools)
 				ComplexEventProcessor engine = new ComplexEventProcessorImpl(
 						Manager.Read(MANAGERPARAMETERFILE), buffer, connFact,
 						initConn);
@@ -85,6 +109,7 @@ public class MainMonitoring {
 					e.printStackTrace();
 				}
 	
+				//the manager of all the architecture
 				GlimpseManager manager = new GlimpseManager(
 						Manager.Read(MANAGERPARAMETERFILE), connFact, initConn,
 						engine.getRuleManager());
@@ -101,6 +126,7 @@ public class MainMonitoring {
 		
 		try 
 		{
+			//the connection are initialized
 			Properties environmentParameters = Manager.Read(ENVIRONMENTPARAMETERSFILE);
 			initConn = new InitialContext(environmentParameters);
 			

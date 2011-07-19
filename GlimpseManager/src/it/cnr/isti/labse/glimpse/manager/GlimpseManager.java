@@ -65,6 +65,12 @@ public class GlimpseManager extends Thread implements MessageListener {
 	
 	public static HashMap<Object, ConsumerProfile> requestMap = new HashMap<Object, ConsumerProfile>();
 	
+	/**
+	 * @param settings
+	 * @param connectionFact
+	 * @param initConn
+	 * @param rulesManager
+	 */
 	public GlimpseManager(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn, RulesManager rulesManager)
 	{
 		serviceTopic = settings.getProperty("serviceTopic");

@@ -33,6 +33,9 @@ import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.naming.InitialContext;
 
+import org.example.complexEventResponse.ComplexEventResponse;
+import org.example.complexEventResponse.ComplexEventResponseListDocument;
+
 public class ResponseDispatcher {
 
 	private static Topic connectionTopic;
@@ -59,14 +62,20 @@ public class ResponseDispatcher {
 		}		
 	}
 
-	public static void sendResponse(String msg, String enablerName, String answerTopic)
+	public static void sendResponse(String ruleMatched, String key, String value, String enablerName, String answerTopic)
 	{
 		try {
 			publicSession = connection.createTopicSession(false,Session.AUTO_ACKNOWLEDGE);
 			connectionTopic = publishSession.createTopic(answerTopic);
 			tPub = publishSession.createPublisher(connectionTopic);
+			ComplexEventResponseListDocument rsp;
+			rsp = ComplexEventResponseListDocument.Factory.newInstance();
+			ComplexEventResponse response = rsp.addNewComplexEventResponseList();
+			response.setRuleName(ruleMatched);
+			response.setResponseKey(key);
+			response.setResponseValue(value);
 			TextMessage sendMessage = publishSession.createTextMessage();
-			sendMessage.setText(msg);
+			sendMessage.setText(rsp.xmlText());
 			sendMessage.setStringProperty("DESTINATION", enablerName);
 			tPub.publish(sendMessage);
 		} catch (JMSException e) {
@@ -74,7 +83,7 @@ public class ResponseDispatcher {
 		}
 	}
 	
-	public static void NotifyMe(String ruleMatched, String enablerName, String value)
+	public static void NotifyMe(String ruleMatched, String enablerName, String key, String value)
 	{
 		ConsumerProfile enablerMatched = (ConsumerProfile)requestMap.get(ruleMatched);
 		
@@ -85,7 +94,7 @@ public class ResponseDispatcher {
 		ComplexEventResponseType theResponseType = theResponse.addNewResponseType();
 		theResponseType.setString(value.toString());*/
 		
-		ResponseDispatcher.sendResponse(value, enablerName, enablerMatched.getAnswerTopic());
+		ResponseDispatcher.sendResponse(ruleMatched, key, value, enablerName, enablerMatched.getAnswerTopic());
 		System.out.println(ResponseDispatcher.class.getSimpleName()
 				+ ": ruleMatched: " + ruleMatched
 				+ " - enablerName: " + enablerName

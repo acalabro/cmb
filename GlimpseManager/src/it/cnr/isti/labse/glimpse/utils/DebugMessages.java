@@ -20,10 +20,10 @@
 */
 package it.cnr.isti.labse.glimpse.utils;
 
-/*
+/**
  * This class provides print function for debug
  * 
- * @author acalabro
+ * @author Antonello Calabr&ograve;
  *
  */
 public class DebugMessages {

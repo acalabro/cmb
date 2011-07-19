@@ -35,13 +35,17 @@ public abstract class GlimpseBaseEvent <T> implements Serializable {
 	protected int eventInResponseToID;
 	protected String networkedSystemSource;
 	protected String sourceState;
+	protected String eventName;
 	
-	public GlimpseBaseEvent(String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource) {
+	public GlimpseBaseEvent(String eventName, String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource) {
 		consumed = false;
 	};
 	
 	public abstract T getData();
 	public abstract void setData(T t);
+	
+	public abstract String getName();
+	public abstract void setName(String eventName);
 	
 	public abstract Long getTimestamp();
 	

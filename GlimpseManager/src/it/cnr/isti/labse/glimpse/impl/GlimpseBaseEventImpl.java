@@ -35,10 +35,11 @@ public class GlimpseBaseEventImpl extends GlimpseBaseEvent<String>
 	private int eventInResponseToID;
 	private String sourceState;
 	private String networkedSystemSource;
+	private String eventName;
 	
-	public GlimpseBaseEventImpl(String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource)
+	public GlimpseBaseEventImpl(String eventName, String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource)
 	{
-		super(connectorID, connectorInstanceID, connectorInstanceExecutionID, eventID, eventInResponseToID, ts, networkedSystemSource);
+		super(eventName, connectorID, connectorInstanceID, connectorInstanceExecutionID, eventID, eventInResponseToID, ts, networkedSystemSource);
 		this.connectorID = connectorID;
 		this.connectorInstanceID = connectorInstanceID;
 		this.connectorInstanceExecutionID = connectorInstanceExecutionID;
@@ -46,6 +47,7 @@ public class GlimpseBaseEventImpl extends GlimpseBaseEvent<String>
 		this.eventInResponseToID = eventInResponseToID;
 		this.timestamp = ts;
 		this.networkedSystemSource = networkedSystemSource;
+		this.eventName = eventName;
 	}
 
 	public String getData() {
@@ -127,5 +129,15 @@ public class GlimpseBaseEventImpl extends GlimpseBaseEvent<String>
 	@Override
 	public void setEventInResponseToID(int eventInResponseToID) {
 		this.eventInResponseToID = eventInResponseToID;		
+	}
+
+	@Override
+	public String getName() {
+		return this.eventName;
+	}
+
+	@Override
+	public void setName(String eventName) {
+		this.eventName = eventName;		
 	}
 }

@@ -20,6 +20,13 @@
 */
 package it.cnr.isti.labse.glimpse.utils;
 
+/**
+ * @author Antonello Calabr&ograve;
+ *
+ *This class provide some basic functionalities to evaluate
+ *pattern between simple/complex event captured by the cep
+ *
+ */
 public class NotifierUtils {
 	
 	public static boolean strictlyFollows(int firstEventID, int secondEventID)

@@ -24,6 +24,13 @@ import it.cnr.isti.labse.glimpse.exceptions.IncorrectRuleFormatException;
 import it.cnr.isti.labse.glimpse.exceptions.UnknownRuleException;
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionType;
 
+/**
+ * 
+ * 
+ * 
+ * @author Antonello Calabr&ograve;
+ *
+ */
 public abstract class RulesManager {
 	public RulesManager(Object knowledgeBuilder, Object knowledgeBase, Object knowledgeSession) {
 	}
