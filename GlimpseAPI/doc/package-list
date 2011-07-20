@@ -1,0 +1,9 @@
+it.cnr.isti.labse.glimpse.api
+it.cnr.isti.labse.glimpse.api.monitor
+it.cnr.isti.labse.glimpse.api.probe
+it.cnr.isti.labse.glimpse.example
+it.cnr.isti.labse.glimpse.exceptions
+it.cnr.isti.labse.glimpse.impl
+it.cnr.isti.labse.glimpse.impl.monitor
+it.cnr.isti.labse.glimpse.impl.probe
+it.cnr.isti.labse.glimpse.utils
