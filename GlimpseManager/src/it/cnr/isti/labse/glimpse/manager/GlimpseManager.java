@@ -116,7 +116,7 @@ public class GlimpseManager extends Thread implements MessageListener {
 
 	public void onMessage(Message arg0) {
 		
-			TextMessage msg = null;
+		TextMessage msg = null;
 		try {
 			msg = (TextMessage) arg0;
 			DebugMessages.line();			
@@ -163,6 +163,12 @@ public class GlimpseManager extends Thread implements MessageListener {
 				}
 			} catch (IncorrectRuleFormatException e) {
 				sendMessage(createMessage("PROVIDED RULE CONTAINS ERRORS", msg.getStringProperty("SENDER")));
+			}
+		} catch(NullPointerException asd) {
+			try {
+				sendMessage(createMessage("PROVIDED RULE IS NULL, PLEASE PROVIDE A VALID RULE", msg.getStringProperty("SENDER")));
+			} catch (JMSException e) {
+				e.printStackTrace();
 			}
 		} catch (XmlException e) {
 				try {
