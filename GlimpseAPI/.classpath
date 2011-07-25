@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="src/lib/activemq-all-5.3.2.jar"/>
-	<classpathentry kind="lib" path="src/lib/ComplexEventResponse.jar"/>
-	<classpathentry kind="lib" path="src/lib/ComplexEventRule.jar"/>
-	<classpathentry kind="lib" path="src/lib/javax.jms.jar"/>
-	<classpathentry kind="lib" path="src/lib/xbean.jar"/>
+	<classpathentry kind="lib" path="externallib/activemq-all-5.3.2.jar"/>
+	<classpathentry kind="lib" path="externallib/javax.jms.jar"/>
+	<classpathentry kind="lib" path="externallib/xbean.jar"/>
+	<classpathentry kind="lib" path="lib/ComplexEventResponse.jar"/>
+	<classpathentry kind="lib" path="lib/ComplexEventRule.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
