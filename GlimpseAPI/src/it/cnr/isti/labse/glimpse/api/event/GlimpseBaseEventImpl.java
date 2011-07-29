@@ -22,6 +22,13 @@ package it.cnr.isti.labse.glimpse.api.event;
 
 import it.cnr.isti.labse.glimpse.api.event.GlimpseBaseEvent;
 
+/**
+ * 
+ * 
+ * 
+ * @author acalabro
+ *
+ */
 public class GlimpseBaseEventImpl extends GlimpseBaseEvent<String>
 {
 	private static final long serialVersionUID = 1L;
@@ -37,6 +44,16 @@ public class GlimpseBaseEventImpl extends GlimpseBaseEvent<String>
 	private String networkedSystemSource;
 	private String eventName;
 	
+	/**
+	 * @param eventName
+	 * @param connectorID
+	 * @param connectorInstanceID
+	 * @param connectorInstanceExecutionID
+	 * @param eventID
+	 * @param eventInResponseToID
+	 * @param ts the timestamp if the event
+	 * @param networkedSystemSource
+	 */
 	public GlimpseBaseEventImpl(String eventName, String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource)
 	{
 		super(eventName, connectorID, connectorInstanceID, connectorInstanceExecutionID, eventID, eventInResponseToID, ts, networkedSystemSource);

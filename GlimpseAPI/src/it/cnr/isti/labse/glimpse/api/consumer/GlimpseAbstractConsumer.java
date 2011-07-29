@@ -24,7 +24,11 @@ import javax.naming.NamingException;
 import org.apache.xmlbeans.XmlException;
 
 /**
- * A simple thread to test the monitoring API
+ *
+ * This class represent a generic implementation of the interface {@link GlimpseConsumer}.
+ * It is possible to use or extends the method: <br />
+ * {{@link #messageReceived(Message)}<br /> <br />
+ * 
  * 
  * @author Antonello Calabr&ograve;
  * 
@@ -36,6 +40,12 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 	protected static InitialContext initContext;
 	protected Properties settings;
 	
+	/**
+	 * This method setup the connection
+	 * 
+	 * @param settings, the settings properties for the connection to the Monitoring infrastructure.
+	 * The Properties object may also be created using the method {@link #createSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)}
+	 */
 	protected void init(Properties settings) {
 		try {
 			this.settings = settings;

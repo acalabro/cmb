@@ -1,6 +1,8 @@
 package it.cnr.isti.labse.glimpse.utils;
 
 /**
+ * This class is used to get the Monitoring Engine status.
+ * 
  * @author acalabro
  *
  */

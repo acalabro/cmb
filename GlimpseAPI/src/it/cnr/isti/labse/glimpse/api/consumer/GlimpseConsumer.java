@@ -1,7 +1,5 @@
 package it.cnr.isti.labse.glimpse.api.consumer;
 
-import java.util.Properties;
-
 import javax.jms.JMSException;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
@@ -17,33 +15,31 @@ import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionList
 /**
  * Implementing this interface to create
  * a communication with the monitoring Enabler.<br /><br />
- * To correctly use the monitoring, the connection parameters
- * must be configured using the following methods:<br />
- * {@link #initConnection(Properties, boolean)}<br />
- * {@link #createConnection(InitialContext, Properties, boolean)}<br /><br />
- * <br />
- * How the Monitoring Enabler works:<br />
- *  -> To request an evaluation to the monitoring enabler, a client<br />
- *  must be able to send a well formed request: a JMS Message which payload<br />
- *  is an xml containing a set of actions expressed using the <br />
- *  ComplexEventRule.xsd schema.<br />
+ * It is possible to use a generic implementation of the consumer
+ * using or extending the class {@link GlimpseAbstractConsumer}
+ * 
+ * However, implementing this interface the behaviour of the 
+ * consumer must respect the following actions:<br /><br />
+ * 
+ * Send a TextMessage that contains the Xml generated 
+ * following the ComplexEventRequest schema<br /><br />
+ * 
+ * The message must be sent on the jms://serviceTopic channel.<br />
+ * The consumer must listen for the response of the monitoring infrastructure
+ * that will send a jms textMessage containing the response channel where to connect
+ * to listen for the evaluation results.<br /><br />
+ * 
  *  To aid on the creation of the XML, you can use the class ComplexEventRuleActionListDocument.<br />
  *  Possible XML actions are: Insert Delete Start Stop Restart.<br /><br />
- *  When a well structured message (see exampleRule.xml in the APITestProject example) is received from the monitoring infrastructure<br />
+ *  When a well structured message (see exampleRule.xml) is received from the monitoring infrastructure<br />
  *  the monitoring will provide a responseMessage (TextMessage) containing the name<br />
- *  of the private topic where all the messages related to the requested evaluation will be sent.<br />
- *  When the enabler receives this message, should subscribes the new channel.<br />
- *  For this action, it can be use the method {@link #connectToTheResponseChannel(TopicConnection, String, boolean)}<br /><br />
  *  
  * ************************************************************************<br />
  * **************An usage example is available here {@link GlimpseAbstractConsumer}**************<br />
  * ************************************************************************<br /><br />
  * 
- * 	@see #initConnection(Properties, boolean) initConnection method set InitialContext <br />
- * 	@see #createConnection(InitialContext, Properties, boolean) set TopicConnectionFactory <br /> <br />
- * 
  * @author Antonello Calabr&ograve;
- * @version 0.2
+ * @version 0.4
  * 
  */
 public interface GlimpseConsumer extends MessageListener{
@@ -74,10 +70,10 @@ public interface GlimpseConsumer extends MessageListener{
 	void sendActionListMessage(TopicConnection connection, InitialContext initContext, String serviceChannel, ComplexEventRuleActionListDocument actionList, boolean debug) throws JMSException, NamingException;
 
 	/**
-	 * Send a textMessage to the monitoring infrastructure,
-	 * you can use it after setting up connection, see 
-	 * {@link #createConnection(InitialContext, Properties, boolean)} method
-	 * and {@link #initConnection(Properties, boolean)} method
+	 * Send a textMessage to the monitoring infrastructure,<br />
+	 * examples of setting up connection and behaviour of<br />
+	 * a generic {@link GlimpseConsumer} are defined in <br />
+	 * the {@link GlimpseAbstractConsumer} class.
 	 * 
 	 * @param connection
 	 * @param initContext
