@@ -24,7 +24,8 @@ import it.cnr.isti.labse.glimpse.api.event.GlimpseBaseEvent;
 
 /**
  * 
- * 
+ * This class is a possible implementation (extension) of the {@link GlimpseBaseEvent} class.<br /><br /> 
+ * This implementation refer to a CONNECT project scenario.
  * 
  * @author acalabro
  *
@@ -45,14 +46,14 @@ public class GlimpseBaseEventImpl extends GlimpseBaseEvent<String>
 	private String eventName;
 	
 	/**
-	 * @param eventName
-	 * @param connectorID
-	 * @param connectorInstanceID
-	 * @param connectorInstanceExecutionID
-	 * @param eventID
-	 * @param eventInResponseToID
-	 * @param ts the timestamp if the event
-	 * @param networkedSystemSource
+	 * @param eventName the name of the event that will be fired
+	 * @param connectorID the CONNECTor ID from which the event is passing through
+	 * @param connectorInstanceID the identificator of a specific instance of the CONNECTor
+	 * @param connectorInstanceExecutionID the execution identifier of an instance
+	 * @param eventID an identificator of the event
+	 * @param eventInResponseToID cause/effect, this value provide the id of the event from which this event is effect/cause
+	 * @param ts the timestamp if the event 
+	 * @param networkedSystemSource the networked system that generate this event before pass through the CONNECTor
 	 */
 	public GlimpseBaseEventImpl(String eventName, String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource)
 	{

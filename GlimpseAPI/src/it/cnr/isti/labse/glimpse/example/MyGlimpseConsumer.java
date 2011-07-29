@@ -22,6 +22,7 @@ package it.cnr.isti.labse.glimpse.example;
 
 import it.cnr.isti.labse.glimpse.api.consumer.GlimpseAbstractConsumer;
 import it.cnr.isti.labse.glimpse.api.consumer.GlimpseConsumer;
+import it.cnr.isti.labse.glimpse.utils.Manager;
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionListDocument;
 
 import java.util.Properties;
@@ -38,7 +39,7 @@ import javax.jms.TextMessage;
  * Obviously the behaviour of the class is defined in the {@link GlimpseAbstractConsumer} class and<br />
  * can be modified implementing the interface {@link GlimpseConsumer}.<br /><br />
  * 
- * Extending the {@link GlimpseAbstractConsumer} class, it is possible to improve the behaviour of the {@link GlimpseAbstractConsumer} class.
+ * Extending the {@link GlimpseAbstractConsumer} class, it is possible to improve the behaviour of the consumer.
  * 
  * @author acalabro
  *
@@ -46,7 +47,7 @@ import javax.jms.TextMessage;
 public class MyGlimpseConsumer extends GlimpseAbstractConsumer {
 
 	/**
-	 * @param settings can be generated automatically using {@link GlimpseAbstractConsumer#createSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)};
+	 * @param settings can be generated automatically using {@link Manager#createConsumerSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)}
 	 * @param plainTextRule a plain text rule is a String containing the drools<br />
 	 * (or other cep engine implemented) rule that can be generated structured<br />
 	 * using the {@link ComplexEventRuleActionListDocument} classes.<br />

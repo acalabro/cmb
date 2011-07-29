@@ -23,9 +23,11 @@ package it.cnr.isti.labse.glimpse.api.probe;
 
 import java.util.Properties;
 
+import it.cnr.isti.labse.glimpse.api.consumer.GlimpseAbstractConsumer;
 import it.cnr.isti.labse.glimpse.api.event.GlimpseBaseEvent;
 import it.cnr.isti.labse.glimpse.api.probe.GlimpseProbe;
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
+import it.cnr.isti.labse.glimpse.utils.Manager;
 
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
@@ -38,6 +40,13 @@ import javax.jms.TopicSession;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+/**
+ * This class represent a generic implementation of the interface {@link GlimpseProbe}.<br />
+ * It provides for extension, the abstract method: {@link #sendMessage(GlimpseBaseEvent, boolean)}<br /> <br />
+ * 
+ * @author acalabro
+ *
+ */
 public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 	
 	protected static InitialContext initContext;
@@ -46,6 +55,12 @@ public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 	protected static TopicConnection connection;
 	protected static Topic connectionTopic;
 	
+	/**
+	 * This constructor allow to create a {@link GlimpseAbstractProbe} object<br />
+	 * providing the {@link #settings} properties
+	 * @param settings can be generated automatically using {@link Manager#createConsumerSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)}.
+	 * 
+	 */	
 	public GlimpseAbstractProbe(Properties settings) {
 		
 		try {	
@@ -58,6 +73,18 @@ public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 		}		
 	}
 	
+	/**
+	 * This method setup a {@link TopicConnection} object.
+	 * 
+	 * @param initConn the InitialContext object generated using the method {@link GlimpseAbstractConsumer#initConnection(Properties, boolean)}.
+	 * @param settings can be generated automatically using {@link Manager#createProbeSettingsPropertiesObject(String, String, String, String, String, String, boolean, String, String)}
+	 * @param probeChannel
+	 * @param settings
+	 * @param debug
+	 * @return a {@link TopicPublisher} object
+	 * @throws NamingException
+	 * @throws JMSException
+	 */
 	protected TopicPublisher createConnection(InitialContext initConn, String probeChannel, Properties settings, boolean debug) throws NamingException, JMSException
 	{
 		if (debug)
@@ -88,6 +115,14 @@ public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 			return tPub = publishSession.createPublisher(connectionTopic);
 	}
 
+	/**
+	 * This method setup the connection parameters using the {@link Properties} object {@link #settings}
+	 * 
+	 * @param settings the parameter to setup the connection to the Enterprise Service Bus<br /> to send messages
+	 * @param debug
+	 * @return it provides an {@link InitialContext} object that will be used<br />during the Consumer <-> Monitoring interaction.
+	 * @throws NamingException
+	 */
 	protected InitialContext initConnection(Properties settings, boolean debug) throws NamingException {
 		if (debug)
 		DebugMessages.print(this.getClass().getSimpleName(),
@@ -99,8 +134,20 @@ public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 		return initConn;
 	}	
 	
+	/* (non-Javadoc)
+	 * @see it.cnr.isti.labse.glimpse.api.probe.GlimpseProbe#sendMessage(it.cnr.isti.labse.glimpse.api.event.GlimpseBaseEvent, boolean)
+	 */
 	public abstract void sendMessage(GlimpseBaseEvent<String> event, boolean debug);
 	
+	/**
+	 * This method send a {@link GlimpseBaseEvent} message on the enterrprise service bus<br />
+	 * specifically on the channel specified in the {@link #settings} object.
+	 * 
+	 * @param event the event to send
+	 * @param debug
+	 * @throws JMSException
+	 * @throws NamingException
+	 */
 	protected void sendEventMessage(GlimpseBaseEvent<?> event, boolean debug) throws JMSException,
 			NamingException {
 		if (debug) {
@@ -121,29 +168,5 @@ public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static Properties createSettingsPropertiesObject(
-			String javaNamingFactoryInitial, String javaNamingProviderUrl,
-			String javaNamingSecurityPrincipal,
-			String javaNamingSecurityCredential, String connectionFactoryNames,
-			String topicProbeTopic, boolean debug,
-			String probeName, String probeChannel) {
-		if (debug)
-			DebugMessages.print(GlimpseAbstractProbe.class.getSimpleName(),
-			"Creating Properties object ");
-		Properties settings = new Properties();
-		settings.setProperty("java.naming.factory.initial",javaNamingFactoryInitial);
-		settings.setProperty("java.naming.provider.url", javaNamingProviderUrl);
-		settings.setProperty("java.naming.security.principal", javaNamingSecurityPrincipal);
-		settings.setProperty("java.naming.security.credential", javaNamingSecurityCredential);
-		settings.setProperty("connectionFactoryNames", connectionFactoryNames);
-		settings.setProperty("topic.probeTopic", topicProbeTopic);
-		settings.setProperty("probeName", probeName);
-		settings.setProperty("probeChannel", probeChannel);
-		if (debug) {
-			DebugMessages.ok(); 
-			DebugMessages.line(); }
-		return settings;
 	}
 }

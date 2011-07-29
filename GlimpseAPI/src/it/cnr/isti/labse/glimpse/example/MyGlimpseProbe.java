@@ -27,7 +27,21 @@ import javax.naming.NamingException;
 
 import it.cnr.isti.labse.glimpse.api.event.GlimpseBaseEvent;
 import it.cnr.isti.labse.glimpse.api.probe.GlimpseAbstractProbe;
+import it.cnr.isti.labse.glimpse.api.probe.GlimpseProbe;
 
+
+/**
+ * This class is an example of how to extend the {@link GlimpseAbstractProbe} class, <br />
+ * simply implementing the abstract method {@link MyGlimpseProbe#sendMessage(GlimpseBaseEvent, boolean)}.
+ * <br /><br />
+ * Obviously the behaviour of the class is defined in the {@link GlimpseAbstractProbe} class and<br />
+ * can be modified implementing the interface {@link GlimpseProbe}.<br /><br />
+ * 
+ * Extending the {@link GlimpseAbstractProbe} class, it is possible to improve or modify the behaviour of theProbe.
+ * 
+ * @author acalabro
+ *
+ */
 
 public class MyGlimpseProbe extends GlimpseAbstractProbe {
 

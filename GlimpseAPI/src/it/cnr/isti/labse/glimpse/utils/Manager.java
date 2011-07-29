@@ -1,5 +1,8 @@
 package it.cnr.isti.labse.glimpse.utils;
 
+import it.cnr.isti.labse.glimpse.api.consumer.GlimpseAbstractConsumer;
+import it.cnr.isti.labse.glimpse.api.probe.GlimpseAbstractProbe;
+
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.File;
@@ -99,5 +102,79 @@ public class Manager
 			e.printStackTrace();
 		}
 		return strB.toString();
+	}
+	
+	/**
+	 * This method generate a {@link Properties} object file.
+	 * 
+	 * @param javaNamingFactoryInitial 
+	 * @param javaNamingProviderUrl
+	 * @param javaNamingSecurityPrincipal
+	 * @param javaNamingSecurityCredential
+	 * @param connectionFactoryNames 
+	 * @param topicServiceTopic the channel where to connect to send the monitoring request
+	 * @param debug
+	 * @param consumerName the name of the consumer that is sending the request
+	 * @return a {@link Properties} object
+	 */
+	public static Properties createConsumerSettingsPropertiesObject(
+				String javaNamingFactoryInitial, String javaNamingProviderUrl,
+				String javaNamingSecurityPrincipal,
+				String javaNamingSecurityCredential, String connectionFactoryNames,
+				String topicServiceTopic, boolean debug, String consumerName) {
+			if (debug)
+				DebugMessages.print(GlimpseAbstractConsumer.class.getSimpleName(),
+				"Creating Properties object ");
+			Properties settings = new Properties();
+			settings.setProperty("java.naming.factory.initial",javaNamingFactoryInitial);
+			settings.setProperty("java.naming.provider.url", javaNamingProviderUrl);
+			settings.setProperty("java.naming.security.principal", javaNamingSecurityPrincipal);
+			settings.setProperty("java.naming.security.credential", javaNamingSecurityCredential);
+			settings.setProperty("connectionFactoryNames", connectionFactoryNames);
+			settings.setProperty("topic.serviceTopic", topicServiceTopic);
+			settings.setProperty("consumerName", consumerName);
+			if (debug) {
+				DebugMessages.ok(); 
+				DebugMessages.line(); }
+			return settings;
+		}
+	
+	/**
+	 * This method generate a {@link Properties} object file that can be used to<br />
+	 * setup a {@link GlimpseAbstractProbe}.
+	 * 
+	 * @param javaNamingFactoryInitial 
+	 * @param javaNamingProviderUrl
+	 * @param javaNamingSecurityPrincipal
+	 * @param javaNamingSecurityCredential
+	 * @param connectionFactoryNames 
+	 * @param topicProbeTopic the channel where to connect to send the events
+	 * @param debug
+	 * @param probeName the name of the probe that is sending the events
+	 * @param probeChannel the channel where to send events
+	 * @return a {@link Properties} object
+	 */
+	public static Properties createProbeSettingsPropertiesObject(
+			String javaNamingFactoryInitial, String javaNamingProviderUrl,
+			String javaNamingSecurityPrincipal,
+			String javaNamingSecurityCredential, String connectionFactoryNames,
+			String topicProbeTopic, boolean debug,
+			String probeName, String probeChannel) {
+		if (debug)
+			DebugMessages.print(GlimpseAbstractProbe.class.getSimpleName(),
+			"Creating Properties object ");
+		Properties settings = new Properties();
+		settings.setProperty("java.naming.factory.initial",javaNamingFactoryInitial);
+		settings.setProperty("java.naming.provider.url", javaNamingProviderUrl);
+		settings.setProperty("java.naming.security.principal", javaNamingSecurityPrincipal);
+		settings.setProperty("java.naming.security.credential", javaNamingSecurityCredential);
+		settings.setProperty("connectionFactoryNames", connectionFactoryNames);
+		settings.setProperty("topic.probeTopic", topicProbeTopic);
+		settings.setProperty("probeName", probeName);
+		settings.setProperty("probeChannel", probeChannel);
+		if (debug) {
+			DebugMessages.ok(); 
+			DebugMessages.line(); }
+		return settings;
 	}
 }

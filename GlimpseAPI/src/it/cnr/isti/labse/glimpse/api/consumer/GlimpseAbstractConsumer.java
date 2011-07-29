@@ -2,6 +2,7 @@ package it.cnr.isti.labse.glimpse.api.consumer;
 
 import it.cnr.isti.labse.glimpse.exceptions.IncorrectRuleFormatException;
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
+import it.cnr.isti.labse.glimpse.utils.Manager;
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionListDocument;
 
 import java.io.Serializable;
@@ -25,10 +26,8 @@ import org.apache.xmlbeans.XmlException;
 
 /**
  *
- * This class represent a generic implementation of the interface {@link GlimpseConsumer}.
- * It is possible to use or extends the method: <br />
- * {{@link #messageReceived(Message)}<br /> <br />
- * 
+ * This class represent a generic implementation of the interface {@link GlimpseConsumer}.<br />
+ * It provides for extension, the abstract method: {@link #messageReceived(Message)}<br /> <br />
  * 
  * @author Antonello Calabr&ograve;
  * 
@@ -60,6 +59,19 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * This constructor allow to create a {@link GlimpseAbstractConsumer} object<br />
+	 * providing the {@link #settings} properties and a {@link String} object that will be<br />
+	 * automatically converted to a {@link ComplexEventRuleActionListDocument} object.
+	 * 
+	 * @param settings can be generated automatically using {@link Manager#createConsumerSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)}.
+	 * @param plainTextRule a plain text rule is a String containing the drools<br />
+	 * (or other cep engine implemented) rule that can be generated structured<br />
+	 * using the {@link ComplexEventRuleActionListDocument} classes.<br />
+	 * For a rule example see the exampleRule.xml file. 
+	 */
 	public GlimpseAbstractConsumer(Properties settings, String plainTextRule) {
 		init(settings);
 		try {
@@ -71,6 +83,16 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 		}
 	}
 	
+	/**
+	 * 
+	 * This constructor allow to create a {@link GlimpseAbstractConsumer} object<br />
+	 * providing the {@link #settings} properties and a {@link ComplexEventRuleActionListDocument} object.
+	 * 
+	 * @param settings can be generated automatically using {@link Manager#createConsumerSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)}.
+	 * @param complexEventRuleXML a {@link ComplexEventRuleActionListDocument} object<br />
+	 * that contains the set of rule that will be loaded on the CEP knowledge base for the evaluation.
+	 * The {@link ComplexEventRuleActionListDocument} object, can be generated from a string, using the method 
+	 */
 	public GlimpseAbstractConsumer(Properties settings, ComplexEventRuleActionListDocument complexEventRuleXML) {
 				
 		try {
@@ -83,6 +105,9 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 		}
 	}
 			
+	/* (non-Javadoc)
+	 * @see javax.jms.MessageListener#onMessage(javax.jms.Message)
+	 */
 	@Override
 	public void onMessage(Message arg0) {
 		try {
@@ -105,14 +130,31 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 		}
 	}
 	
+	/**
+	 * This method can be used when extending this abstract class to<br />modify the management of received messages. 
+	 * 
+	 * @param arg0 the received Message
+	 * @throws JMSException
+	 */
 	public abstract void messageReceived(Message arg0) throws JMSException;
 	
+	/* (non-Javadoc)
+	 * @see it.cnr.isti.labse.glimpse.api.consumer.GlimpseConsumer#getMonitorStatusMessage(javax.jms.TopicSession, boolean)
+	 */
 	@Override
 	public TextMessage getMonitorStatusMessage(TopicSession publishSession, boolean debug) {
 		//TODO:Not yet implemented server side.
 		return null;
 	}
 
+	/**
+	 * This method setup the connection parameters using the {@link Properties} object {@link #settings}
+	 * 
+	 * @param settings the parameter to setup the connection to the Enterprise Service Bus<br /> to send messages
+	 * @param debug
+	 * @return it provides an {@link InitialContext} object that will be used<br />during the Consumer <-> Monitoring interaction.
+	 * @throws NamingException
+	 */
 	protected InitialContext initConnection(Properties settings, boolean debug) throws NamingException {
 		if (debug)
 		DebugMessages.print(this.getClass().getSimpleName(),
@@ -124,6 +166,16 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 		return initConn;
 	}
 	
+	/**
+	 * This method setup a {@link TopicConnection} object.
+	 * 
+	 * @param initConn the InitialContext object generated using the method {@link GlimpseAbstractConsumer#initConnection(Properties, boolean)}.
+	 * @param settings can be generated automatically using {@link GlimpseAbstractConsumer#createSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)};
+	 * @param debug
+	 * @return a TopicConnection object.
+	 * @throws NamingException
+	 * @throws JMSException
+	 */
 	protected TopicConnection createConnection(InitialContext initConn, Properties settings, boolean debug) throws NamingException, JMSException
 	{
 		if (debug)
@@ -141,6 +193,9 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 		return connection;
 	}
 	
+	/* (non-Javadoc)
+	 * @see it.cnr.isti.labse.glimpse.api.consumer.GlimpseConsumer#sendActionListMessage(javax.jms.TopicConnection, javax.naming.InitialContext, java.lang.String, it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionListDocument, boolean)
+	 */
 	@Override
 	public void sendActionListMessage(TopicConnection connection, InitialContext initContext, String serviceChannel, ComplexEventRuleActionListDocument actionList, boolean debug) throws JMSException, NamingException {
 		if (debug) {
@@ -175,6 +230,9 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 			DebugMessages.line(); }
 	}
 	
+	/* (non-Javadoc)
+	 * @see it.cnr.isti.labse.glimpse.api.consumer.GlimpseConsumer#sendTextMessage(javax.jms.TopicConnection, javax.naming.InitialContext, java.lang.String, java.lang.String, boolean)
+	 */
 	@Override
 	public void sendTextMessage(TopicConnection connection, InitialContext initContext, String serviceChannel, String textToSend, boolean debug)
 			throws JMSException, NamingException {
@@ -210,6 +268,17 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 			DebugMessages.line(); }
 	}
 	
+	/**
+	 * This method creates a subscriber object to send the evaluation request to the monitoring engine.
+	 * 
+	 * @param connection the {@link TopicConnection} created using {@link GlimpseAbstractConsumer#createConnection(InitialContext, Properties, boolean)} method 
+	 * @param initContext the {@link InitialContext}
+	 * @param serviceChannel the channel where to sent the request
+	 * @param debug
+	 * @return a {@link TopicSubscriber} object
+	 * @throws JMSException
+	 * @throws NamingException
+	 */
 	protected TopicSubscriber createSubscriber(TopicConnection connection, InitialContext initContext, String serviceChannel, boolean debug) throws JMSException, NamingException {
 		if (debug) {
 			DebugMessages.print(this.getClass().getSimpleName(),
@@ -236,6 +305,15 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 		return tSub;
 	}
 	
+	/**
+	 * This method aid to generate a {@link ComplexEventRuleActionListDocument} from an XML String
+	 * 
+	 * @param xmlRule the xml rule to send
+	 * @param debug
+	 * @return a {@link ComplexEventRuleActionListDocument} object
+	 * @throws XmlException
+	 * @throws JMSException
+	 */
 	protected ComplexEventRuleActionListDocument createComplexEventRuleActionDocumentFromXMLString(
 			String xmlRule, boolean debug) throws XmlException, JMSException {
 		if (debug)
@@ -248,6 +326,18 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 		return theDocument;
 	}
 	
+	/**
+	 * 
+	 * This method connect the Consumer to the response channel where the results of the<br />
+	 * requested evaluation to the monitoring infrastructure will be sent on.
+	 * 
+	 * @param connection the connection object currently used
+	 * @param responseChannel the channel where to connect to. <br />The monitoring will provides this
+	 * parameter after sending the evaluation request.
+	 * @param debug
+	 * @return a {@link TopicSubscriber} object
+	 * @throws JMSException
+	 */
 	protected TopicSubscriber connectToTheResponseChannel(TopicConnection connection, String responseChannel, boolean debug) throws JMSException {
 		if (debug) {
 			DebugMessages.ok();
@@ -275,29 +365,16 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 			DebugMessages.line(); }
 		 return tSub;
 	}
-	
-	public static Properties createSettingsPropertiesObject(
-				String javaNamingFactoryInitial, String javaNamingProviderUrl,
-				String javaNamingSecurityPrincipal,
-				String javaNamingSecurityCredential, String connectionFactoryNames,
-				String topicServiceTopic, boolean debug, String consumerName) {
-			if (debug)
-				DebugMessages.print(GlimpseAbstractConsumer.class.getSimpleName(),
-				"Creating Properties object ");
-			Properties settings = new Properties();
-			settings.setProperty("java.naming.factory.initial",javaNamingFactoryInitial);
-			settings.setProperty("java.naming.provider.url", javaNamingProviderUrl);
-			settings.setProperty("java.naming.security.principal", javaNamingSecurityPrincipal);
-			settings.setProperty("java.naming.security.credential", javaNamingSecurityCredential);
-			settings.setProperty("connectionFactoryNames", connectionFactoryNames);
-			settings.setProperty("topic.serviceTopic", topicServiceTopic);
-			settings.setProperty("consumerName", consumerName);
-			if (debug) {
-				DebugMessages.ok(); 
-				DebugMessages.line(); }
-			return settings;
-		}
 
+	/**
+	 * @param msg the TextMessage received in response from the monitoring infrastructure,<br />
+	 * containing the id of the channel where to connect to obtain response to the submitted<br />
+	 * monitoring evaluation request.
+	 * @return a string to be used with the method {@link GlimpseAbstractConsumer#connectToTheResponseChannel(TopicConnection, String, boolean)} method<br />
+	 * to connect on the response channel
+	 * @throws JMSException
+	 * @throws IncorrectRuleFormatException
+	 */
 	protected String getAnswerTopicFromTextMessage(TextMessage msg) throws JMSException, IncorrectRuleFormatException {
 		if (msg.getText().substring(0,14).compareTo("AnswerTopic ==") == 0)
 			return msg.getText().substring(15,msg.getText().length());
