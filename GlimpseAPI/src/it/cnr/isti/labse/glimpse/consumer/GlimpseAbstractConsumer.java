@@ -1,4 +1,4 @@
-package it.cnr.isti.labse.glimpse.api.consumer;
+package it.cnr.isti.labse.glimpse.consumer;
 
 import it.cnr.isti.labse.glimpse.exceptions.IncorrectRuleFormatException;
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;

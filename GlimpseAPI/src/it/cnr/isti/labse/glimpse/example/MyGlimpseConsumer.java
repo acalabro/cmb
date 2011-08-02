@@ -20,8 +20,7 @@
 */
 package it.cnr.isti.labse.glimpse.example;
 
-import it.cnr.isti.labse.glimpse.api.consumer.GlimpseAbstractConsumer;
-import it.cnr.isti.labse.glimpse.api.consumer.GlimpseConsumer;
+import it.cnr.isti.labse.glimpse.consumer.GlimpseAbstractConsumer;
 import it.cnr.isti.labse.glimpse.utils.Manager;
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionListDocument;
 

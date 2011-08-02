@@ -19,13 +19,13 @@
   * 
 */
 
-package it.cnr.isti.labse.glimpse.api.probe;
+package it.cnr.isti.labse.glimpse.probe;
 
 import java.util.Properties;
 
-import it.cnr.isti.labse.glimpse.api.consumer.GlimpseAbstractConsumer;
-import it.cnr.isti.labse.glimpse.api.event.GlimpseBaseEvent;
-import it.cnr.isti.labse.glimpse.api.probe.GlimpseProbe;
+import it.cnr.isti.labse.glimpse.consumer.GlimpseAbstractConsumer;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
+import it.cnr.isti.labse.glimpse.probe.GlimpseProbe;
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
 import it.cnr.isti.labse.glimpse.utils.Manager;
 

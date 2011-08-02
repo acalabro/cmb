@@ -18,9 +18,9 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
   * 
 */
-package it.cnr.isti.labse.glimpse.api.probe;
+package it.cnr.isti.labse.glimpse.probe;
 
-import it.cnr.isti.labse.glimpse.api.event.GlimpseBaseEvent;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
 
 /**
  * 

@@ -1,7 +1,7 @@
 package it.cnr.isti.labse.glimpse.utils;
 
-import it.cnr.isti.labse.glimpse.api.consumer.GlimpseAbstractConsumer;
-import it.cnr.isti.labse.glimpse.api.probe.GlimpseAbstractProbe;
+import it.cnr.isti.labse.glimpse.consumer.GlimpseAbstractConsumer;
+import it.cnr.isti.labse.glimpse.probe.GlimpseAbstractProbe;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;

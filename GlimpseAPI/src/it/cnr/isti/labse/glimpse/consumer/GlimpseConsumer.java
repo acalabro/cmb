@@ -1,4 +1,4 @@
-package it.cnr.isti.labse.glimpse.api.consumer;
+package it.cnr.isti.labse.glimpse.consumer;
 
 import javax.jms.JMSException;
 import javax.jms.MessageListener;

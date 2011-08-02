@@ -20,8 +20,8 @@
 */
 package it.cnr.isti.labse.glimpse.example;
 
-import it.cnr.isti.labse.glimpse.api.event.GlimpseBaseEvent;
-import it.cnr.isti.labse.glimpse.api.event.GlimpseBaseEventImpl;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventImpl;
 import it.cnr.isti.labse.glimpse.utils.Manager;
 
 /* 

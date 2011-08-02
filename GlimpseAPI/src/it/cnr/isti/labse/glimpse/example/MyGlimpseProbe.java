@@ -25,9 +25,9 @@ import java.util.Properties;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
 
-import it.cnr.isti.labse.glimpse.api.event.GlimpseBaseEvent;
-import it.cnr.isti.labse.glimpse.api.probe.GlimpseAbstractProbe;
-import it.cnr.isti.labse.glimpse.api.probe.GlimpseProbe;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
+import it.cnr.isti.labse.glimpse.probe.GlimpseAbstractProbe;
+import it.cnr.isti.labse.glimpse.probe.GlimpseProbe;
 
 
 /**
