@@ -21,7 +21,7 @@
 package it.cnr.isti.labse.glimpse;
 
 import it.cnr.isti.labse.glimpse.impl.EventsBufferImpl;
-import it.cnr.isti.labse.glimpse.impl.GlimpseBaseEventImpl;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventImpl;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
 import it.cnr.isti.labse.glimpse.manager.GlimpseManager;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;

@@ -1,4 +1,4 @@
-import it.cnr.isti.labse.glimpse.impl.GlimpseBaseEventImpl;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventImpl;
 
 declare GlimpseBaseEventImpl
    @role( event )

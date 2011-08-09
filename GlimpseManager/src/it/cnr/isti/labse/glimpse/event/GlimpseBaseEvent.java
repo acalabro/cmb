@@ -23,7 +23,21 @@ package it.cnr.isti.labse.glimpse.event;
 import java.io.Serializable;
 
 /**
- * @author  acalabro
+ * The GlimpseBaseEvent <T> is the simple event that the monitoring infrastructure<br />
+ * use to infer more complex events. These object must be sent from a probe<br />
+ * through the ESB and should contain the information about the events to monitor or <br />
+ * to correlate.<br /><br />
+ * 
+ * The variables of {@link #GlimpseBaseEvent(String, String, String, String, int, int, Long, String)}<br />
+ * actually are structured into the Connect context, containing information<br />
+ * about the connector that fires the event, about it's istance and the networked system<br />
+ * from which the payload is generated.<br /><br />
+ * Obviously, extending the {@link #GlimpseBaseEvent(String, String, String, String, int, int, Long, String)} class<br />
+ * it's possible to add or change variables and to manages it into the CEP using a well-formed drools rule.<br />
+ * 
+ * @author acalabro
+ *
+ * @param <T> The type of the data on the payload of the GlimpseBaseEvent, see method {@link #getData()} and {@link #setData(Object)}
  */
 public abstract class GlimpseBaseEvent <T> implements Serializable {
 	private static final long serialVersionUID = 1L;
