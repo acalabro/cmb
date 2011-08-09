@@ -3,9 +3,9 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule ./ComplexEventRule.xsd">
 <Insert RuleType="drools">
-	<RuleName>Upload time</RuleName>
+	<RuleName>Notification rule</RuleName>
         <RuleBody>
-        import it.cnr.isti.labse.glimpse.impl.GlimpseBaseEventImpl;
+        import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventImpl;
         import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
         import it.cnr.isti.labse.glimpse.utils.NotifierUtils;
         
@@ -27,5 +27,5 @@
 			ResponseDispatcher.NotifyMe(drools.getRule().getName(),"myEnabler",NotifierUtils.eventName($aEvent.getName()),NotifierUtils.eventName($aEvent.getData()));
 		end
         </RuleBody>
-	</Insert>
+    </Insert> 
 </ComplexEventRuleActionList>
