@@ -1,14 +1,14 @@
-package glimpseosgi;
+package it.cnr.isti.labse.glimpse.osgi;
 
-import glimpseosgi.buffer.EventsBuffer;
-import glimpseosgi.cep.ComplexEventProcessor;
-import glimpseosgi.event.GlimpseBaseEventImpl;
-import glimpseosgi.impl.ComplexEventProcessorImpl;
-import glimpseosgi.impl.EventsBufferImpl;
-import glimpseosgi.manager.GlimpseManager;
-import glimpseosgi.utils.DebugMessages;
-import glimpseosgi.utils.Manager;
-import glimpseosgi.utils.SplashScreen;
+import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
+import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventImpl;
+import it.cnr.isti.labse.glimpse.impl.ComplexEventProcessorImpl;
+import it.cnr.isti.labse.glimpse.impl.EventsBufferImpl;
+import it.cnr.isti.labse.glimpse.manager.GlimpseManager;
+import it.cnr.isti.labse.glimpse.utils.DebugMessages;
+import it.cnr.isti.labse.glimpse.utils.Manager;
+import it.cnr.isti.labse.glimpse.utils.SplashScreen;
 
 import java.util.Properties;
 
@@ -16,6 +16,7 @@ import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.apache.activemq.jndi.ActiveMQInitialContextFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 

@@ -9,7 +9,6 @@
 	<classpathentry kind="lib" path="externallib/drools-api-5.1.1.jar"/>
 	<classpathentry kind="lib" path="externallib/drools-core-5.1.1.jar"/>
 	<classpathentry kind="lib" path="externallib/javax.jms.jar"/>
-	<classpathentry kind="lib" path="externallib/jms.jar"/>
 	<classpathentry kind="lib" path="externallib/jsr173_1.0_api.jar"/>
 	<classpathentry kind="lib" path="externallib/resolver.jar"/>
 	<classpathentry kind="lib" path="externallib/saxon9he.jar"/>
@@ -17,5 +16,6 @@
 	<classpathentry kind="lib" path="externallib/xbean.jar"/>
 	<classpathentry kind="lib" path="externallib/xmlbeans-qname.jar"/>
 	<classpathentry kind="lib" path="externallib/xmlpublic.jar"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
