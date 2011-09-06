@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: GlimpseOSGi
+Bundle-SymbolicName: GlimpseOSGi
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: glimpseosgi.Activator
+Import-Package: javax.naming,
+ org.osgi.framework;version="1.3.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .,
+ src/bundle/drools-core-5.1.1.jar,
+ src/bundle/javax.jms.jar
