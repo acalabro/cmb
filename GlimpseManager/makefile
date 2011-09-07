@@ -22,7 +22,8 @@ runfelix : CLASSPATH_TMP_FILE:=$(shell mktemp)
 runfelix : TMP_FILE:=$(shell mktemp)  
 runfelix : 	
 	for I in `ls $(FELIX_BIN)*.jar`; do echo "$$I" >> $(CLASSPATH_TMP_FILE); done
-	for I in `ls $(FELIX_BUNDLE)*.jar`; do echo "$$I" >> $(CLASSPATH_TMP_FILE); done
+#	for I in `ls $(FELIX_BUNDLE)*.jar`; do echo "$$I" >> $(CLASSPATH_TMP_FILE); done
+	echo "$(FELIX_BUNDLE)*" >> $(CLASSPATH_TMP_FILE)
 	for I in `ls $(JARS_PATH)*.jar`; do echo "$$I" >> $(CLASSPATH_TMP_FILE); done
 	L=`echo "$(EXT_JAR_LIST)"`; for E in $(LOCAL_BUNDLE_LIST); do L=`echo "$$L" | sed "s/\b$$E\b//g"`; done; echo $$L>$(TMP_FILE)
 	for I in `cat $(TMP_FILE)`; do echo "$(EXT_JARS_PATH)$$I" >> $(CLASSPATH_TMP_FILE); done   
