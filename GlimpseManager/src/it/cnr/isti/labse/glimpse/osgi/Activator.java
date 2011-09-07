@@ -1,6 +1,5 @@
 package it.cnr.isti.labse.glimpse.osgi;
 
-import it.cnr.isti.labse.glimpse.MainMonitoring;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventImpl;
@@ -11,17 +10,12 @@ import it.cnr.isti.labse.glimpse.utils.DebugMessages;
 import it.cnr.isti.labse.glimpse.utils.Manager;
 import it.cnr.isti.labse.glimpse.utils.SplashScreen;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Properties;
 
 import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.apache.activemq.jndi.ActiveMQInitialContextFactory;
-import org.drools.agent.FileLoader;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
