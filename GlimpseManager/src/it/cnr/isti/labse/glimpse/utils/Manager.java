@@ -42,7 +42,7 @@ public class Manager
 	public static Properties Read(String fileName)
 	{
 		Properties readedProps = new Properties();
-		
+
 		File file = new File(fileName);
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;

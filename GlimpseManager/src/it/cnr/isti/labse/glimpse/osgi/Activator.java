@@ -1,5 +1,6 @@
 package it.cnr.isti.labse.glimpse.osgi;
 
+import it.cnr.isti.labse.glimpse.MainMonitoring;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventImpl;
@@ -10,6 +11,9 @@ import it.cnr.isti.labse.glimpse.utils.DebugMessages;
 import it.cnr.isti.labse.glimpse.utils.Manager;
 import it.cnr.isti.labse.glimpse.utils.SplashScreen;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 import javax.jms.TopicConnectionFactory;
@@ -17,6 +21,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.activemq.jndi.ActiveMQInitialContextFactory;
+import org.drools.agent.FileLoader;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -43,9 +48,11 @@ public class Activator implements BundleActivator {
 	 */
 	public static boolean initProps(String systemSettings) {
 		try {
-			systemProps = Manager
-					.Read(systemSettings);
+//			systemProps = Manager
+//					.Read(systemSettings);
 
+//            systemProps.load(new FileInputStream(systemSettings));
+            systemProps.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(systemSettings));
 			ENVIRONMENTPARAMETERSFILE = systemProps
 					.getProperty("ENVIRONMENTPARAMETERSFILE");
 			DROOLSPARAMETERFILE = systemProps
@@ -54,7 +61,8 @@ public class Activator implements BundleActivator {
 					.getProperty("MANAGERPARAMETERFILE");
 			return true;
 		} catch (Exception asd) {
-			System.out.println("USAGE: java -jar MainMonitoring.jar \"systemSettings\"");
+			asd.printStackTrace();
+		    System.out.println("USAGE: java -jar MainMonitoring.jar \"systemSettings\"");
 			return false;
 		}
 	}
@@ -102,7 +110,8 @@ public class Activator implements BundleActivator {
 		Activator.context = bundleContext;
 		try{
 			//TODO:FIX THE LINE BELOW
-			if (Activator.initProps("/home/acalabro/Desktop/systemSettings") && Activator.init()) {
+//            if (Activator.initProps("/home/acalabro/Desktop/systemSettings") && Activator.init()) {
+            if (Activator.initProps("ConfGlimpse/glimpseSettings.properties") && Activator.init()) {
 
 				SplashScreen.Show();
 				//the buffer where the events are stored to be analyzed
