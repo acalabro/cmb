@@ -42,17 +42,18 @@ public class Activator implements BundleActivator {
 	 */
 	public static boolean initProps(String systemSettings) {
 		try {
-//			systemProps = Manager
-//					.Read(systemSettings);
+			systemProps = Manager
+					.Read(systemSettings);
 
-//            systemProps.load(new FileInputStream(systemSettings));
-            systemProps.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(systemSettings));
-			ENVIRONMENTPARAMETERSFILE = systemProps
+            //systemProps.load(new FileInputStream(systemSettings));
+            //systemProps.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(systemSettings));
+            ENVIRONMENTPARAMETERSFILE = systemProps
 					.getProperty("ENVIRONMENTPARAMETERSFILE");
 			DROOLSPARAMETERFILE = systemProps
 					.getProperty("DROOLSPARAMETERFILE");
 			MANAGERPARAMETERFILE = systemProps
 					.getProperty("MANAGERPARAMETERFILE");
+			System.out.println(ENVIRONMENTPARAMETERSFILE);
 			return true;
 		} catch (Exception asd) {
 			asd.printStackTrace();
@@ -104,8 +105,8 @@ public class Activator implements BundleActivator {
 		Activator.context = bundleContext;
 		try{
 			//TODO:FIX THE LINE BELOW
-//            if (Activator.initProps("/home/acalabro/Desktop/systemSettings") && Activator.init()) {
-            if (Activator.initProps("ConfGlimpse/glimpseSettings.properties") && Activator.init()) {
+            if (Activator.initProps("/home/acalabro/Desktop/systemSettings") && Activator.init()) {
+            //if (Activator.initProps("ConfGlimpse/glimpseSettings.properties") && Activator.init()) {
 
 				SplashScreen.Show();
 				//the buffer where the events are stored to be analyzed
