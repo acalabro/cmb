@@ -53,7 +53,6 @@ public class Activator implements BundleActivator {
 					.getProperty("DROOLSPARAMETERFILE");
 			MANAGERPARAMETERFILE = systemProps
 					.getProperty("MANAGERPARAMETERFILE");
-			System.out.println(ENVIRONMENTPARAMETERSFILE);
 			return true;
 		} catch (Exception asd) {
 			asd.printStackTrace();
@@ -76,7 +75,6 @@ public class Activator implements BundleActivator {
 		{
 			//the connection are initialized
 			Properties environmentParameters = Manager.Read(ENVIRONMENTPARAMETERSFILE);
-			
 			initConn = new InitialContext(environmentParameters);
 			DebugMessages.print(Activator.class.getSimpleName(),"Setting up TopicConnectionFactory");
 			connFact = (TopicConnectionFactory)initConn.lookup("TopicCF");
@@ -102,6 +100,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
+		Thread.currentThread().setContextClassLoader(org.apache.activemq.jndi.ActiveMQInitialContextFactory.class.getClassLoader());
 		Activator.context = bundleContext;
 		try{
 			//TODO:FIX THE LINE BELOW
@@ -111,7 +110,7 @@ public class Activator implements BundleActivator {
 				SplashScreen.Show();
 				//the buffer where the events are stored to be analyzed
 				EventsBuffer<GlimpseBaseEventImpl> buffer = new EventsBufferImpl<GlimpseBaseEventImpl>();
-	
+				
 				//The complex event engine that will be used (in this case drools)
 				ComplexEventProcessor engine = new ComplexEventProcessorImpl(
 						Manager.Read(MANAGERPARAMETERFILE), buffer, connFact,

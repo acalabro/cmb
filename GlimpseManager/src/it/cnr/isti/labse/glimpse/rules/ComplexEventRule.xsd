@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule" xmlns:tns="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule" elementFormDefault="qualified">
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule"
+	xmlns:tns="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule" elementFormDefault="qualified">
 
     <element name="ComplexEventRuleActionList" type="tns:ComplexEventRuleActionType" />
     

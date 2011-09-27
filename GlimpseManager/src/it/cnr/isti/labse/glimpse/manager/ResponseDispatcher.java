@@ -21,6 +21,8 @@
 package it.cnr.isti.labse.glimpse.manager;
 
 import it.cnr.isti.labse.glimpse.consumer.ConsumerProfile;
+import it.cnr.isti.labse.glimpse.xml.complexEventResponse.ComplexEventResponse;
+import it.cnr.isti.labse.glimpse.xml.complexEventResponse.ComplexEventResponseListDocument;
 
 import java.util.HashMap;
 import javax.jms.JMSException;
@@ -32,9 +34,6 @@ import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.naming.InitialContext;
-
-import org.example.complexEventResponse.ComplexEventResponse;
-import org.example.complexEventResponse.ComplexEventResponseListDocument;
 
 public class ResponseDispatcher {
 
