@@ -20,7 +20,6 @@
 */
 package it.cnr.isti.labse.glimpse.impl;
 
-import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventImpl;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
@@ -71,10 +70,9 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 	private KnowledgeBase kbase;
 	private StatefulKnowledgeSession ksession;
 	private WorkingMemoryEntryPoint eventStream;
-	private GlimpseBaseEvent<String> receivedEvent;
 	private KnowledgeBuilder kbuilder;
 	
-	public ComplexEventProcessorImpl(Properties settings, EventsBuffer<GlimpseBaseEventImpl> buffer, TopicConnectionFactory connectionFact,
+	public ComplexEventProcessorImpl(Properties settings, EventsBuffer<GlimpseBaseEvent<?>> buffer, TopicConnectionFactory connectionFact,
 			InitialContext initConn) {
 		this.topic = settings.getProperty("probeTopic");
 		
@@ -144,15 +142,13 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 	@Override
 	public void onMessage(Message arg0) {
 		ObjectMessage msg = (ObjectMessage) arg0;
-		
 		try {
-			receivedEvent = (GlimpseBaseEvent<String>) msg.getObject();
-			if (eventStream != null)
-			{
-				eventStream.insert(receivedEvent);
-				System.out.println(this.getClass().getSimpleName() + ": receive: " + receivedEvent.getData() + " from: " + receivedEvent.getConnectorID() + " execution: " + receivedEvent.getConnectorInstanceID());
-				DebugMessages.line();
-			}
+			GlimpseBaseEvent<String> receivedEvent = (GlimpseBaseEvent<String>) msg.getObject();
+			if (eventStream != null) {
+					eventStream.insert(receivedEvent);
+					System.out.println(this.getClass().getSimpleName() + ": receive: " + receivedEvent.getData() + " from: " + receivedEvent.getConnectorID() + " execution: " + receivedEvent.getConnectorInstanceID());	
+					DebugMessages.line();
+				}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}

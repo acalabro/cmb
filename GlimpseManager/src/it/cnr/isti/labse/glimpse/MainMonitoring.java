@@ -21,7 +21,7 @@
 package it.cnr.isti.labse.glimpse;
 
 import it.cnr.isti.labse.glimpse.impl.EventsBufferImpl;
-import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventImpl;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
 import it.cnr.isti.labse.glimpse.manager.GlimpseManager;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
@@ -95,7 +95,7 @@ public class MainMonitoring {
 	
 				SplashScreen.Show();
 				//the buffer where the events are stored to be analyzed
-				EventsBuffer<GlimpseBaseEventImpl> buffer = new EventsBufferImpl<GlimpseBaseEventImpl>();
+				EventsBuffer<GlimpseBaseEvent<?>> buffer = new EventsBufferImpl<GlimpseBaseEvent<?>>();
 	
 				//The complex event engine that will be used (in this case drools)
 				ComplexEventProcessor engine = new ComplexEventProcessorImpl(

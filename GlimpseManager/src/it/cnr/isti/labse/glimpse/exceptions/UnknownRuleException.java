@@ -18,7 +18,16 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
   * 
 */
+
 package it.cnr.isti.labse.glimpse.exceptions;
+
+/**
+ * This exception will be thrown when the Monitoring Manager<br />
+ * is unable to complete the request of unloading a rule.
+ * 
+ * @author Antonello Calabr&ograve;
+ * @version 3.2
+ */
 
 public class UnknownRuleException extends Exception {
 

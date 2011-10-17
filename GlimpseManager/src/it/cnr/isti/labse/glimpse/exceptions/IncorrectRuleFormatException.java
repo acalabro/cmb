@@ -18,17 +18,23 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
   * 
 */
+
 package it.cnr.isti.labse.glimpse.exceptions;
 
-import it.cnr.isti.labse.glimpse.utils.DebugMessages;
+/**
+ * This exception will be thrown when the Monitoring Manager<br />
+ * will receive an invalid rule.<br />
+ * The rule is contained into the field RuleBody of the ComplexEventRuleDocument object
+ * 
+ * @author Antonello Calabr&ograve;
+ * @version 3.2
+ */
 
 public class IncorrectRuleFormatException extends Exception {
 	private static final long serialVersionUID = -2577929182751048650L;
 
 	public IncorrectRuleFormatException()
 	{
-		DebugMessages.line();
 		System.out.println("Check rule format, may contains errors");
-		DebugMessages.line();
 	}
 }

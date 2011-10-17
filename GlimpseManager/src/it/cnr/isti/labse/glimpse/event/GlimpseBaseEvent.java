@@ -18,25 +18,24 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
   * 
 */
+
 package it.cnr.isti.labse.glimpse.event;
 
 import java.io.Serializable;
 
 /**
- * The GlimpseBaseEvent <T> is the simple event that the monitoring infrastructure<br />
- * use to infer more complex events. These object must be sent from a probe<br />
- * through the ESB and should contain the information about the events to monitor or <br />
- * to correlate.<br /><br />
+ * The GlimpseBaseEvent <T> is the generic basic event that the monitoring infrastructure<br />
+ * uses to infer more complex events. These object must be sent from a probe<br />
+ * to GLIMPSE through the ESB.<br /><br />
  * 
- * The variables of {@link #GlimpseBaseEvent(String, String, String, String, int, int, Long, String)}<br />
- * actually are structured into the Connect context, containing information<br />
- * about the connector that fires the event, about it's istance and the networked system<br />
- * from which the payload is generated.<br /><br />
- * Obviously, extending the {@link #GlimpseBaseEvent(String, String, String, String, int, int, Long, String)} class<br />
- * it's possible to add or change variables and to manages it into the CEP using a well-formed drools rule.<br />
+ * The parameter of GlimpseBaseEvent(String, String, String, String, int, int, Long, String, boolean)<br />
+ * are useful to provide information about the connector where the probe is instanciated.<br /><br />
+ * Extending the GlimpseBaseEvent(String, String, String, String, int, int, Long, String, boolean) class<br />
+ * it's possible to add or change variables and to manages it into the CEP using a well-formed Drools rule.<br />
  * 
- * @author acalabro
- *
+ * @author Antonello Calabr&ograve;
+ * @version 3.2
+ * 
  * @param <T> The type of the data on the payload of the GlimpseBaseEvent, see method {@link #getData()} and {@link #setData(Object)}
  */
 public abstract class GlimpseBaseEvent <T> implements Serializable {
@@ -50,9 +49,11 @@ public abstract class GlimpseBaseEvent <T> implements Serializable {
 	protected String networkedSystemSource;
 	protected String sourceState;
 	protected String eventName;
+	protected boolean isException;
 	
-	public GlimpseBaseEvent(String eventName, String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource) {
+	public GlimpseBaseEvent(String eventName, String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource, boolean isException) {
 		consumed = false;
+		isException = false;
 	};
 	
 	public abstract T getData();
@@ -83,4 +84,7 @@ public abstract class GlimpseBaseEvent <T> implements Serializable {
 	
 	public abstract String getConnectorInstanceExecutionID();
 	public abstract void setConnectorInstanceExecutionID(String connectorInstanceExecutionID);
+
+	public abstract boolean getIsException();
+	public abstract void setIsException(boolean isException);
 }

@@ -18,23 +18,25 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
   * 
 */
+
 package it.cnr.isti.labse.glimpse.event;
 
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
+import it.cnr.isti.labse.glimpse.xml.complexEventException.ComplexEventException;
 
 /**
  * 
  * This class is a possible implementation (extension) of the {@link GlimpseBaseEvent} class.<br /><br /> 
  * This implementation refer to a CONNECT project scenario.
  * 
- * @author acalabro
- *
+ * @author Antonello Calabr&ograve;
+ * @version 3.2
  */
-public class GlimpseBaseEventImpl extends GlimpseBaseEvent<String>
+public class GlimpseBaseEventImpl<T> extends GlimpseBaseEvent<T>
 {
 	private static final long serialVersionUID = 1L;
 	public Long timestamp = 0L;
-	private String data;
+	private T data;
 	private boolean consumed;
 	private String connectorID;
 	private String connectorInstanceID;
@@ -44,6 +46,7 @@ public class GlimpseBaseEventImpl extends GlimpseBaseEvent<String>
 	private String sourceState;
 	private String networkedSystemSource;
 	private String eventName;
+	private boolean isException;
 	
 	/**
 	 * @param eventName the name of the event that will be fired
@@ -54,10 +57,11 @@ public class GlimpseBaseEventImpl extends GlimpseBaseEvent<String>
 	 * @param eventInResponseToID cause/effect, this value provide the id of the event from which this event is effect/cause
 	 * @param ts the timestamp if the event 
 	 * @param networkedSystemSource the networked system that generate this event before pass through the CONNECTor
+	 * @param isException is true if the event is an Exception, the payload of this kind of event is a {@link ComplexEventException} object.
 	 */
-	public GlimpseBaseEventImpl(String eventName, String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource)
+	public GlimpseBaseEventImpl(String eventName, String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource, boolean isException)
 	{
-		super(eventName, connectorID, connectorInstanceID, connectorInstanceExecutionID, eventID, eventInResponseToID, ts, networkedSystemSource);
+		super(eventName, connectorID, connectorInstanceID, connectorInstanceExecutionID, eventID, eventInResponseToID, ts, networkedSystemSource, isException);
 		this.connectorID = connectorID;
 		this.connectorInstanceID = connectorInstanceID;
 		this.connectorInstanceExecutionID = connectorInstanceExecutionID;
@@ -66,13 +70,14 @@ public class GlimpseBaseEventImpl extends GlimpseBaseEvent<String>
 		this.timestamp = ts;
 		this.networkedSystemSource = networkedSystemSource;
 		this.eventName = eventName;
+		this.isException = isException;
 	}
 
-	public String getData() {
+	public T getData() {
 		return this.data;
 	}
 	
-	public void setData(String t) {
+	public void setData(T t) {
 		this.data = t;
 	}
 	
@@ -157,5 +162,16 @@ public class GlimpseBaseEventImpl extends GlimpseBaseEvent<String>
 	@Override
 	public void setName(String eventName) {
 		this.eventName = eventName;		
+	}
+
+	@Override
+	public boolean getIsException() {
+		return this.isException;
+	}
+
+	@Override
+	public void setIsException(boolean isException) {
+		this.isException = isException;
+		
 	}
 }

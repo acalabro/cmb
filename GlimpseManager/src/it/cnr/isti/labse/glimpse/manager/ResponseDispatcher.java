@@ -21,13 +21,15 @@
 package it.cnr.isti.labse.glimpse.manager;
 
 import it.cnr.isti.labse.glimpse.consumer.ConsumerProfile;
+import it.cnr.isti.labse.glimpse.xml.complexEventException.ComplexEventException;
 import it.cnr.isti.labse.glimpse.xml.complexEventResponse.ComplexEventResponse;
 import it.cnr.isti.labse.glimpse.xml.complexEventResponse.ComplexEventResponseListDocument;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import javax.jms.JMSException;
+import javax.jms.ObjectMessage;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
@@ -61,20 +63,15 @@ public class ResponseDispatcher {
 		}		
 	}
 
-	public static void sendResponse(String ruleMatched, String key, String value, String enablerName, String answerTopic)
+	public static void sendResponse(ComplexEventResponse response, String enablerName, String answerTopic)
 	{
 		try {
 			publicSession = connection.createTopicSession(false,Session.AUTO_ACKNOWLEDGE);
 			connectionTopic = publishSession.createTopic(answerTopic);
 			tPub = publishSession.createPublisher(connectionTopic);
-			ComplexEventResponseListDocument rsp;
-			rsp = ComplexEventResponseListDocument.Factory.newInstance();
-			ComplexEventResponse response = rsp.addNewComplexEventResponseList();
-			response.setRuleName(ruleMatched);
-			response.setResponseKey(key);
-			response.setResponseValue(value);
-			TextMessage sendMessage = publishSession.createTextMessage();
-			sendMessage.setText(rsp.xmlText());
+			
+			ObjectMessage sendMessage = publishSession.createObjectMessage();
+			sendMessage.setObject((Serializable) response);
 			sendMessage.setStringProperty("DESTINATION", enablerName);
 			tPub.publish(sendMessage);
 		} catch (JMSException e) {
@@ -82,21 +79,52 @@ public class ResponseDispatcher {
 		}
 	}
 	
-	public static void NotifyMe(String ruleMatched, String enablerName, String key, String value)
+	public static void sendResponse(ComplexEventException exception, String enablerName, String answerTopic)
+	{
+		try {
+			publicSession = connection.createTopicSession(false,Session.AUTO_ACKNOWLEDGE);
+			connectionTopic = publishSession.createTopic(answerTopic);
+			tPub = publishSession.createPublisher(connectionTopic);
+			
+			ObjectMessage sendMessage = publishSession.createObjectMessage();
+			sendMessage.setObject((Serializable) exception);
+			sendMessage.setStringProperty("DESTINATION", enablerName);
+			tPub.publish(sendMessage);
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
+	}
+		
+	public static void NotifyMeValue(String ruleMatched, String enablerName, String key, String value)
 	{
 		ConsumerProfile enablerMatched = (ConsumerProfile)requestMap.get(ruleMatched);
 		
-		/*ComplexEventResponseListDocument responseList = ComplexEventResponseListDocument.Factory.newInstance();
-
-		ComplexEventResponse theResponse = responseList.addNewComplexEventResponseList();
+		ComplexEventResponseListDocument rsp;
+		rsp = ComplexEventResponseListDocument.Factory.newInstance();
+		ComplexEventResponse response = rsp.addNewComplexEventResponseList();
+		response.setRuleName(ruleMatched);
+		response.setResponseKey(key);
+		response.setResponseValue(value);
 		
-		ComplexEventResponseType theResponseType = theResponse.addNewResponseType();
-		theResponseType.setString(value.toString());*/
-		
-		ResponseDispatcher.sendResponse(ruleMatched, key, value, enablerName, enablerMatched.getAnswerTopic());
+		ResponseDispatcher.sendResponse(response, enablerName, enablerMatched.getAnswerTopic());
 		System.out.println(ResponseDispatcher.class.getSimpleName()
 				+ ": ruleMatched: " + ruleMatched
 				+ " - enablerName: " + enablerName
 				+ " - evaluationResult: " + value.toString());
+	}
+	
+	public static void NotifyMeException(String ruleMatched,
+			String enablerName, Exception exception)
+	{
+		ConsumerProfile enablerMatched = (ConsumerProfile)requestMap.get(ruleMatched);
+		
+		ComplexEventException exceptionRaised = ComplexEventException.Factory.newInstance();
+		exceptionRaised.setCauseClassName("asd");
+		exceptionRaised.setClassName(exception.getClass().getName());
+		exceptionRaised.setLocalizedMessage(exception.getLocalizedMessage());
+		exceptionRaised.setMessage(exception.getMessage());
+		exceptionRaised.setStackTrace(exception.getStackTrace().toString());
+
+		ResponseDispatcher.sendResponse(exceptionRaised, enablerName, enablerMatched.getAnswerTopic());
 	}
 }
