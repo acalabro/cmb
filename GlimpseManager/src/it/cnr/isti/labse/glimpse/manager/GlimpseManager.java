@@ -129,13 +129,8 @@ public class GlimpseManager extends Thread implements MessageListener {
 			ruleDoc = ComplexEventRuleActionListDocument.Factory.parse(XMLRule);	
 			ComplexEventRuleActionType rules = ruleDoc.getComplexEventRuleActionList();
 			
-			
 			//the topic where the listener will give analysis results
 			answerTopic =  "answerTopic" + "#" + this.getName() + "#" + System.nanoTime();
-
-			DebugMessages.print(this.getClass().getSimpleName(),"Communicate the answerTopic to the enabler");
-			sendMessage(createMessage("AnswerTopic == " + answerTopic, sender));
-			DebugMessages.ok();	
 
 			DebugMessages.print(this.getClass().getSimpleName(), "Create answerTopic");
 			connectionTopic = publishSession.createTopic(answerTopic);
@@ -161,8 +156,13 @@ public class GlimpseManager extends Thread implements MessageListener {
 					}
 					DebugMessages.ok();
 				}
+				
+				DebugMessages.print(this.getClass().getSimpleName(),"Communicate the answerTopic to the enabler");
+				sendMessage(createMessage("AnswerTopic == " + answerTopic, sender));
+				DebugMessages.ok();	
+				
 			} catch (IncorrectRuleFormatException e) {
-				sendMessage(createMessage("PROVIDED RULE CONTAINS ERRORS", msg.getStringProperty("SENDER")));
+				sendMessage(createMessage("PROVIDED RULE CONTAINS ERRORS", sender));
 			}
 		} catch(NullPointerException asd) {
 			try {

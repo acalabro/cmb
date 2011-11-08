@@ -119,12 +119,21 @@ public class ResponseDispatcher {
 		ConsumerProfile enablerMatched = (ConsumerProfile)requestMap.get(ruleMatched);
 		
 		ComplexEventException exceptionRaised = ComplexEventException.Factory.newInstance();
-		exceptionRaised.setCauseClassName("asd");
+		if (exception.getCause() == null) {
+			exceptionRaised.setCauseClassName("null");
+		} else {
+			exceptionRaised.setCauseClassName(exception.getCause().getClass().getName());
+		}
 		exceptionRaised.setClassName(exception.getClass().getName());
 		exceptionRaised.setLocalizedMessage(exception.getLocalizedMessage());
 		exceptionRaised.setMessage(exception.getMessage());
 		exceptionRaised.setStackTrace(exception.getStackTrace().toString());
 
 		ResponseDispatcher.sendResponse(exceptionRaised, enablerName, enablerMatched.getAnswerTopic());
+		
+		System.out.println(ResponseDispatcher.class.getSimpleName()
+				+ ": ruleMatched: " + ruleMatched
+				+ " - enablerName: " + enablerName
+				+ " - evaluationResult: " + exceptionRaised.getClassName());
 	}
 }

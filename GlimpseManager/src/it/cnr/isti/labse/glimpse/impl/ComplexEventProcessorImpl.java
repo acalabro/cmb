@@ -138,12 +138,11 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onMessage(Message arg0) {
 		ObjectMessage msg = (ObjectMessage) arg0;
 		try {
-			GlimpseBaseEvent<String> receivedEvent = (GlimpseBaseEvent<String>) msg.getObject();
+			GlimpseBaseEvent<?> receivedEvent = (GlimpseBaseEvent<?>) msg.getObject();
 			if (eventStream != null) {
 					eventStream.insert(receivedEvent);
 					System.out.println(this.getClass().getSimpleName() + ": receive: " + receivedEvent.getData() + " from: " + receivedEvent.getConnectorID() + " execution: " + receivedEvent.getConnectorInstanceID());	

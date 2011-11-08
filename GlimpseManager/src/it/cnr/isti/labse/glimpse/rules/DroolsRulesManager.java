@@ -61,6 +61,7 @@ public class DroolsRulesManager extends RulesManager {
 
 	@Override
 	void deleteRule(final String ruleName) throws UnknownRuleException {
+		
 		final Collection<KnowledgePackage> pkg = kbase.getKnowledgePackages();
 		final Object[] pkgArray = pkg.toArray();
 		final KnowledgePackage pkgPd = (org.drools.definition.KnowledgePackage)pkgArray[0];
