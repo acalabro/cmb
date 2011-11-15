@@ -51,6 +51,8 @@ public abstract class GlimpseBaseEvent <T> implements Serializable {
 	protected String eventName;
 	protected boolean isException;
 	
+	//TODO: put these parameters into the JMS header
+	
 	public GlimpseBaseEvent(String eventName, String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource, boolean isException) {
 		consumed = false;
 		isException = false;

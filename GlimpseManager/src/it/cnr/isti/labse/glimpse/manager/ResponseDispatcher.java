@@ -94,6 +94,22 @@ public class ResponseDispatcher {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void sendResponse(Object object, String enablerName, String answerTopic)
+	{
+		try {
+			publicSession = connection.createTopicSession(false,Session.AUTO_ACKNOWLEDGE);
+			connectionTopic = publishSession.createTopic(answerTopic);
+			tPub = publishSession.createPublisher(connectionTopic);
+			
+			ObjectMessage sendMessage = publishSession.createObjectMessage();
+			sendMessage.setObject((Serializable) object);
+			sendMessage.setStringProperty("DESTINATION", enablerName);
+			tPub.publish(sendMessage);
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
+	}
 		
 	public static void NotifyMeValue(String ruleMatched, String enablerName, String key, String value)
 	{
@@ -111,6 +127,17 @@ public class ResponseDispatcher {
 				+ ": ruleMatched: " + ruleMatched
 				+ " - enablerName: " + enablerName
 				+ " - evaluationResult: " + value.toString());
+	}
+	
+	public static void NotifyMeObject(String ruleMatched, String enablerName, Object object)
+	{
+		ConsumerProfile enablerMatched = (ConsumerProfile)requestMap.get(ruleMatched);
+		
+		ResponseDispatcher.sendResponse(object, enablerName, enablerMatched.getAnswerTopic());
+		System.out.println(ResponseDispatcher.class.getSimpleName()
+				+ ": ruleMatched: " + ruleMatched
+				+ " - enablerName: " + enablerName
+				+ " - object: " + object.toString());
 	}
 	
 	public static void NotifyMeException(String ruleMatched,
