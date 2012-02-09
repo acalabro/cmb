@@ -20,6 +20,8 @@
 */
 package it.cnr.isti.labse.glimpse.utils;
 
+import org.apache.commons.net.ntp.TimeStamp;
+
 /**
  * This class provides print function for debug
  * 
@@ -28,8 +30,7 @@ package it.cnr.isti.labse.glimpse.utils;
  */
 public class DebugMessages {
 
-	public static int lastMessageLength = 0;
-	
+	public static int lastMessageLength = 0;	
 	/**
 	 * Print the string "className : message " without break line.
 	 * Can be used with method {@link #ok()}
@@ -37,10 +38,18 @@ public class DebugMessages {
 	 * @param callerClass the name of the class that is calling method
 	 * @param messageToPrint the message to print
 	 */
-	public static void print(String callerClass, String messageToPrint)
+	
+//	public static Logger getLogFileSingleton() {	
+//		if (DebugAndLogMessages.logFile == null)
+//			return DebugAndLogMessages.logFile = new File(
+//					System.getProperty("user.dir") + "/glimpseLog.log");
+//		return DebugAndLogMessages.logFile;		
+//  }
+	
+	public static void print(TimeStamp now, String callerClass, String messageToPrint)
 	{
-		String message = callerClass + ": " + messageToPrint;
-		System.out.print(message);
+		String message = now.getDate().toString() + " - " +  callerClass + ": " + messageToPrint;
+		System.err.print(message);
 		lastMessageLength = message.length();
 	}
 	/**
@@ -50,35 +59,35 @@ public class DebugMessages {
 	 * @param callerClass the name of the class that is calling method
 	 * @param messageToPrint the message to print
 	 */
-	public static void println(String callerClass, String messageToPrint)
+	public static void println(TimeStamp now, String callerClass, String messageToPrint)
 	{
-		String message = callerClass + ": " + messageToPrint;
-		System.out.println(message);
+		String message = now.getDate().toString() + " - " +  callerClass + ": " + messageToPrint;
+		System.err.println(message);
 	}
 	/**
 	 * Print the OK text
 	 */
 	public static void ok()
 	{
-		int tab = 10 - (lastMessageLength / 8);
+		int tab = 12 - (lastMessageLength / 8);
 		String add="";
 		for(int i = 0; i< tab;i++) {
 			add +="\t"; 
 		}
-		System.out.println(add + "[ OK ]");
+		System.err.println(add + "[ OK ]");
 	}
 	/**
 	 * 
 	 * Print a line <br />
 	 */
 	public static void line() {
-		System.out.println("--------------------------------------------------------------------------------------");	
+		System.err.println("------------------------------------------------------------------------------------------------------");
 	}
 	
 	/**
 	 * Print asterisks
 	 */
 	public static void asterisks() {
-		System.out.println("**************************************************************************************");	
+		System.err.println("******************************************************************************************************");
 	}
 }

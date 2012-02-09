@@ -16,6 +16,7 @@ import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.apache.commons.net.ntp.TimeStamp;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -76,7 +77,7 @@ public class Activator implements BundleActivator {
 			//the connection are initialized
 			Properties environmentParameters = Manager.Read(ENVIRONMENTPARAMETERSFILE);
 			initConn = new InitialContext(environmentParameters);
-			DebugMessages.print(Activator.class.getSimpleName(),"Setting up TopicConnectionFactory");
+			DebugMessages.print(TimeStamp.getCurrentTime(), Activator.class.getSimpleName(),"Setting up TopicConnectionFactory");
 			connFact = (TopicConnectionFactory)initConn.lookup("TopicCF");
 			DebugMessages.ok();
 			DebugMessages.line();

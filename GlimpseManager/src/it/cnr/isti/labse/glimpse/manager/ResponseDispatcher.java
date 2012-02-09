@@ -21,6 +21,7 @@
 package it.cnr.isti.labse.glimpse.manager;
 
 import it.cnr.isti.labse.glimpse.consumer.ConsumerProfile;
+import it.cnr.isti.labse.glimpse.utils.DebugMessages;
 import it.cnr.isti.labse.glimpse.xml.complexEventException.ComplexEventException;
 import it.cnr.isti.labse.glimpse.xml.complexEventResponse.ComplexEventResponse;
 import it.cnr.isti.labse.glimpse.xml.complexEventResponse.ComplexEventResponseListDocument;
@@ -36,6 +37,8 @@ import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.naming.InitialContext;
+
+import org.apache.commons.net.ntp.TimeStamp;
 
 public class ResponseDispatcher {
 
@@ -123,8 +126,8 @@ public class ResponseDispatcher {
 		response.setResponseValue(value);
 		
 		ResponseDispatcher.sendResponse(response, enablerName, enablerMatched.getAnswerTopic());
-		System.out.println(ResponseDispatcher.class.getSimpleName()
-				+ ": ruleMatched: " + ruleMatched
+		DebugMessages.print(TimeStamp.getCurrentTime(), ResponseDispatcher.class.getSimpleName(),
+				"ruleMatched: " + ruleMatched
 				+ " - enablerName: " + enablerName
 				+ " - evaluationResult: " + value.toString());
 	}
@@ -134,8 +137,8 @@ public class ResponseDispatcher {
 		ConsumerProfile enablerMatched = (ConsumerProfile)requestMap.get(ruleMatched);
 		
 		ResponseDispatcher.sendResponse(object, enablerName, enablerMatched.getAnswerTopic());
-		System.out.println(ResponseDispatcher.class.getSimpleName()
-				+ ": ruleMatched: " + ruleMatched
+		DebugMessages.print(TimeStamp.getCurrentTime(), ResponseDispatcher.class.getSimpleName(),
+				"ruleMatched: " + ruleMatched
 				+ " - enablerName: " + enablerName
 				+ " - object: " + object.toString());
 	}
@@ -158,8 +161,8 @@ public class ResponseDispatcher {
 
 		ResponseDispatcher.sendResponse(exceptionRaised, enablerName, enablerMatched.getAnswerTopic());
 		
-		System.out.println(ResponseDispatcher.class.getSimpleName()
-				+ ": ruleMatched: " + ruleMatched
+		DebugMessages.print(TimeStamp.getCurrentTime(), ResponseDispatcher.class.getSimpleName(),
+				"ruleMatched: " + ruleMatched
 				+ " - enablerName: " + enablerName
 				+ " - evaluationResult: " + exceptionRaised.getClassName());
 	}

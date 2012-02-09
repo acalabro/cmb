@@ -20,6 +20,7 @@
 */
 package it.cnr.isti.labse.glimpse.cep;
 
+import it.cnr.isti.labse.glimpse.exceptions.UnknownMethodCallRuleException;
 import it.cnr.isti.labse.glimpse.rules.RulesManager;
 
 import javax.jms.Message;
@@ -31,6 +32,6 @@ public abstract class ComplexEventProcessor extends Thread {
 	public abstract RulesManager getRuleManager();
 	
 	public abstract void init(TopicConnectionFactory connectionFact, InitialContext initConn);
-	public abstract void onMessage(Message arg0);	
+	public abstract void onMessage(Message arg0) throws UnknownMethodCallRuleException;	
 	public abstract void setMetric();
 }

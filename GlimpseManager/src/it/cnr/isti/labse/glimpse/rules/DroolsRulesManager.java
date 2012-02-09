@@ -22,6 +22,7 @@ package it.cnr.isti.labse.glimpse.rules;
 
 import java.util.Collection;
 
+import org.apache.commons.net.ntp.TimeStamp;
 import org.drools.KnowledgeBase;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
@@ -53,8 +54,14 @@ public class DroolsRulesManager extends RulesManager {
 	@Override
 	void insertRule(final String rule, final String ruleName) throws IncorrectRuleFormatException {
 
-		newKnowledgeBuilder.add(ResourceFactory.newByteArrayResource(rule.trim().getBytes()), ResourceType.DRL);
-		 if (newKnowledgeBuilder.getErrors().size() > 0)
+		//try {
+			newKnowledgeBuilder.add(ResourceFactory.newByteArrayResource(rule.trim().getBytes()), ResourceType.DRL);
+//		} catch (RuntimeDroolsException droolsExceptionOnLoading) {
+//			newKnowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+//			throw new UnknownMethodCallRuleException();
+//		}
+		
+		if (newKnowledgeBuilder.getErrors().size() > 0)
 			 throw new IncorrectRuleFormatException();
 		 
 	}
@@ -67,7 +74,7 @@ public class DroolsRulesManager extends RulesManager {
 		final KnowledgePackage pkgPd = (org.drools.definition.KnowledgePackage)pkgArray[0];
 		kbase.removeRule(pkgPd.getName(), ruleName);
 		DebugMessages.line();
-		DebugMessages.print(this.getClass().getSimpleName(), "Rule " + ruleName + " successful removed.");
+		DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Rule " + ruleName + " successfully deleted");
 		DebugMessages.line();
 	}
 
@@ -144,8 +151,12 @@ public class DroolsRulesManager extends RulesManager {
 				e.printStackTrace();
 			}
 		}
-		kbase.addKnowledgePackages(newKnowledgeBuilder.getKnowledgePackages());
+			kbase.addKnowledgePackages(newKnowledgeBuilder.getKnowledgePackages());
 		return newKnowledgeBuilder.getKnowledgePackages().toArray();
+	}
+	
+	public int getLoadedKnowledgePackageCardinality() {
+		return this.kbase.getKnowledgePackages().size();
 	}
 	
 	public void getLoadedRulesInfo()
@@ -159,7 +170,7 @@ public class DroolsRulesManager extends RulesManager {
 		Rule rl;
 		for(int i = 0; i<rlsArray.length; i++) {
 			rl = (Rule) rlsArray[i];
-			System.out.println("Package: " + pkgPd.getName() + " - RuleName: " + rl.getName());
+			System.err.println("Package: " + pkgPd.getName() + " - RuleName: " + rl.getName());
 		}
 		DebugMessages.line();
 	}	

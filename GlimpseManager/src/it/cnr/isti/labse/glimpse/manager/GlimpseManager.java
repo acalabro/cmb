@@ -45,6 +45,7 @@ import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.apache.commons.net.ntp.TimeStamp;
 import org.apache.xmlbeans.XmlException;
 import org.drools.definitions.impl.KnowledgePackageImp;
 import org.drools.definition.rule.*;
@@ -81,29 +82,29 @@ public class GlimpseManager extends Thread implements MessageListener {
 	public void setupConnection(TopicConnectionFactory connectionFact, InitialContext initConn)
 	{	
 		try {
-			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object ");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Creating connection object ");
 			connection = connectionFact.createTopicConnection();
 			DebugMessages.ok();
 			
-			DebugMessages.print(this.getClass().getSimpleName(), "Creating public session object ");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Creating public session object ");
 			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 			DebugMessages.ok();
 			
-			DebugMessages.print(this.getClass().getSimpleName(), "Creating subscribe object");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Creating subscribe object");
 			subscribeSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 			DebugMessages.ok();
 			
-			DebugMessages.print(this.getClass().getSimpleName(), "Setting up destination topic ");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Setting up destination topic ");
 			connectionTopic = (Topic)initConn.lookup(serviceTopic);
 			tPub = publishSession.createPublisher(connectionTopic);
 			DebugMessages.ok();
 
-			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Setting up reading topic ");
 			tSub = subscribeSession.createSubscriber(connectionTopic, "DESTINATION = 'monitor'", true);
 			tSub.setMessageListener(this);
 			DebugMessages.ok();
 			
-			DebugMessages.print(this.getClass().getSimpleName(),"Creating response dispatcher ");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"Creating response dispatcher ");
 			responder = new ResponseDispatcher(initConn,connectionFact, requestMap);
 			DebugMessages.ok();
 						
@@ -120,7 +121,7 @@ public class GlimpseManager extends Thread implements MessageListener {
 		try {
 			msg = (TextMessage) arg0;
 			DebugMessages.line();			
-			System.out.println(this.getClass().getSimpleName() + ": receive " + msg.getText());
+			DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"receive " + msg.getText());
 			DebugMessages.line();
 			String XMLRule = msg.getText();
 			String sender = msg.getStringProperty("SENDER");		
@@ -132,13 +133,13 @@ public class GlimpseManager extends Thread implements MessageListener {
 			//the topic where the listener will give analysis results
 			answerTopic =  "answerTopic" + "#" + this.getName() + "#" + System.nanoTime();
 
-			DebugMessages.print(this.getClass().getSimpleName(), "Create answerTopic");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Create answerTopic");
 			connectionTopic = publishSession.createTopic(answerTopic);
 			//tPub = publishSession.createPublisher(connectionTopic);
 			DebugMessages.ok();
 			
-			DebugMessages.print(this.getClass().getSimpleName(), "Setup ComplexEventProcessor with Enabler request.");
-			try {
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Setup ComplexEventProcessor with Enabler request.");
+			try {	
 				Object[] loadedKnowledgePackage = rulesManager.loadRules(rules);
 				//inserisco la coppia chiave valore dove la chiave è il KnowledgePackage
 				//caricato, generato da DroolsRulesManager con la loadRules
@@ -155,12 +156,12 @@ public class GlimpseManager extends Thread implements MessageListener {
 						requestMap.put(singleRuleContainer[j].getName(), new ConsumerProfile(sender, answerTopic));
 					}
 					DebugMessages.ok();
+					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "KnowledgeBase packages loaded: " + rulesManager.getLoadedKnowledgePackageCardinality());
 				}
 				
-				DebugMessages.print(this.getClass().getSimpleName(),"Communicate the answerTopic to the enabler");
+				DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"Communicate the answerTopic to the enabler");
 				sendMessage(createMessage("AnswerTopic == " + answerTopic, sender));
-				DebugMessages.ok();	
-				
+				DebugMessages.ok();
 			} catch (IncorrectRuleFormatException e) {
 				sendMessage(createMessage("PROVIDED RULE CONTAINS ERRORS", sender));
 			}
@@ -184,7 +185,7 @@ public class GlimpseManager extends Thread implements MessageListener {
 
 	public void run()
 	{
-		DebugMessages.print(this.getClass().getSimpleName(), "Starting connection ");
+		DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Starting connection ");
 		try {
 			connection.start();
 		} catch (JMSException e) {

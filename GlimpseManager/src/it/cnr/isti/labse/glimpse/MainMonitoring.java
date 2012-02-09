@@ -30,11 +30,15 @@ import it.cnr.isti.labse.glimpse.utils.DebugMessages;
 import it.cnr.isti.labse.glimpse.utils.Manager;
 import it.cnr.isti.labse.glimpse.utils.SplashScreen;
 
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.Properties;
 
 import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import org.apache.commons.net.ntp.TimeStamp;
 
 /**
  * @author Antonello Calabr&ograve;
@@ -91,9 +95,14 @@ public class MainMonitoring {
 	 */
 	public static void main(String[] args) {
 		try{
+			FileOutputStream fos = new FileOutputStream("glimpseLog.log");
+			PrintStream ps = new PrintStream(fos);
+			System.setErr(ps);
+			
 			if (MainMonitoring.initProps(args[0]) && MainMonitoring.init()) {
 	
 				SplashScreen.Show();
+				System.out.println("Please wait until setup is done...");
 				//the buffer where the events are stored to be analyzed
 				EventsBuffer<GlimpseBaseEvent<?>> buffer = new EventsBufferImpl<GlimpseBaseEvent<?>>();
 	
@@ -130,7 +139,7 @@ public class MainMonitoring {
 			Properties environmentParameters = Manager.Read(ENVIRONMENTPARAMETERSFILE);
 			initConn = new InitialContext(environmentParameters);
 			
-			DebugMessages.print(MainMonitoring.class.getSimpleName(),"Setting up TopicConnectionFactory");
+			DebugMessages.print(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(),"Setting up TopicConnectionFactory");
 			connFact = (TopicConnectionFactory)initConn.lookup("TopicCF");
 			DebugMessages.ok();
 			DebugMessages.line();

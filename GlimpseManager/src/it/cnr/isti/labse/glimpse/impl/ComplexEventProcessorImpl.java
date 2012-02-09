@@ -23,6 +23,7 @@ package it.cnr.isti.labse.glimpse.impl;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
+import it.cnr.isti.labse.glimpse.exceptions.UnknownMethodCallRuleException;
 import it.cnr.isti.labse.glimpse.rules.DroolsRulesManager;
 import it.cnr.isti.labse.glimpse.rules.RulesManager;
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
@@ -44,6 +45,7 @@ import javax.jms.TopicSubscriber;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.apache.commons.net.ntp.TimeStamp;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
 import org.drools.KnowledgeBaseFactory;
@@ -82,29 +84,29 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 	public void init(TopicConnectionFactory connectionFact,
 			InitialContext initConn) {
 		try {
-			DebugMessages.print(this.getClass().getSimpleName(), "Creating connection object ");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Creating connection object ");
 			connection = connectionFact.createTopicConnection();
 			DebugMessages.ok();
 
-			DebugMessages.print(this.getClass().getSimpleName(), "Creating public session object ");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Creating public session object ");
 			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 			DebugMessages.ok();
 			
-			DebugMessages.print(this.getClass().getSimpleName(), "Creating subscribe object ");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Creating subscribe object ");
 			subscribeSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 			DebugMessages.ok();
 			
-			DebugMessages.print(this.getClass().getSimpleName(), "Setting up reading topic ");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Setting up reading topic ");
 			connectionTopic = (Topic) initConn.lookup(topic);
 			tSub = subscribeSession.createSubscriber(connectionTopic, null,true);
 			DebugMessages.ok();
 			
-			DebugMessages.print(this.getClass().getSimpleName(), "Setting up destination topic ");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Setting up destination topic ");
 			connectionTopic = publishSession.createTopic(this.topic);
 			tPub = publishSession.createPublisher(connectionTopic);
 			DebugMessages.ok();	
 
-			DebugMessages.print(this.getClass().getSimpleName(), "Reading knowledge base ");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Reading knowledge base ");
 			kbase = readKnowledgeBase();
 			ksession = kbase.newStatefulKnowledgeSession();
 			ksession.setGlobal("EVENTS EntryPoint", eventStream);
@@ -121,7 +123,7 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 	
 	public void run()
 	{
-		DebugMessages.print(this.getClass().getSimpleName(), "Starting connection ");
+		DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Starting connection ");
 		try {
 			connection.start();
 			tSub.setMessageListener(this);
@@ -140,14 +142,20 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 	
 	@Override
 	public void onMessage(Message arg0) {
+		
 		ObjectMessage msg = (ObjectMessage) arg0;
 		try {
 			GlimpseBaseEvent<?> receivedEvent = (GlimpseBaseEvent<?>) msg.getObject();
 			if (eventStream != null) {
+				try {
 					eventStream.insert(receivedEvent);
-					System.out.println(this.getClass().getSimpleName() + ": receive: " + receivedEvent.getData() + " from: " + receivedEvent.getConnectorID() + " execution: " + receivedEvent.getConnectorInstanceID());	
+					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"receives: " + receivedEvent.getData() + " from: " + receivedEvent.getConnectorID() + " execution: " + receivedEvent.getConnectorInstanceID());	
 					DebugMessages.line();
+				} catch(org.drools.RuntimeDroolsException droolsCrashException) {
+					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), droolsCrashException.getMessage());
+					new UnknownMethodCallRuleException();
 				}
+			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}

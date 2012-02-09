@@ -21,6 +21,10 @@
 
 package it.cnr.isti.labse.glimpse.exceptions;
 
+import it.cnr.isti.labse.glimpse.utils.DebugMessages;
+
+import org.apache.commons.net.ntp.TimeStamp;
+
 /**
  * This exception will be thrown when the Monitoring Manager<br />
  * is unable to complete the request of unloading a rule.
@@ -35,7 +39,7 @@ public class UnknownRuleException extends Exception {
 
 	public UnknownRuleException()
 	{
-		System.out.println("Unable to found a rule with provided ruleName");
+		DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Unable to found a rule with provided ruleName");
 	}
 	
 	

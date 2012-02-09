@@ -21,6 +21,10 @@
 
 package it.cnr.isti.labse.glimpse.exceptions;
 
+import it.cnr.isti.labse.glimpse.utils.DebugMessages;
+
+import org.apache.commons.net.ntp.TimeStamp;
+
 /**
  * This exception will be thrown when the Monitoring Manager<br />
  * will receive an invalid rule.<br />
@@ -35,6 +39,6 @@ public class IncorrectRuleFormatException extends Exception {
 
 	public IncorrectRuleFormatException()
 	{
-		System.out.println("Check rule format, may contains errors");
+		DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Check rule format, may contains errors");
 	}
 }
