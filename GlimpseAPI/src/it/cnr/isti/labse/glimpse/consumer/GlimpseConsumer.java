@@ -8,6 +8,7 @@ import javax.jms.TopicSession;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import it.cnr.isti.labse.glimpse.example.MyGlimpseConsumer;
 import it.cnr.isti.labse.glimpse.utils.Status;
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionListDocument;
 
@@ -26,20 +27,23 @@ import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionList
  * 
  * The message must be sent on the jms://serviceTopic channel.<br />
  * The consumer must listen for the response of the monitoring infrastructure
- * that will send a jms textMessage containing the response channel where to connect
- * to listen for the evaluation results.<br /><br />
+ * that will send a jms TextMessage containing the response channel where to connect
+ * to listen for the evaluation results.<br />
+ * The text contained into the TextMessage sent from the monitoring infrastructure<br />
+ * is "AnswerTopic ==<em>TOPICNAMEWHERETOCONNECTTO</em>"<br /><br />
  * 
- *  To aid on the creation of the XML, you can use the class ComplexEventRuleActionListDocument.<br />
+ *  To create in a simple way the XML that define the request, you can use the class ComplexEventRuleActionListDocument.<br />
  *  Possible XML actions are: Insert Delete Start Stop Restart.<br /><br />
- *  When a well structured message (see exampleRule.xml) is received from the monitoring infrastructure<br />
- *  the monitoring will provide a responseMessage (TextMessage) containing the name<br />
+ *  The payload (the field RuleBody of the ComplexEventRuleType object) of <br />
+ *  a well-structured ComplexEventRule message, actually, must contains a Drools rule.<br />
+ *  For more details about Drools Rule, see the exampleRule.xml.<br /> 
  *  
  * ************************************************************************<br />
- * **************An usage example is available here {@link GlimpseAbstractConsumer}**************<br />
+ * *******An usage example is available here {@link MyGlimpseConsumer}********<br />
  * ************************************************************************<br /><br />
  * 
  * @author Antonello Calabr&ograve;
- * @version 0.4
+ * @version 3.2
  * 
  */
 public interface GlimpseConsumer extends MessageListener{

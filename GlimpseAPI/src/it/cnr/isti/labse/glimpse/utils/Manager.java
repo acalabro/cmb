@@ -1,7 +1,7 @@
 package it.cnr.isti.labse.glimpse.utils;
 
 import it.cnr.isti.labse.glimpse.consumer.GlimpseAbstractConsumer;
-import it.cnr.isti.labse.glimpse.probe.GlimpseAbstractProbe;
+import it.cnr.isti.labse.glimpse.probe.GlimpseProbe;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -14,13 +14,18 @@ import java.util.Properties;
  * This class should be used only for debug purpose<br />
  * because uses deprecated methods.
  * Helps to read text from files and to generate<br />
- * Properties object from a .ini formed file
+ * Properties object
  *  
  * @author Antonello Calabr&ograve;
- *
+ * @version 3.2
+ * 
  */
 public class Manager
 {
+	/**
+	 * @param fileName the absolute path of the file to parse
+	 * @return a {@link Properties} object
+	 */
 	@SuppressWarnings("deprecation")
 	public static Properties Read(String fileName)
 	{
@@ -141,7 +146,7 @@ public class Manager
 	
 	/**
 	 * This method generate a {@link Properties} object file that can be used to<br />
-	 * setup a {@link GlimpseAbstractProbe}.
+	 * setup a {@link GlimpseProbe}.
 	 * 
 	 * @param javaNamingFactoryInitial 
 	 * @param javaNamingProviderUrl
@@ -161,7 +166,7 @@ public class Manager
 			String topicProbeTopic, boolean debug,
 			String probeName, String probeChannel) {
 		if (debug)
-			DebugMessages.print(GlimpseAbstractProbe.class.getSimpleName(),
+			DebugMessages.print(GlimpseProbe.class.getSimpleName(),
 			"Creating Properties object ");
 		Properties settings = new Properties();
 		settings.setProperty("java.naming.factory.initial",javaNamingFactoryInitial);

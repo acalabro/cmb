@@ -24,16 +24,22 @@ import it.cnr.isti.labse.glimpse.utils.Manager;
 
 /**
  * This is a test class that execute the extended class {@link MyGlimpseConsumer}<br />
- * that simply override the {@link MyGlimpseConsumer#messageReceived(javax.jms.Message)} 
+ * {@link MyGlimpseConsumer} simply override the {@link MyGlimpseConsumer#messageReceived(javax.jms.Message)} method 
  * 
- * @author acalabro
+ * @author Antonello Calabr&ograve;
+ * @version 3.2
  *
  */
 public class MyGlimpseConsumerLauncher {
 
 	public static void main(String[] args) {
 		
-		new MyGlimpseConsumer(Manager.createConsumerSettingsPropertiesObject("org.apache.activemq.jndi.ActiveMQInitialContextFactory","tcp://atlantis.isti.cnr.it:61616","system","manager","TopicCF","jms.serviceTopic",false, "consumerTest"),
+		new MyGlimpseConsumer(
+				Manager.createConsumerSettingsPropertiesObject("org.apache.activemq.jndi.ActiveMQInitialContextFactory","tcp://atlantis.isti.cnr.it:61616","system","manager","TopicCF","jms.serviceTopic",false, "consumerTest"),
 				Manager.ReadTextFromFile(System.getProperty("user.dir") + "/bin/it/cnr/isti/labse/glimpse/example/exampleRule.xml"));
+		/*new MyGlimpseConsumer(
+				Manager.createConsumerSettingsPropertiesObject("org.apache.activemq.jndi.ActiveMQInitialContextFactory","tcp://localhost:61616","system","manager","TopicCF","jms.serviceTopic",false, "consumerTest"),
+				Manager.ReadTextFromFile(System.getProperty("user.dir") + "/bin/it/cnr/isti/labse/glimpse/example/exampleDeleteRule.xml"));*/
+			
 	}
 }

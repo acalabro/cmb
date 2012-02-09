@@ -18,21 +18,150 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
   * 
 */
+
 package it.cnr.isti.labse.glimpse.probe;
 
+import java.util.Properties;
+
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
+import it.cnr.isti.labse.glimpse.probe.GlimpseProbeInterface;
+import it.cnr.isti.labse.glimpse.utils.DebugMessages;
+import it.cnr.isti.labse.glimpse.utils.Manager;
+
+import javax.jms.JMSException;
+import javax.jms.ObjectMessage;
+import javax.jms.Session;
+import javax.jms.Topic;
+import javax.jms.TopicConnection;
+import javax.jms.TopicConnectionFactory;
+import javax.jms.TopicPublisher;
+import javax.jms.TopicSession;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 /**
+ * This class represent a generic implementation of the interface {@link GlimpseProbeInterface}.<br />
+ * It provides the abstract method: {@link #sendMessage(GlimpseBaseEvent, boolean)}<br />
+ * that can be extended if needed.<br />
  * 
- * The interface {@link GlimpseProbe} contains the event that a generic probe<br />
- * must implement to generate events.
- * 
- *  The behaviour of a Probe is defined in {@link GlimpseAbstractProbe}
- * 
- * @author acalabro
+ * @author Antonello Calabr&ograve;
+ * @version 3.2
  *
  */
-public interface GlimpseProbe {
+public abstract class GlimpseProbe implements GlimpseProbeInterface {
+	
+	protected static InitialContext initContext;
+	protected static TopicSession publishSession;
+	protected static TopicPublisher tPub;
+	protected static TopicConnection connection;
+	protected static Topic connectionTopic;
+	
+	/**
+	 * This constructor allow to create a GlimpseAbstractProbe object<br />
+	 * providing the {@link Properties} settings object
+	 * @param settings can be generated automatically
+	 * using {@link Manager#createConsumerSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)}.
+	 * 
+	 */	
+	public GlimpseProbe(Properties settings) {
+		
+		try {	
+			initContext = this.initConnection(settings, true);
+			this.createConnection(initContext,settings.getProperty("probeChannel"), settings, true);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	/**
+	 * This method setup a {@link TopicConnection} object.
+	 * 
+	 * @param initConn the InitialContext object generated using the method {@link #initConnection(Properties, boolean)}.
+	 * @param settings can be generated automatically using {@link Manager#createProbeSettingsPropertiesObject(String, String, String, String, String, String, boolean, String, String)}
+	 * @param probeChannel
+	 * @param debug
+	 * @return a {@link TopicPublisher} object
+	 * @throws NamingException
+	 * @throws JMSException
+	 */
+	protected TopicPublisher createConnection(InitialContext initConn, String probeChannel, Properties settings, boolean debug) throws NamingException, JMSException
+	{
+		if (debug)
+			DebugMessages.print(this.getClass().getSimpleName(),
+					"Creating ConnectionFactory with settings ");
+		TopicConnectionFactory connFact = (TopicConnectionFactory)initConn.lookup(settings.getProperty("connectionFactoryNames"));
+		if (debug) {
+			DebugMessages.ok();  
+			DebugMessages.print(this.getClass().getSimpleName(),
+						"Creating TopicConnection "); }
+			connection = connFact.createTopicConnection();
+			if (debug) {
+			DebugMessages.ok();
+			DebugMessages.line(); }
+			if (debug) {
+				DebugMessages.print(this.getClass().getSimpleName(),
+						"Creating Session "); }
+			publishSession = connection.createTopicSession(false,Session.AUTO_ACKNOWLEDGE);
+			if (debug) {
+				DebugMessages.ok();
+				DebugMessages.print(this.getClass().getSimpleName(),
+						"Looking up for channel ");}
+			connectionTopic = (Topic) initContext.lookup(probeChannel);
+			if (debug) {
+				DebugMessages.ok();
+				DebugMessages.print(this.getClass().getSimpleName(),
+						"Creating Publisher "); }
+			return tPub = publishSession.createPublisher(connectionTopic);
+	}
 
-	void sendMessage(GlimpseBaseEvent<String> event, boolean debug);
+	/**
+	 * This method setup the connection parameters using the {@link Properties} object settings
+	 * 
+	 * @param settings the parameter to setup the connection to the Enterprise Service Bus<br /> to send messages
+	 * @param debug
+	 * @return it provides an {@link InitialContext} object that will be used<br />during the Consumer <-> Monitoring interaction.
+	 * @throws NamingException
+	 */
+	protected InitialContext initConnection(Properties settings, boolean debug) throws NamingException {
+		if (debug)
+		DebugMessages.print(this.getClass().getSimpleName(),
+				"Creating InitialContext with settings ");
+		InitialContext initConn = new InitialContext(settings);
+		if (debug) {
+			DebugMessages.ok(); 
+			DebugMessages.line(); }
+		return initConn;
+	}	
+	
+	/**
+	 * This method send a {@link GlimpseBaseEvent} message on the ESB<br />
+	 * specifically on the channel specified in the settings object.
+	 * 
+	 * @param event the event to send
+	 * @param debug
+	 * @throws JMSException
+	 * @throws NamingException
+	 */
+	public void sendMessage(GlimpseBaseEvent<?> event, boolean debug) {
+		if (debug) {
+			DebugMessages.print(this.getClass().getSimpleName(),
+					"Creating Message "); }
+		try 
+		{
+			ObjectMessage messageToSend = publishSession.createObjectMessage();			
+			messageToSend.setObject(event);
+		if (debug) {
+			DebugMessages.ok();
+			DebugMessages.print(this.getClass().getSimpleName(),
+					"Publishing message  "); }
+		tPub.publish(messageToSend);	
+		if (debug) {
+			DebugMessages.ok(); 
+			DebugMessages.line(); }
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
+	}
 }

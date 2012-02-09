@@ -3,7 +3,8 @@ package it.cnr.isti.labse.glimpse.utils;
 /**
  * This class is used to get the Monitoring Engine status.
  * 
- * @author acalabro
+ * @author Antonello Calabr&ograve;
+ * @version 0.1
  *
  */
 public enum Status {

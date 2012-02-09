@@ -22,42 +22,39 @@ package it.cnr.isti.labse.glimpse.example;
 
 import java.util.Properties;
 
-import javax.jms.JMSException;
-import javax.naming.NamingException;
-
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
-import it.cnr.isti.labse.glimpse.probe.GlimpseAbstractProbe;
 import it.cnr.isti.labse.glimpse.probe.GlimpseProbe;
+import it.cnr.isti.labse.glimpse.probe.GlimpseProbeInterface;
 
 
 /**
- * This class is an example of how to extend the {@link GlimpseAbstractProbe} class, <br />
+ * This class is an example of how to extend the {@link GlimpseProbe} class, <br />
  * simply implementing the abstract method {@link MyGlimpseProbe#sendMessage(GlimpseBaseEvent, boolean)}.
  * <br /><br />
- * Obviously the behaviour of the class is defined in the {@link GlimpseAbstractProbe} class and<br />
- * can be modified implementing the interface {@link GlimpseProbe}.<br /><br />
+ * Obviously the behaviour of the class is defined in the {@link GlimpseProbe} class and<br />
+ * can be modified implementing the interface {@link GlimpseProbeInterface}.<br /><br />
  * 
- * Extending the {@link GlimpseAbstractProbe} class, it is possible to improve or modify the behaviour of theProbe.
+ * Extending the {@link GlimpseProbe} class, it is possible to improve or modify the behaviour of theProbe.
  * 
- * @author acalabro
+ * @author Antonello Calabr&ograve;
+ * @version 3.2
  *
  */
 
-public class MyGlimpseProbe extends GlimpseAbstractProbe {
+public class MyGlimpseProbe extends GlimpseProbe {
 
 	public MyGlimpseProbe(Properties settings) {
 		super(settings);
 	}
 
-	@Override
-	public void sendMessage(GlimpseBaseEvent<String> event, boolean debug) {
-		try {
-			sendEventMessage(event, debug);
-		} catch (JMSException e) {
-			e.printStackTrace();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}		
-	}
+	/*
+	 * To override the sendMessage, you can use the following code
+	 * 
+	 * @Override
+	 * public void sendMessage(GlimpseBaseEvent<?> event, boolean debug) {
+	 * 	//YOUR SENDING IMPLEMENTATION
+	 * }
+	 * 
+	 * */
 
 }

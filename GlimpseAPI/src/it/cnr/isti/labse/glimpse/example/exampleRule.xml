@@ -3,7 +3,7 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule ./ComplexEventRule.xsd">
 <Insert RuleType="drools">
-	<RuleName>Notification rule</RuleName>
+	<RuleName>SecurityRule</RuleName>
         <RuleBody>
         import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventImpl;
         import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
@@ -14,18 +14,21 @@
 	        @timestamp( timestamp )
         end
         
-		rule "upload time"
+		rule "SecurityRule"
 		no-loop
 		salience 999
 		dialect "java"
 		when
-			$aEvent : GlimpseBaseEventImpl(this.networkedSystemSource =="NS1", this.getConsumed == false);
+			$aEvent : GlimpseBaseEventImpl(this.getData == "Drone", this.getConsumed == false, this.isException == false);
 		then
 			$aEvent.setConsumed(true);
 			update( $aEvent );
 			retract( $aEvent );
-			ResponseDispatcher.NotifyMe(drools.getRule().getName(),"myEnabler",NotifierUtils.eventName($aEvent.getName()),NotifierUtils.eventName($aEvent.getData()));
+			ResponseDispatcher.NotifyMeValue(
+				drools.getRule().getName(),
+				"SecurityConsumer",
+				"Event", (String)$aEvent.getData());
 		end
         </RuleBody>
-    </Insert> 
+	</Insert>
 </ComplexEventRuleActionList>
