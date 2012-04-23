@@ -105,7 +105,7 @@ public class MainMonitoring {
 				System.out.println("Please wait until setup is done...");
 				//the buffer where the events are stored to be analyzed
 				EventsBuffer<GlimpseBaseEvent<?>> buffer = new EventsBufferImpl<GlimpseBaseEvent<?>>();
-	
+
 				//The complex event engine that will be used (in this case drools)
 				ComplexEventProcessor engine = new ComplexEventProcessorImpl(
 						Manager.Read(MANAGERPARAMETERFILE), buffer, connFact,

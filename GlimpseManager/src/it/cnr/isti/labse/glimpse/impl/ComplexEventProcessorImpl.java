@@ -149,7 +149,7 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 			if (eventStream != null) {
 				try {
 					eventStream.insert(receivedEvent);
-					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"receives: " + receivedEvent.getData() + " from: " + receivedEvent.getConnectorID() + " execution: " + receivedEvent.getConnectorInstanceID());	
+					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"receives: " + receivedEvent.getEventData());	
 					DebugMessages.line();
 				} catch(org.drools.RuntimeDroolsException droolsCrashException) {
 					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), droolsCrashException.getMessage());
