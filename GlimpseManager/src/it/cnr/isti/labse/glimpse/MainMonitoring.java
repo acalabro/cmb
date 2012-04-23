@@ -139,6 +139,16 @@ public class MainMonitoring {
 			Properties environmentParameters = Manager.Read(ENVIRONMENTPARAMETERSFILE);
 			initConn = new InitialContext(environmentParameters);
 			
+			DebugMessages.println(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(), "Connection Parameters");
+			DebugMessages.line();
+			DebugMessages.println(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(), "java.naming.factory.initial " + environmentParameters.getProperty("java.naming.factory.initial"));
+			DebugMessages.println(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(), "java.naming.provider.url " + environmentParameters.getProperty("java.naming.provider.url"));
+			DebugMessages.println(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(), "java.naming.security.principal " + environmentParameters.getProperty("java.naming.security.principal"));
+			DebugMessages.println(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(), "java.naming.security.credentials " + environmentParameters.getProperty("java.naming.security.credentials"));
+			DebugMessages.println(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(), "connectionFactoryNames " + environmentParameters.getProperty("connectionFactoryNames"));
+			DebugMessages.println(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(), "topic.serviceTopic " + environmentParameters.getProperty("topic.serviceTopic"));
+			DebugMessages.println(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(), "topic.probeTopic " + environmentParameters.getProperty("topic.probeTopic"));
+			DebugMessages.line();
 			DebugMessages.print(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(),"Setting up TopicConnectionFactory");
 			connFact = (TopicConnectionFactory)initConn.lookup("TopicCF");
 			DebugMessages.ok();
