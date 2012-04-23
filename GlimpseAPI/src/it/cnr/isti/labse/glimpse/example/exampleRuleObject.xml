@@ -27,7 +27,7 @@
 		ResponseDispatcher.NotifyMeObject(
 				drools.getRule().getName(),
 				"consumerTest",
-				(Object)$aEvent.getData());
+				NotifierUtils.eventName((Object)$aEvent.getData()));
 		end
         </RuleBody>
 	</Insert>

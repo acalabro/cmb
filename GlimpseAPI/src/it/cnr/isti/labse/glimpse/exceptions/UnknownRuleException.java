@@ -35,7 +35,7 @@ public class UnknownRuleException extends Exception {
 
 	public UnknownRuleException()
 	{
-		System.out.println(this.getClass().getSimpleName() + ": Unable to found a rule with provided ruleName");
+		System.out.println("Unable to found a rule with provided ruleName");
 	}
 	
 	

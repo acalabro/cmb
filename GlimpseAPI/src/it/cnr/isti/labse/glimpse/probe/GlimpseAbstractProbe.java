@@ -23,7 +23,6 @@ package it.cnr.isti.labse.glimpse.probe;
 
 import java.util.Properties;
 
-import it.cnr.isti.labse.glimpse.consumer.GlimpseAbstractConsumer;
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
 import it.cnr.isti.labse.glimpse.probe.GlimpseProbe;
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
@@ -40,11 +39,14 @@ import javax.jms.TopicSession;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+
 /**
  * This class represent a generic implementation of the interface {@link GlimpseProbe}.<br />
- * It provides for extension, the abstract method: {@link #sendMessage(GlimpseBaseEvent, boolean)}<br /> <br />
+ * It provides the abstract method: {@link #sendMessage(GlimpseBaseEvent, boolean)}<br />
+ * that can be extended if needed.<br />
  * 
- * @author acalabro
+ * @author Antonello Calabr&ograve;
+ * @version 3.2
  *
  */
 public abstract class GlimpseAbstractProbe implements GlimpseProbe {
@@ -56,9 +58,10 @@ public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 	protected static Topic connectionTopic;
 	
 	/**
-	 * This constructor allow to create a {@link GlimpseAbstractProbe} object<br />
-	 * providing the {@link #settings} properties
-	 * @param settings can be generated automatically using {@link Manager#createConsumerSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)}.
+	 * This constructor allow to create a GlimpseAbstractProbe object<br />
+	 * providing the {@link Properties} settings object
+	 * @param settings can be generated automatically
+	 * using {@link Manager#createConsumerSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)}.
 	 * 
 	 */	
 	public GlimpseAbstractProbe(Properties settings) {
@@ -76,7 +79,7 @@ public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 	/**
 	 * This method setup a {@link TopicConnection} object.
 	 * 
-	 * @param initConn the InitialContext object generated using the method {@link GlimpseAbstractConsumer#initConnection(Properties, boolean)}.
+	 * @param initConn the InitialContext object generated using the method {@link #initConnection(Properties, boolean)}.
 	 * @param settings can be generated automatically using {@link Manager#createProbeSettingsPropertiesObject(String, String, String, String, String, String, boolean, String, String)}
 	 * @param probeChannel
 	 * @param settings
@@ -134,13 +137,10 @@ public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 		return initConn;
 	}	
 	
-	/* (non-Javadoc)
-	 * @see it.cnr.isti.labse.glimpse.api.probe.GlimpseProbe#sendMessage(it.cnr.isti.labse.glimpse.api.event.GlimpseBaseEvent, boolean)
-	 */
-	public abstract void sendMessage(GlimpseBaseEvent<String> event, boolean debug);
+	public abstract void sendMessage(GlimpseBaseEvent<?> event, boolean debug);
 	
 	/**
-	 * This method send a {@link GlimpseBaseEvent} message on the enterrprise service bus<br />
+	 * This method send a {@link GlimpseBaseEvent} message on the ESB<br />
 	 * specifically on the channel specified in the {@link #settings} object.
 	 * 
 	 * @param event the event to send
@@ -156,7 +156,7 @@ public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 		try 
 		{
 			ObjectMessage messageToSend = publishSession.createObjectMessage();			
-			messageToSend.setObject(event);
+			messageToSend.setObject(event);		
 		if (debug) {
 			DebugMessages.ok();
 			DebugMessages.print(this.getClass().getSimpleName(),

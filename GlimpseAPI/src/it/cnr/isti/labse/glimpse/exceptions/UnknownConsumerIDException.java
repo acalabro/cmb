@@ -35,6 +35,6 @@ public class UnknownConsumerIDException extends Exception {
 
 	public UnknownConsumerIDException()
 	{
-		System.out.println(this.getClass().getSimpleName() + ": Check request ID, may contains errors");
+		System.out.println("Check request ID, may contains errors");
 	}
 }

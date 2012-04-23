@@ -35,6 +35,6 @@ public class IncorrectRuleFormatException extends Exception {
 
 	public IncorrectRuleFormatException()
 	{
-		System.out.println(this.getClass().getSimpleName() + ": Check rule format, may contains errors");
+		System.out.println("Check rule format, may contains errors");
 	}
 }

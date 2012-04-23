@@ -57,29 +57,18 @@ public class MyGlimpseConsumer extends GlimpseAbstractConsumer {
 			String plainTextRule) {
 		super(settings, plainTextRule);
 	}
-	
-	public MyGlimpseConsumer(Properties settings,
-			ComplexEventRuleActionListDocument complexEventRuleXML) {
-		super(settings,complexEventRuleXML);
-	}
 
 	@Override
 	public void messageReceived(Message arg0) throws JMSException {
 		try {
-			ObjectMessage responseFromMonitoring = (ObjectMessage) arg0;
-			
+			ObjectMessage responseFromMonitoring = (ObjectMessage) arg0;	
 			if (responseFromMonitoring.getObject() instanceof ComplexEventException) {
 				ComplexEventException exceptionReceived = (ComplexEventException) responseFromMonitoring.getObject();
 				System.out.println("Exception ClassName: " + exceptionReceived.getClassName() + "\n");
 			}
 			else {
-				if (responseFromMonitoring.getObject() instanceof ComplexEventResponse) {
-						ComplexEventResponse resp = (ComplexEventResponse) responseFromMonitoring.getObject();
-						System.out.println("Response value :" + resp.getResponseValue());
-				}
-				else {
-					System.out.println("Response object :" + responseFromMonitoring.getObject().toString());
-				}
+				ComplexEventResponse resp = (ComplexEventResponse) responseFromMonitoring.getObject();
+				System.out.println("Response value: " + resp.getResponseValue());
 			}
 		}
 		catch(ClassCastException asd) {

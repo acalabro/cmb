@@ -1,7 +1,7 @@
 package it.cnr.isti.labse.glimpse.utils;
 
 import it.cnr.isti.labse.glimpse.consumer.GlimpseAbstractConsumer;
-import it.cnr.isti.labse.glimpse.probe.GlimpseProbe;
+import it.cnr.isti.labse.glimpse.probe.GlimpseAbstractProbe;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -146,7 +146,7 @@ public class Manager
 	
 	/**
 	 * This method generate a {@link Properties} object file that can be used to<br />
-	 * setup a {@link GlimpseProbe}.
+	 * setup a {@link GlimpseAbstractProbe}.
 	 * 
 	 * @param javaNamingFactoryInitial 
 	 * @param javaNamingProviderUrl
@@ -166,7 +166,7 @@ public class Manager
 			String topicProbeTopic, boolean debug,
 			String probeName, String probeChannel) {
 		if (debug)
-			DebugMessages.print(GlimpseProbe.class.getSimpleName(),
+			DebugMessages.print(GlimpseAbstractProbe.class.getSimpleName(),
 			"Creating Properties object ");
 		Properties settings = new Properties();
 		settings.setProperty("java.naming.factory.initial",javaNamingFactoryInitial);

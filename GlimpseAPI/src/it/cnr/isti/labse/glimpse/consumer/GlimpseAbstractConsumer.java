@@ -63,7 +63,7 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 	/**
 	 * This method setup the connection
 	 * 
-	 * @param settings  the settings properties for the connection to the Monitoring infrastructure.
+	 * @param settings, the settings properties for the connection to the Monitoring infrastructure.
 	 * The Properties object may also be created using the method {@link Manager#createConsumerSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)}
 	 */
 	protected void init(Properties settings) {
@@ -192,7 +192,7 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 	 * @param initConn the InitialContext object generated using the method
 	 * {@link GlimpseAbstractConsumer#initConnection(Properties, boolean)}.
 	 * @param settings can be generated automatically using
-	 * {@link Manager#createConsumerSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)};
+	 * {@link GlimpseAbstractConsumer#createSettingsPropertiesObject(String, String, String, String, String, String, boolean, String)};
 	 * @param debug
 	 * @return a TopicConnection object.
 	 * @throws NamingException
@@ -359,6 +359,7 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 	 */
 	protected TopicSubscriber connectToTheResponseChannel(TopicConnection connection, String responseChannel, boolean debug) throws JMSException {
 		if (debug) {
+			DebugMessages.ok();
 			DebugMessages.print(this.getClass().getSimpleName(),
 					"Creating Session "); }
 		TopicSession subscribeSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -380,8 +381,7 @@ public abstract class GlimpseAbstractConsumer implements GlimpseConsumer {
 		connection.start();
 		if (debug) {
 			DebugMessages.ok(); 
-			DebugMessages.print(this.getClass().getSimpleName(), "Connecting to the responseChannel " + responseChannel);
-			DebugMessages.ok();
+			DebugMessages.println(this.getClass().getSimpleName(), "Successfully connected to the responseChannel " + responseChannel);
 			DebugMessages.line(); }
 		 return tSub;
 	}
