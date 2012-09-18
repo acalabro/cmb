@@ -21,6 +21,8 @@
 package it.cnr.isti.labse.glimpse;
 
 import it.cnr.isti.labse.glimpse.impl.EventsBufferImpl;
+import it.cnr.isti.labse.glimpse.impl.ServiceLocatorImpl;
+import it.cnr.isti.labse.glimpse.impl.ServiceRegistryImpl;
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
 import it.cnr.isti.labse.glimpse.manager.GlimpseManager;
@@ -33,6 +35,8 @@ import it.cnr.isti.labse.glimpse.utils.SplashScreen;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
@@ -103,7 +107,8 @@ public class MainMonitoring {
 	
 				SplashScreen.Show();
 				System.out.println("Please wait until setup is done...");
-				//the buffer where the events are stored to be analyzed
+				//the buffer where the events are stored to be analyzed, in this version
+				//the buffer object is not used because Drools has it's own eventStream object
 				EventsBuffer<GlimpseBaseEvent<?>> buffer = new EventsBufferImpl<GlimpseBaseEvent<?>>();
 
 				//The complex event engine that will be used (in this case drools)
@@ -117,12 +122,20 @@ public class MainMonitoring {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-	
+
+				//Service platform locator daemon pool thread
+				ExecutorService serviceLocatorThreadPool = Executors.newCachedThreadPool();     
+				serviceLocatorThreadPool.execute(
+						new ServiceLocatorImpl("the Wsdl", 
+								"the soap request file path",
+								new ServiceRegistryImpl()));
+						
 				//the manager of all the architecture
 				GlimpseManager manager = new GlimpseManager(
 						Manager.Read(MANAGERPARAMETERFILE), connFact, initConn,
 						engine.getRuleManager());
 				manager.start();
+				
 			}
 		} catch (Exception e) {
 			System.out.println("USAGE: java -jar MainMonitoring.jar \"systemSettings\"");			

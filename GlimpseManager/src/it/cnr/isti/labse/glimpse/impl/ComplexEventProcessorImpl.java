@@ -126,8 +126,8 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 		DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Starting connection ");
 		try {
 			connection.start();
-			tSub.setMessageListener(this);
 			DebugMessages.ok();
+			tSub.setMessageListener(this);
 			DebugMessages.line();
 			while (this.getState() == State.RUNNABLE) {
 		        Thread.sleep(20);
@@ -160,6 +160,7 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 			e.printStackTrace();
 		}
 		catch(ClassCastException ex) {
+			
 		}
 	}
 	
