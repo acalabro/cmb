@@ -160,7 +160,7 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 			e.printStackTrace();
 		}
 		catch(ClassCastException ex) {
-			
+			DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), ex.getMessage());
 		}
 	}
 	

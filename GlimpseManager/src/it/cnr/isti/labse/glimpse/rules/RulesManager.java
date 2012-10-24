@@ -34,8 +34,8 @@ import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionType
 public abstract class RulesManager {
 	public RulesManager(Object knowledgeBuilder, Object knowledgeBase, Object knowledgeSession) {
 	}
-	abstract void insertRule(String rule, String ruleName) throws IncorrectRuleFormatException;
-	abstract void deleteRule(String ruleName) throws UnknownRuleException;
+	public abstract void insertRule(String rule, String ruleName) throws IncorrectRuleFormatException;
+	public abstract void deleteRule(String ruleName) throws UnknownRuleException;
 	abstract void startRule(String ruleName) throws UnknownRuleException;
 	abstract void stopRule(String ruleName) throws UnknownRuleException;
 	abstract void restartRule(String ruleName) throws UnknownRuleException;

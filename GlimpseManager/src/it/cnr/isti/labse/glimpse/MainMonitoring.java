@@ -22,12 +22,12 @@ package it.cnr.isti.labse.glimpse;
 
 import it.cnr.isti.labse.glimpse.impl.EventsBufferImpl;
 import it.cnr.isti.labse.glimpse.impl.ServiceLocatorImpl;
-import it.cnr.isti.labse.glimpse.impl.ServiceRegistryImpl;
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
 import it.cnr.isti.labse.glimpse.manager.GlimpseManager;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 import it.cnr.isti.labse.glimpse.impl.ComplexEventProcessorImpl;
+import it.cnr.isti.labse.glimpse.services.ServiceLocator;
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
 import it.cnr.isti.labse.glimpse.utils.Manager;
 import it.cnr.isti.labse.glimpse.utils.SplashScreen;
@@ -35,8 +35,6 @@ import it.cnr.isti.labse.glimpse.utils.SplashScreen;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
@@ -62,6 +60,8 @@ public class MainMonitoring {
 	protected static String ENVIRONMENTPARAMETERSFILE;
 	protected static String DROOLSPARAMETERFILE;
 	protected static String MANAGERPARAMETERFILE;
+	protected static String SOAPREQUESTFILE;
+	protected static String DROOLSRULEREQUESTTEMPLATE;
 	// end settings
 
 	private static TopicConnectionFactory connFact;
@@ -85,6 +85,10 @@ public class MainMonitoring {
 					.getProperty("DROOLSPARAMETERFILE");
 			MANAGERPARAMETERFILE = systemProps
 					.getProperty("MANAGERPARAMETERFILE");
+			SOAPREQUESTFILE = systemProps
+					.getProperty("SOAPREQUESTFILE");
+			DROOLSRULEREQUESTTEMPLATE = systemProps
+					.getProperty("DROOLSRULEREQUESTTEMPLATE");			
 			return true;
 		} catch (Exception asd) {
 			System.out.println("USAGE: java -jar MainMonitoring.jar \"systemSettings\"");
@@ -107,6 +111,7 @@ public class MainMonitoring {
 	
 				SplashScreen.Show();
 				System.out.println("Please wait until setup is done...");
+				
 				//the buffer where the events are stored to be analyzed, in this version
 				//the buffer object is not used because Drools has it's own eventStream object
 				EventsBuffer<GlimpseBaseEvent<?>> buffer = new EventsBufferImpl<GlimpseBaseEvent<?>>();
@@ -123,19 +128,15 @@ public class MainMonitoring {
 					e.printStackTrace();
 				}
 
-				//Service platform locator daemon pool thread
-				ExecutorService serviceLocatorThreadPool = Executors.newCachedThreadPool();     
-				serviceLocatorThreadPool.execute(
-						new ServiceLocatorImpl("the Wsdl", 
-								"the soap request file path",
-								new ServiceRegistryImpl()));
-						
+				//the component in charge to locate services and load specific rules.
+				ServiceLocator serviceLocator = new ServiceLocatorImpl(engine,SOAPREQUESTFILE, DROOLSRULEREQUESTTEMPLATE);
+				serviceLocator.start();
+				
 				//the manager of all the architecture
 				GlimpseManager manager = new GlimpseManager(
 						Manager.Read(MANAGERPARAMETERFILE), connFact, initConn,
 						engine.getRuleManager());
 				manager.start();
-				
 			}
 		} catch (Exception e) {
 			System.out.println("USAGE: java -jar MainMonitoring.jar \"systemSettings\"");			
@@ -151,7 +152,7 @@ public class MainMonitoring {
 			//the connection are initialized
 			Properties environmentParameters = Manager.Read(ENVIRONMENTPARAMETERSFILE);
 			initConn = new InitialContext(environmentParameters);
-			
+			 
 			DebugMessages.println(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(), "Connection Parameters");
 			DebugMessages.line();
 			DebugMessages.println(TimeStamp.getCurrentTime(), MainMonitoring.class.getSimpleName(), "java.naming.factory.initial " + environmentParameters.getProperty("java.naming.factory.initial"));

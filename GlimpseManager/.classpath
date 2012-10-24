@@ -15,7 +15,7 @@
 	<classpathentry exported="true" kind="lib" path="externallib/xmlpublic.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ComplexEventResponse.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ComplexEventRule.jar"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/MonitorUserLibrary"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/MonitoringLibrary"/>
 	<classpathentry exported="true" kind="lib" path="lib/ComplexEventException.jar"/>
 	<classpathentry exported="true" kind="lib" path="externallib/jbosscx-client.jar"/>
 	<classpathentry kind="lib" path="/usr/lib/eclipse/plugins/org.apache.axis_1.4.0.v201005080400/lib/axis.jar"/>

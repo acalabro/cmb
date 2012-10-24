@@ -52,7 +52,7 @@ public class DroolsRulesManager extends RulesManager {
 	}
 
 	@Override
-	void insertRule(final String rule, final String ruleName) throws IncorrectRuleFormatException {
+	public void insertRule(final String rule, final String ruleName) throws IncorrectRuleFormatException {
 
 		//try {
 			newKnowledgeBuilder.add(ResourceFactory.newByteArrayResource(rule.trim().getBytes()), ResourceType.DRL);
@@ -67,7 +67,7 @@ public class DroolsRulesManager extends RulesManager {
 	}
 
 	@Override
-	void deleteRule(final String ruleName) throws UnknownRuleException {
+	public void deleteRule(final String ruleName) throws UnknownRuleException {
 		
 		final Collection<KnowledgePackage> pkg = kbase.getKnowledgePackages();
 		final Object[] pkgArray = pkg.toArray();
@@ -115,7 +115,7 @@ public class DroolsRulesManager extends RulesManager {
 				e.printStackTrace();
 			}
 		}		
-		
+				
 		final ComplexEventRuleType[] startRules = rules.getStartArray();
 		for(int i = 0; i < startRules.length; i++)
 		{
