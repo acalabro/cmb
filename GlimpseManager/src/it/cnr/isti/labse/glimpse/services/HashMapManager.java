@@ -1,4 +1,4 @@
-package it.cnr.isti.labse.glimpse.impl;
+package it.cnr.isti.labse.glimpse.services;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -25,13 +25,6 @@ public class HashMapManager {
 	}
 	
 	public InetAddress getMachine(String serviceName, String serviceType, String serviceRole) {
-//		if (serviceType != null) {
-//			return localSearchType(serviceName, serviceType);
-//		}
-//		else {
-//			if (serviceRole != null)
-//				return localSearchRole(serviceName, serviceRole);
-//		}
 		return localSearchName(serviceName);
 	}
 

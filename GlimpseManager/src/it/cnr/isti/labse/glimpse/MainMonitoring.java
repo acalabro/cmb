@@ -21,6 +21,7 @@
 package it.cnr.isti.labse.glimpse;
 
 import it.cnr.isti.labse.glimpse.impl.EventsBufferImpl;
+import it.cnr.isti.labse.glimpse.impl.RuleTemplateManager;
 import it.cnr.isti.labse.glimpse.impl.ServiceLocatorImpl;
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
@@ -128,8 +129,10 @@ public class MainMonitoring {
 					e.printStackTrace();
 				}
 
+				RuleTemplateManager templateManager = new RuleTemplateManager(DROOLSRULEREQUESTTEMPLATE);
+				
 				//the component in charge to locate services and load specific rules.
-				ServiceLocator serviceLocator = new ServiceLocatorImpl(engine,SOAPREQUESTFILE, DROOLSRULEREQUESTTEMPLATE);
+				ServiceLocator serviceLocator = new ServiceLocatorImpl(engine,SOAPREQUESTFILE, templateManager);
 				serviceLocator.start();
 				
 				//the manager of all the architecture

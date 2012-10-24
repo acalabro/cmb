@@ -1,15 +1,14 @@
 package it.cnr.isti.labse.glimpse.impl;
 
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
-import it.cnr.isti.labse.glimpse.exceptions.IncorrectRuleFormatException;
-import it.cnr.isti.labse.glimpse.rules.RulesManager;
+
 import it.cnr.isti.labse.glimpse.services.ChoreosService;
+import it.cnr.isti.labse.glimpse.services.HashMapManager;
 import it.cnr.isti.labse.glimpse.services.ServiceLocator;
+
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
-import it.cnr.isti.labse.glimpse.utils.Manager;
+
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionListDocument;
-import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionType;
-import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleType;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,26 +17,25 @@ import java.net.InetAddress;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+
 import javax.xml.messaging.URLEndpoint;
 
-import net.sf.saxon.trans.RuleManager;
-
 import org.apache.commons.net.ntp.TimeStamp;
-import org.apache.xmlbeans.XmlException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 public class ServiceLocatorImpl extends ServiceLocator {
 
 	public static String localSoapRequestFilePath;
-	public static String localDroolsRequestTemplateFilePath;
 	public static ServiceRegistryImpl dataSetForCollectedInformation;
+	public static RuleTemplateManager localRuleTemplateManager;
 	
 	public static ServiceLocatorImpl instance = null;
 	public static HashMapManager theHashMapManager;
@@ -45,17 +43,17 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	
 	public static synchronized ServiceLocatorImpl getSingleton() {
         if (instance == null) 
-            instance = new ServiceLocatorImpl(anEngine,localSoapRequestFilePath, localDroolsRequestTemplateFilePath);
+            instance = new ServiceLocatorImpl(anEngine,localSoapRequestFilePath, RuleTemplateManager.getSingleton());
         return instance;
     }
 	
-	public ServiceLocatorImpl(ComplexEventProcessor engine, String soapRequestFilePath, String droolsRuleRequestTemplateFile) {
+	public ServiceLocatorImpl(ComplexEventProcessor engine, String soapRequestFilePath, RuleTemplateManager ruleTemplateManager) {
 		DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Starting ServiceLocator component ");
 
 		ServiceLocatorImpl.instance = this;
 		ServiceLocatorImpl.anEngine = engine;
 		ServiceLocatorImpl.localSoapRequestFilePath = soapRequestFilePath;
-		ServiceLocatorImpl.localDroolsRequestTemplateFilePath = droolsRuleRequestTemplateFile;
+		ServiceLocatorImpl.localRuleTemplateManager = ruleTemplateManager;
 	
 		theHashMapManager = new HashMapManager();
 		
@@ -195,7 +193,7 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	//it will generate a new rule that will be injected into the knowledge
 	//base. This new rule will check if there are (will be) infrastructure
 	//violation from the machine on which the service that call this method is running.
-	public static void GetMachineIP(String serviceName, String serviceType, String serviceRole) {
+	public static void GetMachineIP(String serviceName, String serviceType, String serviceRole, RuleTemplateEnum ruleTemplateType) {
 		
 		DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getCanonicalName(), " getMachineIP method called");
 		ServiceLocatorImpl theLocator = ServiceLocatorImpl.getSingleton();
@@ -205,16 +203,15 @@ public class ServiceLocatorImpl extends ServiceLocator {
 			machineIP = theLocator.getMachineIPQueryingDSB(serviceName, serviceType, serviceRole);
 		}
 		
-		//generate the new rule to monitor
-		ComplexEventRuleActionListDocument newRule = theLocator.generateNewRuleToInjectInKnowledgeBase(machineIP);
 		
+		//generate the new rule to monitor
+		ComplexEventRuleActionListDocument newRule = localRuleTemplateManager.generateNewRuleToInjectInKnowledgeBase(machineIP, ruleTemplateType);
 		
 		//insert new rule into the knowledgeBase
-		theLocator.insertRule(newRule);
-		
+		localRuleTemplateManager.insertRule(newRule);
 		
 		//update the localTable with new information.
-		theHashMapManager.insertLocalTable(newRule.getComplexEventRuleActionList().getInsertArray().hashCode(),
+		theHashMapManager.insertLocalTable(newRule.getComplexEventRuleActionList().getInsertArray(0).getRuleName().hashCode(),
 							serviceName,
 							machineIP,
 							serviceType,
@@ -230,39 +227,5 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	public InetAddress getMachineIPQueryingDSB(String serviceName, String serviceType, String serviceRole) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public ComplexEventRuleActionListDocument generateNewRuleToInjectInKnowledgeBase(
-			InetAddress machineName) {
-		
-		ComplexEventRuleActionListDocument ruleDoc;			
-		ruleDoc = ComplexEventRuleActionListDocument.Factory.newInstance();
-		ComplexEventRuleActionType ruleActions = ruleDoc.addNewComplexEventRuleActionList();
-		ComplexEventRuleType ruleType = ruleActions.addNewInsert();
-		ruleType.setRuleName(machineName.getHostAddress());
-		ruleType.setRuleType("drools");
-		ruleType.setRuleBody(Manager.ReadTextFromFile(localDroolsRequestTemplateFilePath));
-		
-		return ruleDoc;
-	}
-
-	@Override
-	public int insertRule(ComplexEventRuleActionListDocument newRuleToInsert) {
-		try {
-			RulesManager rulesManager = ServiceLocatorImpl.anEngine.getRuleManager();
-			rulesManager.loadRules(newRuleToInsert.getComplexEventRuleActionList());
-			DebugMessages.println(TimeStamp.getCurrentTime(), ServiceLocatorImpl.class.getCanonicalName(), "KnowledgeBase updated");
-		} catch (IncorrectRuleFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	@Override
-	public int unloadRule(int ruleInsertionID) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }
