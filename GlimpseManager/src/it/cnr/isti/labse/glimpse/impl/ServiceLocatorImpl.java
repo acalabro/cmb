@@ -132,7 +132,7 @@ public class ServiceLocatorImpl extends ServiceLocator {
 
 			request = soapMessage.getSOAPBody().addChildElement("http://wsf.cdyne.com/WeatherWS/weather.asmx?op=GetCityForecastByZIP","http://wsf.cdyne.com/WeatherWS/weather.asmx?op=GetCityForecastByZIP","http://www.w3.org/2001/XMLSchema-instance");
 
-						
+			System.out.println(request.getTextContent());
             //TODO: Here we should put the message that must be sent to easyESB
             //readSoapRequest(thePathOfTheStringWhereTheRequestToEasyESBisSaved);
 
