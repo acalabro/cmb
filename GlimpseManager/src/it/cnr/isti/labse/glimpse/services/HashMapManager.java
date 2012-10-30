@@ -21,7 +21,7 @@ public class HashMapManager {
 		}
 		
 		theCommonMapTable = new HashMap<String, InetAddress>();
-		theCommonMapTable.put("serviceA", test);
+		theCommonMapTable.put("resp1", test);
 	}
 	
 	public InetAddress getMachine(String serviceName, String serviceType, String serviceRole) {
