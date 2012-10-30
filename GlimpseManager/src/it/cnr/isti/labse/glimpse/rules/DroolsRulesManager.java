@@ -170,7 +170,8 @@ public class DroolsRulesManager extends RulesManager {
 		Rule rl;
 		for(int i = 0; i<rlsArray.length; i++) {
 			rl = (Rule) rlsArray[i];
-			System.err.println("Package: " + pkgPd.getName() + " - RuleName: " + rl.getName());
+			DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getCanonicalName(),
+					"Package: " + pkgPd.getName() + " - RuleName: " + rl.getName());
 		}
 		DebugMessages.line();
 	}	

@@ -166,4 +166,13 @@ public class ResponseDispatcher {
 				+ " - enablerName: " + enablerName
 				+ " - evaluationResult: " + exceptionRaised.getClassName());
 	}
+	
+	public static void LogViolation(String ruleMatched,
+			String whoGenerateIt, String whatToLog)
+	{
+		DebugMessages.println(TimeStamp.getCurrentTime(), ResponseDispatcher.class.getSimpleName(),
+				"ruleMatched: " + ruleMatched
+				+ " - whoGeneratedIt: " + whoGenerateIt
+				+ " - what happens: " + whatToLog);
+	}
 }

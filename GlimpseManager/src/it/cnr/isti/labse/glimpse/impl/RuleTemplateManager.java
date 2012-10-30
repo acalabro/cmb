@@ -39,6 +39,10 @@ public class RuleTemplateManager {
 	       ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
 	       break;
 	       
+	      case INFRASTRUCTUREVIOLATION:
+	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
+	    	 break;
+
 	      default:
 	    	  ruleSelected = "";
 	    	  break;
@@ -65,7 +69,9 @@ public class RuleTemplateManager {
 	public int insertRule(ComplexEventRuleActionListDocument newRuleToInsert) {
 		try {
 			RulesManager rulesManager = ServiceLocatorImpl.anEngine.getRuleManager();
-			DebugMessages.println(TimeStamp.getCurrentTime(), ServiceLocatorImpl.class.getCanonicalName(), "Updating knowledgeBase");
+			DebugMessages.println(TimeStamp.getCurrentTime(), ServiceLocatorImpl.class.getCanonicalName(), "Updating knowledgeBase " +
+			rulesManager.getLoadedKnowledgePackageCardinality());
+			rulesManager.getLoadedRulesInfo();
 			rulesManager.loadRules(newRuleToInsert.getComplexEventRuleActionList());
 			DebugMessages.println(TimeStamp.getCurrentTime(), ServiceLocatorImpl.class.getCanonicalName(), "KnowledgeBase updated");
 		} catch (IncorrectRuleFormatException e) {

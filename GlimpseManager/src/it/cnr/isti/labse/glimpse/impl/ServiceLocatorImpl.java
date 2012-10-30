@@ -195,7 +195,7 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	//violation from the machine on which the service that call this method is running.
 	public static void GetMachineIP(String serviceName, String serviceType, String serviceRole, RuleTemplateEnum ruleTemplateType) {
 		
-		DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getCanonicalName(), " getMachineIP method called");
+		DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getCanonicalName(), "getMachineIP method called");
 		ServiceLocatorImpl theLocator = ServiceLocatorImpl.getSingleton();
 		
 		InetAddress machineIP = theLocator.getMachineIPLocally(serviceName, serviceType, serviceRole);
