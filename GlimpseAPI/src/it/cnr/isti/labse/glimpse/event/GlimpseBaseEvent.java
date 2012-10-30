@@ -21,8 +21,6 @@
 
 package it.cnr.isti.labse.glimpse.event;
 
-import java.io.Serializable;
-
 /**
  * The GlimpseBaseEvent <T> is the generic basic event that the monitoring infrastructure<br />
  * uses to infer more complex events. These object must be sent from a probe<br />
@@ -34,57 +32,24 @@ import java.io.Serializable;
  * it's possible to add or change variables and to manages it into the CEP using a well-formed Drools rule.<br />
  * 
  * @author Antonello Calabr&ograve;
- * @version 3.2
+ * @version 3.4
  * 
  * @param <T> The type of the data on the payload of the GlimpseBaseEvent, see method {@link #getData()} and {@link #setData(Object)}
  */
-public abstract class GlimpseBaseEvent <T> implements Serializable {
-	private static final long serialVersionUID = 1L;
-	protected boolean consumed;
-	protected String connectorID;
-	protected String connectorInstanceID;
-	protected String connectorInstanceExecutionID;
-	protected int eventID;
-	protected int eventInResponseToID;
-	protected String networkedSystemSource;
-	protected String sourceState;
-	protected String eventName;
-	protected boolean isException;
+public interface GlimpseBaseEvent <T> {
 	
-	public GlimpseBaseEvent(String eventName, String connectorID, String connectorInstanceID, String connectorInstanceExecutionID, int eventID, int eventInResponseToID, Long ts, String networkedSystemSource, boolean isException) {
-		consumed = false;
-		isException = false;
-	};
-	
-	public abstract T getData();
-	public abstract void setData(T t);
-	
-	public abstract String getName();
-	public abstract void setName(String eventName);
-	
-	public abstract Long getTimestamp();
-	
-	public abstract boolean getConsumed();
-	public abstract void setConsumed(boolean consumed);
-	
-	public abstract String getNetworkedSystemSource();
-	public abstract void setNetworkedSystemSource(String networkedSystemSource);
-	
-	public abstract int getEventID();
-	public abstract void setEventID(int eventID);
-	
-	public abstract int getEventInResponseToID();
-	public abstract void setEventInResponseToID(int eventInResponseToID);
-	
-	public abstract String getConnectorID();
-	public abstract void setConnectorID(String connectorID);
+	public T getEventData();
+	public void setEventData(T t);
 		
-	public abstract String getConnectorInstanceID();
-	public abstract void setConnectorInstanceID(String connectorInstanceID);
+	public Long getTimeStamp();
+	public void setTimeStamp(Long timeStamp);
 	
-	public abstract String getConnectorInstanceExecutionID();
-	public abstract void setConnectorInstanceExecutionID(String connectorInstanceExecutionID);
-
-	public abstract boolean getIsException();
-	public abstract void setIsException(boolean isException);
+	public String getEventName();
+	public void setEventName(String eventName);
+	
+	public boolean isException();
+	public void setException(boolean isException);
+	
+	public boolean isConsumed();
+	public void setConsumed(boolean consumed);
 }

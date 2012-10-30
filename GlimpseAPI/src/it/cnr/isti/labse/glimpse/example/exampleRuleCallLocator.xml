@@ -3,29 +3,27 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://labse.isti.cnr.it/glimpse/xml/ComplexEventRule ./ComplexEventRule.xsd">
 <Insert RuleType="drools">
-	<RuleName>ExceptionsFromNS1</RuleName>
+	<RuleName>Generic SLA Monitor</RuleName>
         <RuleBody>
         import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventChoreos;
         import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
         import it.cnr.isti.labse.glimpse.utils.NotifierUtils;
+        import it.cnr.isti.labse.glimpse.impl.ServiceLocatorImpl;
+	import it.cnr.isti.labse.glimpse.impl.RuleTemplateEnum;
         
         declare GlimpseBaseEventChoreos
 	        @role( event )
 	        @timestamp( timeStamp )
         end
         
-		rule "ExceptionsFromNS1"
+		rule "ruleOne"
 		no-loop
 		salience 999
 		dialect "java"
 		when
-			$aEvent : GlimpseBaseEventImpl(this.networkedSystemSource == "NS1", this.isException == true, this.getConsumed == false);
+			$aEvent : GlimpseBaseEventChoreos(this.choreographySource == "CH1", this.isConsumed == false, this.isException == false, this.getServiceSource == "resp1", this.getEventName == "SLA Alert");
 		then
-			$aEvent.setConsumed(true);
-			update( $aEvent );
-			retract( $aEvent );
-			ResponseDispatcher.NotifyMeException(drools.getRule().getName(),
-				"consumerTest", (Exception)$aEvent.getData());
+			ServiceLocatorImpl.GetMachineIP("resp1","a","b",RuleTemplateEnum.INFRASTRUCTUREVIOLATION);
 		end
         </RuleBody>
 	</Insert>

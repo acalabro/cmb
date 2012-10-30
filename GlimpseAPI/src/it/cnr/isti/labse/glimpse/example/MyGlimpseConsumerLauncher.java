@@ -37,7 +37,7 @@ public class MyGlimpseConsumerLauncher {
 		new MyGlimpseConsumer(
 				Manager.createConsumerSettingsPropertiesObject(
 						"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
-						"tcp://dsbchoreos.petalslink.org:61616",
+						"tcp://atlantis.isti.cnr.it:61616",
 						"system",
 						"manager",
 						"TopicCF",
@@ -45,7 +45,7 @@ public class MyGlimpseConsumerLauncher {
 						false,
 						"consumerTest"),
 						Manager.ReadTextFromFile(
-								System.getProperty("user.dir") + "/bin/it/cnr/isti/labse/glimpse/example/exampleRule.xml")
+								System.getProperty("user.dir") + "/bin/it/cnr/isti/labse/glimpse/example/exampleRuleCallLocator.xml")
 								);
 	}
 }

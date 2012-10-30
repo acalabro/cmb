@@ -5,11 +5,11 @@
 <Insert RuleType="drools">
 	<RuleName>ObjectFromNS1</RuleName>
         <RuleBody>
-        import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventImpl;
+        import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventChoreos;
         import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
         import it.cnr.isti.labse.glimpse.utils.NotifierUtils;
         
-        declare GlimpseBaseEventImpl
+        declare GlimpseBaseEventChoreos
 	        @role( event )
 	        @timestamp( timestamp )
         end

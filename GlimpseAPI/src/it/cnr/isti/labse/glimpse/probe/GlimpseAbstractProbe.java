@@ -24,6 +24,7 @@ package it.cnr.isti.labse.glimpse.probe;
 import java.util.Properties;
 
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventAbstract;
 import it.cnr.isti.labse.glimpse.probe.GlimpseProbe;
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
 import it.cnr.isti.labse.glimpse.utils.Manager;
@@ -56,6 +57,7 @@ public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 	protected static TopicPublisher tPub;
 	protected static TopicConnection connection;
 	protected static Topic connectionTopic;
+	protected static int MESSAGEID = 0;
 	
 	/**
 	 * This constructor allow to create a GlimpseAbstractProbe object<br />
@@ -148,14 +150,15 @@ public abstract class GlimpseAbstractProbe implements GlimpseProbe {
 	 * @throws JMSException
 	 * @throws NamingException
 	 */
-	protected void sendEventMessage(GlimpseBaseEvent<?> event, boolean debug) throws JMSException,
+	protected void sendEventMessage(GlimpseBaseEventAbstract<?> event, boolean debug) throws JMSException,
 			NamingException {
 		if (debug) {
 			DebugMessages.print(this.getClass().getSimpleName(),
 					"Creating Message "); }
 		try 
 		{
-			ObjectMessage messageToSend = publishSession.createObjectMessage();			
+			ObjectMessage messageToSend = publishSession.createObjectMessage();	
+			messageToSend.setJMSMessageID(String.valueOf(MESSAGEID++));
 			messageToSend.setObject(event);		
 		if (debug) {
 			DebugMessages.ok();
