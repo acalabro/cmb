@@ -1,0 +1,2 @@
+serviceName = $$SERVICENAME$$
+machineIP == $$MACHINEIP$$
