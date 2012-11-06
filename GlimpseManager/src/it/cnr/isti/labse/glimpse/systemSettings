@@ -3,3 +3,4 @@ DROOLSPARAMETERFILE = 		./configFiles/droolsFile
 MANAGERPARAMETERFILE = 		./configFiles/managerFile
 SOAPREQUESTFILE = 		./configFiles/soapRequestFile
 DROOLSRULEREQUESTTEMPLATE = 	./configFiles/droolsRuleRequestTemplate
+BSMWSDLURIFILEPATH = 		./configFiles/bsmWsdl

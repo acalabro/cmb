@@ -63,6 +63,7 @@ public class MainMonitoring {
 	protected static String MANAGERPARAMETERFILE;
 	protected static String SOAPREQUESTFILE;
 	protected static String DROOLSRULEREQUESTTEMPLATE;
+	protected static String BSMWSDLURIFILEPATH;
 	// end settings
 
 	private static TopicConnectionFactory connFact;
@@ -89,7 +90,9 @@ public class MainMonitoring {
 			SOAPREQUESTFILE = systemProps
 					.getProperty("SOAPREQUESTFILE");
 			DROOLSRULEREQUESTTEMPLATE = systemProps
-					.getProperty("DROOLSRULEREQUESTTEMPLATE");			
+					.getProperty("DROOLSRULEREQUESTTEMPLATE");		
+			BSMWSDLURIFILEPATH = systemProps
+					.getProperty("BSMWSDLURIFILEPATH");		
 			return true;
 		} catch (Exception asd) {
 			System.out.println("USAGE: java -jar MainMonitoring.jar \"systemSettings\"");
@@ -132,7 +135,7 @@ public class MainMonitoring {
 				RuleTemplateManager templateManager = new RuleTemplateManager(DROOLSRULEREQUESTTEMPLATE);
 				
 				//the component in charge to locate services and load specific rules.
-				ServiceLocator serviceLocator = new ServiceLocatorImpl(engine,SOAPREQUESTFILE, templateManager);
+				ServiceLocator serviceLocator = new ServiceLocatorImpl(engine,SOAPREQUESTFILE, templateManager, BSMWSDLURIFILEPATH);
 				serviceLocator.start();
 				
 				//the manager of all the architecture

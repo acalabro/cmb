@@ -1,0 +1,1040 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Body>
+      <ns20:getNodeInformationsResponse xmlns:ns10="http://com.petalslink.easyesb/data/admin/1.0" xmlns:ns11="http://com.petalslink.esstar/admin/model/datatype/1.0" xmlns:ns12="http://com.petalslink.easyesb/admin/model/datatype/1.0" xmlns:ns13="http://docs.oasis-open.org/wsrf/bf-2" xmlns:ns14="http://www.w3.org/2005/08/addressing" xmlns:ns15="http://docs.oasis-open.org/wsn/b-2" xmlns:ns16="http://docs.oasis-open.org/wsn/t-1" xmlns:ns17="http://docs.oasis-open.org/wsrf/rp-2" xmlns:ns18="http://com.petalslink.esstar/data/management/user/1.0" xmlns:ns19="http://com.petalslink.esstar/data/management/admin/1.0" xmlns:ns2="http://com.ebmwebsourcing.easyesb/soa/model/endpoint" xmlns:ns20="http://com.petalslink.easierbsm/data/bsmadmin/1.0" xmlns:ns21="http://schemas.ggf.org/graap/2007/03/ws-agreement" xmlns:ns22="http://com.petalslink.easyesb/component/bpel/data/1.0" xmlns:ns23="http://com.petalslink.easierbsm/data/slamanager/1.0" xmlns:ns24="http://com.petalslink.easierbsm/data/wsdmmanager/1.0" xmlns:ns25="http://www.petalslink.com/esstar/execution.environment.synchronizer.impl/1.0" xmlns:ns26="http://www.ebmwebsourcing.com/wsn/t-1-extension" xmlns:ns27="http://docs.oasis-open.org/wsdm/mows-2.xsd" xmlns:ns28="http://docs.oasis-open.org/wsdm/muws2-2.xsd" xmlns:ns29="http://docs.oasis-open.org/wsdm/muws1-2.xsd" xmlns:ns3="http://com.petalslink.easyesb/soa/model/datatype/1.0" xmlns:ns30="http://com.petalslink.easierbsm/data/wsdm/1.0" xmlns:ns4="http://com.ebmwebsourcing.easyesb/soa/model/service" xmlns:ns5="http://com.ebmwebsourcing.easyesb/soa/model/component" xmlns:ns6="http://com.ebmwebsourcing.easyesb/soa/model/node" xmlns:ns7="http://com.ebmwebsourcing.easyesb/soa/model/registry" xmlns:ns8="http://com.petalslink.easyesb/transporter/1.0" xmlns:ns9="http://com.petalslink.easyesb/exchange/1.0">
+         <ns3:node>
+            <ns3:reference>esb://http://ow2.petals.org::node0@null</ns3:reference>
+            <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+            <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.node.NodeImpl</ns3:type>
+            <ns3:behavioursList>
+               <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.node.NodeBehaviourImpl</ns3:behaviour>
+            </ns3:behavioursList>
+            <ns3:basicNodeInformations>
+               <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+               <ns3:host>localhost</ns3:host>
+               <ns3:port>9100</ns3:port>
+               <ns3:transporterList>
+                  <ns3:transporter>SOAPTransporter</ns3:transporter>
+               </ns3:transporterList>
+            </ns3:basicNodeInformations>
+            <ns3:endpointInitialContext>
+               <ns3:numberOfThreads>0</ns3:numberOfThreads>
+            </ns3:endpointInitialContext>
+            <ns3:name>node0</ns3:name>
+            <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:serviceName>
+            <ns3:servicesGroupList/>
+            <ns3:registry>
+               <ns3:reference>esb://http://ow2.petals.org::node0_registry@registryEndpoint?type=RegistryEndpoint</ns3:reference>
+               <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+               <ns3:type>com.ebmwebsourcing.easyesb.technical.service.registry.impl.endpoint.RegistryEndpointImpl</ns3:type>
+               <ns3:behavioursList>
+                  <ns3:behaviour>com.ebmwebsourcing.easyesb.technical.service.registry.impl.endpoint.RegistryEndpointBehaviourImpl</ns3:behaviour>
+               </ns3:behavioursList>
+               <ns3:basicNodeInformations>
+                  <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                  <ns3:host>localhost</ns3:host>
+                  <ns3:port>9100</ns3:port>
+                  <ns3:transporterList>
+                     <ns3:transporter>SOAPTransporter</ns3:transporter>
+                  </ns3:transporterList>
+               </ns3:basicNodeInformations>
+               <ns3:endpointInitialContext>
+                  <ns3:numberOfThreads>5</ns3:numberOfThreads>
+               </ns3:endpointInitialContext>
+               <ns3:name>registryEndpoint</ns3:name>
+               <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:node0_registry</ns3:serviceName>
+               <ns3:localEndpointsGroupList>
+                  <ns3:technicalService>
+                     <ns3:reference>esb://http://ow2.petals.org::node0_admin@null</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.technical.service.admin.impl.service.AdminServiceImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.technical.service.admin.impl.service.AdminServiceBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>node0_admin</ns3:name>
+                     <ns3:providerEndpointsGroupList/>
+                     <ns3:componentParentReference>esb://http://ow2.petals.org::node0@null</ns3:componentParentReference>
+                  </ns3:technicalService>
+                  <ns3:providerEndpoint>
+                     <ns3:reference>esb://http://ow2.petals.org::node0_admin@adminEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.technical.service.admin.impl.endpoint.AdminEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.technical.service.admin.impl.endpoint.behaviour.BaseAdminEndpointBehaviourImpl</ns3:behaviour>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.technical.service.admin.impl.endpoint.behaviour.UserManagementEndpointBehaviourImpl</ns3:behaviour>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.technical.service.admin.impl.endpoint.behaviour.AdminManagementEndpointBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>adminEndpoint</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:node0_admin</ns3:serviceName>
+                  </ns3:providerEndpoint>
+                  <ns3:technicalService>
+                     <ns3:reference>esb://http://ow2.petals.org::node0_bsmadmin@null</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.technical.service.admin.impl.service.AdminServiceImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.technical.service.admin.impl.service.AdminServiceBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>node0_bsmadmin</ns3:name>
+                     <ns3:providerEndpointsGroupList/>
+                     <ns3:componentParentReference>esb://http://ow2.petals.org::node0@null</ns3:componentParentReference>
+                  </ns3:technicalService>
+                  <ns3:providerEndpoint>
+                     <ns3:reference>esb://http://ow2.petals.org::node0_bsmadmin@bsmadminEndpoint_node0?type=ProviderProxyEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.technical.service.admin.impl.endpoint.AdminEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.technical.service.admin.impl.endpoint.behaviour.BSMAdminEndpointBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>bsmadminEndpoint_node0</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:node0_bsmadmin</ns3:serviceName>
+                  </ns3:providerEndpoint>
+                  <ns3:component>
+                     <ns3:reference>esb://http://ow2.petals.org::GlimpseManager@null?type=Component</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.component.ComponentImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easierbsm.component.glimpse.impl.GlimpseBSMBehaviourImpl</ns3:behaviour>
+                        <ns3:behaviour>com.ebmwebsourcing.easierbsm.component.glimpse.impl.GlimpseBSMProviderEndpointBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>GlimpseManager</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:GlimpseManager</ns3:serviceName>
+                     <ns3:servicesGroupList/>
+                  </ns3:component>
+                  <ns3:clientProxyEndpoint>
+                     <ns3:reference>esb://http://ow2.petals.org@GlimpseManagerExternalEndpoint?type=ClientEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:name>GlimpseManagerExternalEndpoint</ns3:name>
+                     <ns3:providerServiceName xmlns:ns31="http://ow2.petals.org">ns31:GlimpseManager</ns3:providerServiceName>
+                     <ns3:listenerInitialisation>
+                        <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                        <ns3:serverName>soap-server</ns3:serverName>
+                        <ns3:exposableAddress>http://localhost:8180/services/GlimpseManagerExternalEndpoint</ns3:exposableAddress>
+                     </ns3:listenerInitialisation>
+                  </ns3:clientProxyEndpoint>
+                  <ns3:component>
+                     <ns3:reference>esb://http://ow2.petals.org::DataCollector@null?type=Component</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.datacollector.impl.DataCollectorEngineImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easierbsm.datacollector.impl.DataCollectorEngineBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>DataCollector</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:DataCollector</ns3:serviceName>
+                     <ns3:servicesGroupList>
+                        <ns3:technicalService>
+                           <ns3:reference>esb://http://ow2.petals.org::DispacherService@null?type=TechnicalService</ns3:reference>
+                           <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                           <ns3:type>com.ebmwebsourcing.easierbsm.datacollector.impl.DispatcherServiceImpl</ns3:type>
+                           <ns3:behavioursList>
+                              <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                           </ns3:behavioursList>
+                           <ns3:basicNodeInformations>
+                              <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                              <ns3:host>localhost</ns3:host>
+                              <ns3:port>9100</ns3:port>
+                              <ns3:transporterList>
+                                 <ns3:transporter>SOAPTransporter</ns3:transporter>
+                              </ns3:transporterList>
+                           </ns3:basicNodeInformations>
+                           <ns3:endpointInitialContext>
+                              <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                           </ns3:endpointInitialContext>
+                           <ns3:name>DispacherService</ns3:name>
+                           <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:DataCollector</ns3:serviceName>
+                           <ns3:providerEndpointsGroupList/>
+                           <ns3:componentParentReference>esb://http://ow2.petals.org::DataCollector@null?type=Component</ns3:componentParentReference>
+                        </ns3:technicalService>
+                     </ns3:servicesGroupList>
+                  </ns3:component>
+                  <ns3:clientProxyEndpoint>
+                     <ns3:reference>esb://http://ow2.petals.org@DispatcherProviderEndpointClientProxyEndpoint?type=ClientEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>DispatcherProviderEndpointClientProxyEndpoint</ns3:name>
+                     <ns3:providerEndpointName>DispatcherProviderEndpoint</ns3:providerEndpointName>
+                     <ns3:providerServiceName xmlns:ns31="http://ow2.petals.org">ns31:DispacherService</ns3:providerServiceName>
+                     <ns3:listenerInitialisation>
+                        <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                        <ns3:serverName>soap-server</ns3:serverName>
+                        <ns3:exposableAddress>http://localhost:8180/services/DispatcherProviderEndpointClientProxyEndpoint</ns3:exposableAddress>
+                     </ns3:listenerInitialisation>
+                  </ns3:clientProxyEndpoint>
+                  <ns3:technicalService>
+                     <ns3:reference>esb://http://ow2.petals.org::DispacherService@null?type=TechnicalService</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.datacollector.impl.DispatcherServiceImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>DispacherService</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:DataCollector</ns3:serviceName>
+                     <ns3:providerEndpointsGroupList/>
+                     <ns3:componentParentReference>esb://http://ow2.petals.org::DataCollector@null?type=Component</ns3:componentParentReference>
+                  </ns3:technicalService>
+                  <ns3:providerEndpoint>
+                     <ns3:reference>esb://http://ow2.petals.org::DispacherService@DispatcherProviderEndpoint?type=ProviderProxyEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.datacollector.impl.DispatcherProviderEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easierbsm.datacollector.impl.DispatcherProviderEndpointBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>DispatcherProviderEndpoint</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:DispacherService</ns3:serviceName>
+                  </ns3:providerEndpoint>
+                  <ns3:component>
+                     <ns3:reference>esb://http://ow2.petals.org::BPELEngine@null?type=Component</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.component.bpel.impl.BPELComponentImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.component.bpel.impl.BPELComponentBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>BPELEngine</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:BPELEngine</ns3:serviceName>
+                     <ns3:servicesGroupList/>
+                  </ns3:component>
+                  <ns3:component>
+                     <ns3:reference>esb://http://ow2.petals.org::SLAManager@null?type=Component</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.sla.manager.impl.AgreementManagerComponentImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easierbsm.sla.manager.impl.AgreementManagerComponentBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>SLAManager</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:SLAManager</ns3:serviceName>
+                     <ns3:servicesGroupList>
+                        <ns3:technicalService>
+                           <ns3:reference>esb://http://ow2.petals.org::slaCheckingService@null?type=TechnicalService</ns3:reference>
+                           <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                           <ns3:type>com.ebmwebsourcing.easierbsm.sla.manager.impl.AgreementCheckingServiceImpl</ns3:type>
+                           <ns3:behavioursList>
+                              <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                           </ns3:behavioursList>
+                           <ns3:basicNodeInformations>
+                              <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                              <ns3:host>localhost</ns3:host>
+                              <ns3:port>9100</ns3:port>
+                              <ns3:transporterList>
+                                 <ns3:transporter>SOAPTransporter</ns3:transporter>
+                              </ns3:transporterList>
+                           </ns3:basicNodeInformations>
+                           <ns3:endpointInitialContext>
+                              <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                           </ns3:endpointInitialContext>
+                           <ns3:name>slaCheckingService</ns3:name>
+                           <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:SLAManager</ns3:serviceName>
+                           <ns3:providerEndpointsGroupList/>
+                           <ns3:componentParentReference>esb://http://ow2.petals.org::SLAManager@null?type=Component</ns3:componentParentReference>
+                        </ns3:technicalService>
+                     </ns3:servicesGroupList>
+                  </ns3:component>
+                  <ns3:technicalService>
+                     <ns3:reference>esb://http://ow2.petals.org::slaCheckingService@null?type=TechnicalService</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.sla.manager.impl.AgreementCheckingServiceImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>slaCheckingService</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:SLAManager</ns3:serviceName>
+                     <ns3:providerEndpointsGroupList/>
+                     <ns3:componentParentReference>esb://http://ow2.petals.org::SLAManager@null?type=Component</ns3:componentParentReference>
+                  </ns3:technicalService>
+                  <ns3:providerEndpoint>
+                     <ns3:reference>esb://http://ow2.petals.org::slaCheckingService@slaChekingEndpoint?type=ProviderProxyEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.sla.manager.impl.AgreementCheckingProviderEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easierbsm.sla.manager.impl.AgreementCheckingProviderEndpointBehaviourImpl</ns3:behaviour>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.SubscriptionManagerEndpointBehaviourImpl</ns3:behaviour>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.NotificationProducerEndpointBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>slaChekingEndpoint</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:slaCheckingService</ns3:serviceName>
+                  </ns3:providerEndpoint>
+                  <ns3:component>
+                     <ns3:reference>esb://http://ow2.petals.org::WSDMMonitoring@null?type=Component</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMMonitoringEngineImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMMonitoringEngineBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>WSDMMonitoring</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:WSDMMonitoring</ns3:serviceName>
+                     <ns3:servicesGroupList>
+                        <ns3:technicalService>
+                           <ns3:reference>esb://http://securitycompany.services.scn2.wp6.thalesgroup.choreos.ow2.org/::SecurityCompanyService@null?type=TechnicalService</ns3:reference>
+                           <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                           <ns3:type>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMServiceImpl</ns3:type>
+                           <ns3:behavioursList>
+                              <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                           </ns3:behavioursList>
+                           <ns3:basicNodeInformations>
+                              <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                              <ns3:host>localhost</ns3:host>
+                              <ns3:port>9100</ns3:port>
+                              <ns3:transporterList>
+                                 <ns3:transporter>SOAPTransporter</ns3:transporter>
+                              </ns3:transporterList>
+                           </ns3:basicNodeInformations>
+                           <ns3:endpointInitialContext>
+                              <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                           </ns3:endpointInitialContext>
+                           <ns3:name>SecurityCompanyService</ns3:name>
+                           <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:WSDMMonitoring</ns3:serviceName>
+                           <ns3:providerEndpointsGroupList/>
+                           <ns3:componentParentReference>esb://http://ow2.petals.org::WSDMMonitoring@null?type=Component</ns3:componentParentReference>
+                        </ns3:technicalService>
+                        <ns3:technicalService>
+                           <ns3:reference>esb://http://airport.services.scn2.wp6.thalesgroup.choreos.ow2.org/::AirportService@null?type=TechnicalService</ns3:reference>
+                           <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                           <ns3:type>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMServiceImpl</ns3:type>
+                           <ns3:behavioursList>
+                              <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                           </ns3:behavioursList>
+                           <ns3:basicNodeInformations>
+                              <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                              <ns3:host>localhost</ns3:host>
+                              <ns3:port>9100</ns3:port>
+                              <ns3:transporterList>
+                                 <ns3:transporter>SOAPTransporter</ns3:transporter>
+                              </ns3:transporterList>
+                           </ns3:basicNodeInformations>
+                           <ns3:endpointInitialContext>
+                              <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                           </ns3:endpointInitialContext>
+                           <ns3:name>AirportService</ns3:name>
+                           <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:WSDMMonitoring</ns3:serviceName>
+                           <ns3:providerEndpointsGroupList/>
+                           <ns3:componentParentReference>esb://http://ow2.petals.org::WSDMMonitoring@null?type=Component</ns3:componentParentReference>
+                        </ns3:technicalService>
+                     </ns3:servicesGroupList>
+                  </ns3:component>
+                  <ns3:clientProxyEndpoint>
+                     <ns3:reference>esb://http://ow2.petals.org@adminExternalEndpoint?type=ClientEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:name>adminExternalEndpoint</ns3:name>
+                     <ns3:providerEndpointName>adminEndpoint</ns3:providerEndpointName>
+                     <ns3:providerServiceName xmlns:ns31="http://ow2.petals.org">ns31:node0_admin</ns3:providerServiceName>
+                     <ns3:listenerInitialisation>
+                        <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                        <ns3:serverName>soap-server</ns3:serverName>
+                        <ns3:exposableAddress>http://localhost:8180/services/adminExternalEndpoint</ns3:exposableAddress>
+                     </ns3:listenerInitialisation>
+                  </ns3:clientProxyEndpoint>
+                  <ns3:clientProxyEndpoint>
+                     <ns3:reference>esb://http://ow2.petals.org@bsmadminExternalEndpoint?type=ClientEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:name>bsmadminExternalEndpoint</ns3:name>
+                     <ns3:providerEndpointName>bsmadminEndpoint_node0</ns3:providerEndpointName>
+                     <ns3:providerServiceName xmlns:ns31="http://ow2.petals.org">ns31:node0_bsmadmin</ns3:providerServiceName>
+                     <ns3:listenerInitialisation>
+                        <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                        <ns3:serverName>soap-server</ns3:serverName>
+                        <ns3:exposableAddress>http://localhost:8180/services/bsmadminExternalEndpoint</ns3:exposableAddress>
+                     </ns3:listenerInitialisation>
+                  </ns3:clientProxyEndpoint>
+                  <ns3:technicalService>
+                     <ns3:reference>esb://http://securitycompany.services.scn2.wp6.thalesgroup.choreos.ow2.org/::SecurityCompanyService@null?type=TechnicalService</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMServiceImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>SecurityCompanyService</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:WSDMMonitoring</ns3:serviceName>
+                     <ns3:providerEndpointsGroupList/>
+                     <ns3:componentParentReference>esb://http://ow2.petals.org::WSDMMonitoring@null?type=Component</ns3:componentParentReference>
+                  </ns3:technicalService>
+                  <ns3:providerEndpoint>
+                     <ns3:reference>esb://http://securitycompany.services.scn2.wp6.thalesgroup.choreos.ow2.org/::SecurityCompanyService@SecurityCompanyPort_WSDMMonitoring?type=ProviderProxyEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMProviderEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMProviderEndpointBehaviourImpl</ns3:behaviour>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.SubscriptionManagerEndpointBehaviourImpl</ns3:behaviour>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.NotificationProducerEndpointBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>SecurityCompanyPort_WSDMMonitoring</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://securitycompany.services.scn2.wp6.thalesgroup.choreos.ow2.org/">ns31:SecurityCompanyService</ns3:serviceName>
+                  </ns3:providerEndpoint>
+                  <ns3:clientProxyEndpoint>
+                     <ns3:reference>esb://http://securitycompany.services.scn2.wp6.thalesgroup.choreos.ow2.org/@SecurityCompanyPort_WSDMMonitoringClientProxyEndpoint?type=ClientEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>SecurityCompanyPort_WSDMMonitoringClientProxyEndpoint</ns3:name>
+                     <ns3:providerEndpointName>SecurityCompanyPort_WSDMMonitoring</ns3:providerEndpointName>
+                     <ns3:providerServiceName xmlns:ns31="http://securitycompany.services.scn2.wp6.thalesgroup.choreos.ow2.org/">ns31:SecurityCompanyService</ns3:providerServiceName>
+                     <ns3:listenerInitialisation>
+                        <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                        <ns3:serverName>soap-server</ns3:serverName>
+                        <ns3:exposableAddress>http://localhost:8180/services/SecurityCompanyPort_WSDMMonitoringClientProxyEndpoint</ns3:exposableAddress>
+                     </ns3:listenerInitialisation>
+                  </ns3:clientProxyEndpoint>
+                  <ns3:technicalService>
+                     <ns3:reference>esb://http://airport.services.scn2.wp6.thalesgroup.choreos.ow2.org/::AirportService@null?type=TechnicalService</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMServiceImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>AirportService</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:WSDMMonitoring</ns3:serviceName>
+                     <ns3:providerEndpointsGroupList/>
+                     <ns3:componentParentReference>esb://http://ow2.petals.org::WSDMMonitoring@null?type=Component</ns3:componentParentReference>
+                  </ns3:technicalService>
+                  <ns3:providerEndpoint>
+                     <ns3:reference>esb://http://airport.services.scn2.wp6.thalesgroup.choreos.ow2.org/::AirportService@AirportPort_WSDMMonitoring?type=ProviderProxyEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMProviderEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMProviderEndpointBehaviourImpl</ns3:behaviour>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.SubscriptionManagerEndpointBehaviourImpl</ns3:behaviour>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.NotificationProducerEndpointBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>AirportPort_WSDMMonitoring</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://airport.services.scn2.wp6.thalesgroup.choreos.ow2.org/">ns31:AirportService</ns3:serviceName>
+                  </ns3:providerEndpoint>
+                  <ns3:clientProxyEndpoint>
+                     <ns3:reference>esb://http://airport.services.scn2.wp6.thalesgroup.choreos.ow2.org/@AirportPort_WSDMMonitoringClientProxyEndpoint?type=ClientEndpoint</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>AirportPort_WSDMMonitoringClientProxyEndpoint</ns3:name>
+                     <ns3:providerEndpointName>AirportPort_WSDMMonitoring</ns3:providerEndpointName>
+                     <ns3:providerServiceName xmlns:ns31="http://airport.services.scn2.wp6.thalesgroup.choreos.ow2.org/">ns31:AirportService</ns3:providerServiceName>
+                     <ns3:listenerInitialisation>
+                        <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                        <ns3:serverName>soap-server</ns3:serverName>
+                        <ns3:exposableAddress>http://localhost:8180/services/AirportPort_WSDMMonitoringClientProxyEndpoint</ns3:exposableAddress>
+                     </ns3:listenerInitialisation>
+                  </ns3:clientProxyEndpoint>
+               </ns3:localEndpointsGroupList>
+               <ns3:remoteEndpointsGroupList/>
+            </ns3:registry>
+            <ns3:clientEndpointsGroupList>
+               <ns3:clientProxyEndpoint>
+                  <ns3:reference>esb://http://ow2.petals.org@GlimpseManagerExternalEndpoint?type=ClientEndpoint</ns3:reference>
+                  <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                  <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                  <ns3:behavioursList>
+                     <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                  </ns3:behavioursList>
+                  <ns3:basicNodeInformations>
+                     <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                     <ns3:host>localhost</ns3:host>
+                     <ns3:port>9100</ns3:port>
+                     <ns3:transporterList>
+                        <ns3:transporter>SOAPTransporter</ns3:transporter>
+                     </ns3:transporterList>
+                  </ns3:basicNodeInformations>
+                  <ns3:name>GlimpseManagerExternalEndpoint</ns3:name>
+                  <ns3:providerServiceName xmlns:ns31="http://ow2.petals.org">ns31:GlimpseManager</ns3:providerServiceName>
+                  <ns3:listenerInitialisation>
+                     <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                     <ns3:serverName>soap-server</ns3:serverName>
+                     <ns3:exposableAddress>http://localhost:8180/services/GlimpseManagerExternalEndpoint</ns3:exposableAddress>
+                  </ns3:listenerInitialisation>
+               </ns3:clientProxyEndpoint>
+               <ns3:clientProxyEndpoint>
+                  <ns3:reference>esb://http://ow2.petals.org@DispatcherProviderEndpointClientProxyEndpoint?type=ClientEndpoint</ns3:reference>
+                  <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                  <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                  <ns3:behavioursList>
+                     <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                  </ns3:behavioursList>
+                  <ns3:basicNodeInformations>
+                     <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                     <ns3:host>localhost</ns3:host>
+                     <ns3:port>9100</ns3:port>
+                     <ns3:transporterList>
+                        <ns3:transporter>SOAPTransporter</ns3:transporter>
+                     </ns3:transporterList>
+                  </ns3:basicNodeInformations>
+                  <ns3:endpointInitialContext>
+                     <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                  </ns3:endpointInitialContext>
+                  <ns3:name>DispatcherProviderEndpointClientProxyEndpoint</ns3:name>
+                  <ns3:providerEndpointName>DispatcherProviderEndpoint</ns3:providerEndpointName>
+                  <ns3:providerServiceName xmlns:ns31="http://ow2.petals.org">ns31:DispacherService</ns3:providerServiceName>
+                  <ns3:listenerInitialisation>
+                     <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                     <ns3:serverName>soap-server</ns3:serverName>
+                     <ns3:exposableAddress>http://localhost:8180/services/DispatcherProviderEndpointClientProxyEndpoint</ns3:exposableAddress>
+                  </ns3:listenerInitialisation>
+               </ns3:clientProxyEndpoint>
+               <ns3:clientProxyEndpoint>
+                  <ns3:reference>esb://http://ow2.petals.org@adminExternalEndpoint?type=ClientEndpoint</ns3:reference>
+                  <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                  <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                  <ns3:behavioursList>
+                     <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                  </ns3:behavioursList>
+                  <ns3:basicNodeInformations>
+                     <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                     <ns3:host>localhost</ns3:host>
+                     <ns3:port>9100</ns3:port>
+                     <ns3:transporterList>
+                        <ns3:transporter>SOAPTransporter</ns3:transporter>
+                     </ns3:transporterList>
+                  </ns3:basicNodeInformations>
+                  <ns3:name>adminExternalEndpoint</ns3:name>
+                  <ns3:providerEndpointName>adminEndpoint</ns3:providerEndpointName>
+                  <ns3:providerServiceName xmlns:ns31="http://ow2.petals.org">ns31:node0_admin</ns3:providerServiceName>
+                  <ns3:listenerInitialisation>
+                     <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                     <ns3:serverName>soap-server</ns3:serverName>
+                     <ns3:exposableAddress>http://localhost:8180/services/adminExternalEndpoint</ns3:exposableAddress>
+                  </ns3:listenerInitialisation>
+               </ns3:clientProxyEndpoint>
+               <ns3:clientProxyEndpoint>
+                  <ns3:reference>esb://http://ow2.petals.org@bsmadminExternalEndpoint?type=ClientEndpoint</ns3:reference>
+                  <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                  <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                  <ns3:behavioursList>
+                     <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                  </ns3:behavioursList>
+                  <ns3:basicNodeInformations>
+                     <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                     <ns3:host>localhost</ns3:host>
+                     <ns3:port>9100</ns3:port>
+                     <ns3:transporterList>
+                        <ns3:transporter>SOAPTransporter</ns3:transporter>
+                     </ns3:transporterList>
+                  </ns3:basicNodeInformations>
+                  <ns3:name>bsmadminExternalEndpoint</ns3:name>
+                  <ns3:providerEndpointName>bsmadminEndpoint_node0</ns3:providerEndpointName>
+                  <ns3:providerServiceName xmlns:ns31="http://ow2.petals.org">ns31:node0_bsmadmin</ns3:providerServiceName>
+                  <ns3:listenerInitialisation>
+                     <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                     <ns3:serverName>soap-server</ns3:serverName>
+                     <ns3:exposableAddress>http://localhost:8180/services/bsmadminExternalEndpoint</ns3:exposableAddress>
+                  </ns3:listenerInitialisation>
+               </ns3:clientProxyEndpoint>
+               <ns3:clientProxyEndpoint>
+                  <ns3:reference>esb://http://securitycompany.services.scn2.wp6.thalesgroup.choreos.ow2.org/@SecurityCompanyPort_WSDMMonitoringClientProxyEndpoint?type=ClientEndpoint</ns3:reference>
+                  <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                  <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                  <ns3:behavioursList>
+                     <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                  </ns3:behavioursList>
+                  <ns3:basicNodeInformations>
+                     <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                     <ns3:host>localhost</ns3:host>
+                     <ns3:port>9100</ns3:port>
+                     <ns3:transporterList>
+                        <ns3:transporter>SOAPTransporter</ns3:transporter>
+                     </ns3:transporterList>
+                  </ns3:basicNodeInformations>
+                  <ns3:endpointInitialContext>
+                     <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                  </ns3:endpointInitialContext>
+                  <ns3:name>SecurityCompanyPort_WSDMMonitoringClientProxyEndpoint</ns3:name>
+                  <ns3:providerEndpointName>SecurityCompanyPort_WSDMMonitoring</ns3:providerEndpointName>
+                  <ns3:providerServiceName xmlns:ns31="http://securitycompany.services.scn2.wp6.thalesgroup.choreos.ow2.org/">ns31:SecurityCompanyService</ns3:providerServiceName>
+                  <ns3:listenerInitialisation>
+                     <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                     <ns3:serverName>soap-server</ns3:serverName>
+                     <ns3:exposableAddress>http://localhost:8180/services/SecurityCompanyPort_WSDMMonitoringClientProxyEndpoint</ns3:exposableAddress>
+                  </ns3:listenerInitialisation>
+               </ns3:clientProxyEndpoint>
+               <ns3:clientProxyEndpoint>
+                  <ns3:reference>esb://http://airport.services.scn2.wp6.thalesgroup.choreos.ow2.org/@AirportPort_WSDMMonitoringClientProxyEndpoint?type=ClientEndpoint</ns3:reference>
+                  <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                  <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.endpoint.ClientProxyEndpointImpl</ns3:type>
+                  <ns3:behavioursList>
+                     <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.endpoint.behaviour.specific.ClientProxyBehaviourImpl</ns3:behaviour>
+                  </ns3:behavioursList>
+                  <ns3:basicNodeInformations>
+                     <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                     <ns3:host>localhost</ns3:host>
+                     <ns3:port>9100</ns3:port>
+                     <ns3:transporterList>
+                        <ns3:transporter>SOAPTransporter</ns3:transporter>
+                     </ns3:transporterList>
+                  </ns3:basicNodeInformations>
+                  <ns3:endpointInitialContext>
+                     <ns3:numberOfThreads>5</ns3:numberOfThreads>
+                  </ns3:endpointInitialContext>
+                  <ns3:name>AirportPort_WSDMMonitoringClientProxyEndpoint</ns3:name>
+                  <ns3:providerEndpointName>AirportPort_WSDMMonitoring</ns3:providerEndpointName>
+                  <ns3:providerServiceName xmlns:ns31="http://airport.services.scn2.wp6.thalesgroup.choreos.ow2.org/">ns31:AirportService</ns3:providerServiceName>
+                  <ns3:listenerInitialisation>
+                     <ns3:className>com.ebmwebsourcing.easyesb.external.protocol.soap.impl.SOAPListenerImpl</ns3:className>
+                     <ns3:serverName>soap-server</ns3:serverName>
+                     <ns3:exposableAddress>http://localhost:8180/services/AirportPort_WSDMMonitoringClientProxyEndpoint</ns3:exposableAddress>
+                  </ns3:listenerInitialisation>
+               </ns3:clientProxyEndpoint>
+            </ns3:clientEndpointsGroupList>
+            <ns3:component>
+               <ns3:reference>esb://http://ow2.petals.org::GlimpseManager@null?type=Component</ns3:reference>
+               <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+               <ns3:type>com.ebmwebsourcing.easyesb.soa.impl.component.ComponentImpl</ns3:type>
+               <ns3:behavioursList>
+                  <ns3:behaviour>com.ebmwebsourcing.easierbsm.component.glimpse.impl.GlimpseBSMBehaviourImpl</ns3:behaviour>
+                  <ns3:behaviour>com.ebmwebsourcing.easierbsm.component.glimpse.impl.GlimpseBSMProviderEndpointBehaviourImpl</ns3:behaviour>
+               </ns3:behavioursList>
+               <ns3:basicNodeInformations>
+                  <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                  <ns3:host>localhost</ns3:host>
+                  <ns3:port>9100</ns3:port>
+                  <ns3:transporterList>
+                     <ns3:transporter>SOAPTransporter</ns3:transporter>
+                  </ns3:transporterList>
+               </ns3:basicNodeInformations>
+               <ns3:endpointInitialContext>
+                  <ns3:numberOfThreads>0</ns3:numberOfThreads>
+               </ns3:endpointInitialContext>
+               <ns3:name>GlimpseManager</ns3:name>
+               <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:GlimpseManager</ns3:serviceName>
+               <ns3:servicesGroupList/>
+            </ns3:component>
+            <ns3:component>
+               <ns3:reference>esb://http://ow2.petals.org::DataCollector@null?type=Component</ns3:reference>
+               <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+               <ns3:type>com.ebmwebsourcing.easierbsm.datacollector.impl.DataCollectorEngineImpl</ns3:type>
+               <ns3:behavioursList>
+                  <ns3:behaviour>com.ebmwebsourcing.easierbsm.datacollector.impl.DataCollectorEngineBehaviourImpl</ns3:behaviour>
+               </ns3:behavioursList>
+               <ns3:basicNodeInformations>
+                  <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                  <ns3:host>localhost</ns3:host>
+                  <ns3:port>9100</ns3:port>
+                  <ns3:transporterList>
+                     <ns3:transporter>SOAPTransporter</ns3:transporter>
+                  </ns3:transporterList>
+               </ns3:basicNodeInformations>
+               <ns3:endpointInitialContext>
+                  <ns3:numberOfThreads>0</ns3:numberOfThreads>
+               </ns3:endpointInitialContext>
+               <ns3:name>DataCollector</ns3:name>
+               <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:DataCollector</ns3:serviceName>
+               <ns3:servicesGroupList>
+                  <ns3:technicalService>
+                     <ns3:reference>esb://http://ow2.petals.org::DispacherService@null?type=TechnicalService</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.datacollector.impl.DispatcherServiceImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>DispacherService</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:DataCollector</ns3:serviceName>
+                     <ns3:providerEndpointsGroupList/>
+                     <ns3:componentParentReference>esb://http://ow2.petals.org::DataCollector@null?type=Component</ns3:componentParentReference>
+                  </ns3:technicalService>
+               </ns3:servicesGroupList>
+            </ns3:component>
+            <ns3:component>
+               <ns3:reference>esb://http://ow2.petals.org::BPELEngine@null?type=Component</ns3:reference>
+               <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+               <ns3:type>com.ebmwebsourcing.easyesb.component.bpel.impl.BPELComponentImpl</ns3:type>
+               <ns3:behavioursList>
+                  <ns3:behaviour>com.ebmwebsourcing.easyesb.component.bpel.impl.BPELComponentBehaviourImpl</ns3:behaviour>
+               </ns3:behavioursList>
+               <ns3:basicNodeInformations>
+                  <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                  <ns3:host>localhost</ns3:host>
+                  <ns3:port>9100</ns3:port>
+                  <ns3:transporterList>
+                     <ns3:transporter>SOAPTransporter</ns3:transporter>
+                  </ns3:transporterList>
+               </ns3:basicNodeInformations>
+               <ns3:endpointInitialContext>
+                  <ns3:numberOfThreads>0</ns3:numberOfThreads>
+               </ns3:endpointInitialContext>
+               <ns3:name>BPELEngine</ns3:name>
+               <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:BPELEngine</ns3:serviceName>
+               <ns3:servicesGroupList/>
+            </ns3:component>
+            <ns3:component>
+               <ns3:reference>esb://http://ow2.petals.org::SLAManager@null?type=Component</ns3:reference>
+               <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+               <ns3:type>com.ebmwebsourcing.easierbsm.sla.manager.impl.AgreementManagerComponentImpl</ns3:type>
+               <ns3:behavioursList>
+                  <ns3:behaviour>com.ebmwebsourcing.easierbsm.sla.manager.impl.AgreementManagerComponentBehaviourImpl</ns3:behaviour>
+               </ns3:behavioursList>
+               <ns3:basicNodeInformations>
+                  <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                  <ns3:host>localhost</ns3:host>
+                  <ns3:port>9100</ns3:port>
+                  <ns3:transporterList>
+                     <ns3:transporter>SOAPTransporter</ns3:transporter>
+                  </ns3:transporterList>
+               </ns3:basicNodeInformations>
+               <ns3:endpointInitialContext>
+                  <ns3:numberOfThreads>0</ns3:numberOfThreads>
+               </ns3:endpointInitialContext>
+               <ns3:name>SLAManager</ns3:name>
+               <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:SLAManager</ns3:serviceName>
+               <ns3:servicesGroupList>
+                  <ns3:technicalService>
+                     <ns3:reference>esb://http://ow2.petals.org::slaCheckingService@null?type=TechnicalService</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.sla.manager.impl.AgreementCheckingServiceImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>slaCheckingService</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:SLAManager</ns3:serviceName>
+                     <ns3:providerEndpointsGroupList/>
+                     <ns3:componentParentReference>esb://http://ow2.petals.org::SLAManager@null?type=Component</ns3:componentParentReference>
+                  </ns3:technicalService>
+               </ns3:servicesGroupList>
+            </ns3:component>
+            <ns3:component>
+               <ns3:reference>esb://http://ow2.petals.org::WSDMMonitoring@null?type=Component</ns3:reference>
+               <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+               <ns3:type>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMMonitoringEngineImpl</ns3:type>
+               <ns3:behavioursList>
+                  <ns3:behaviour>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMMonitoringEngineBehaviourImpl</ns3:behaviour>
+               </ns3:behavioursList>
+               <ns3:basicNodeInformations>
+                  <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                  <ns3:host>localhost</ns3:host>
+                  <ns3:port>9100</ns3:port>
+                  <ns3:transporterList>
+                     <ns3:transporter>SOAPTransporter</ns3:transporter>
+                  </ns3:transporterList>
+               </ns3:basicNodeInformations>
+               <ns3:endpointInitialContext>
+                  <ns3:numberOfThreads>0</ns3:numberOfThreads>
+               </ns3:endpointInitialContext>
+               <ns3:name>WSDMMonitoring</ns3:name>
+               <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:WSDMMonitoring</ns3:serviceName>
+               <ns3:servicesGroupList>
+                  <ns3:technicalService>
+                     <ns3:reference>esb://http://securitycompany.services.scn2.wp6.thalesgroup.choreos.ow2.org/::SecurityCompanyService@null?type=TechnicalService</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMServiceImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>SecurityCompanyService</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:WSDMMonitoring</ns3:serviceName>
+                     <ns3:providerEndpointsGroupList/>
+                     <ns3:componentParentReference>esb://http://ow2.petals.org::WSDMMonitoring@null?type=Component</ns3:componentParentReference>
+                  </ns3:technicalService>
+                  <ns3:technicalService>
+                     <ns3:reference>esb://http://airport.services.scn2.wp6.thalesgroup.choreos.ow2.org/::AirportService@null?type=TechnicalService</ns3:reference>
+                     <ns3:node xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:node>
+                     <ns3:type>com.ebmwebsourcing.easierbsm.wsdm.monitoring.core.impl.WSDMServiceImpl</ns3:type>
+                     <ns3:behavioursList>
+                        <ns3:behaviour>com.ebmwebsourcing.easyesb.soa.impl.service.ServiceBehaviourImpl</ns3:behaviour>
+                     </ns3:behavioursList>
+                     <ns3:basicNodeInformations>
+                        <ns3:nodeName xmlns:ns31="http://ow2.petals.org">ns31:node0</ns3:nodeName>
+                        <ns3:host>localhost</ns3:host>
+                        <ns3:port>9100</ns3:port>
+                        <ns3:transporterList>
+                           <ns3:transporter>SOAPTransporter</ns3:transporter>
+                        </ns3:transporterList>
+                     </ns3:basicNodeInformations>
+                     <ns3:endpointInitialContext>
+                        <ns3:numberOfThreads>0</ns3:numberOfThreads>
+                     </ns3:endpointInitialContext>
+                     <ns3:name>AirportService</ns3:name>
+                     <ns3:serviceName xmlns:ns31="http://ow2.petals.org">ns31:WSDMMonitoring</ns3:serviceName>
+                     <ns3:providerEndpointsGroupList/>
+                     <ns3:componentParentReference>esb://http://ow2.petals.org::WSDMMonitoring@null?type=Component</ns3:componentParentReference>
+                  </ns3:technicalService>
+               </ns3:servicesGroupList>
+            </ns3:component>
+         </ns3:node>
+      </ns20:getNodeInformationsResponse>
+   </soapenv:Body>
+</soapenv:Envelope>

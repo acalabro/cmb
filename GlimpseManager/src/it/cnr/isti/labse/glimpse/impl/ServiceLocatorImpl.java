@@ -2,15 +2,19 @@ package it.cnr.isti.labse.glimpse.impl;
 
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 
+import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
 import it.cnr.isti.labse.glimpse.services.ChoreosService;
 import it.cnr.isti.labse.glimpse.services.HashMapManager;
 import it.cnr.isti.labse.glimpse.services.ServiceLocator;
 
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
+import it.cnr.isti.labse.glimpse.utils.Manager;
 
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionListDocument;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 
@@ -21,13 +25,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
-import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.SOAPPart;
+import javax.xml.transform.stream.StreamSource;
 
 import javax.xml.messaging.URLEndpoint;
 
 import org.apache.commons.net.ntp.TimeStamp;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -36,6 +42,7 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	public static String localSoapRequestFilePath;
 	public static ServiceRegistryImpl dataSetForCollectedInformation;
 	public static RuleTemplateManager localRuleTemplateManager;
+	public static String localBsmWsdlUriFilePath;
 	
 	public static ServiceLocatorImpl instance = null;
 	public static HashMapManager theHashMapManager;
@@ -43,17 +50,18 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	
 	public static synchronized ServiceLocatorImpl getSingleton() {
         if (instance == null) 
-            instance = new ServiceLocatorImpl(anEngine,localSoapRequestFilePath, RuleTemplateManager.getSingleton());
+            instance = new ServiceLocatorImpl(anEngine,localSoapRequestFilePath, RuleTemplateManager.getSingleton(), localBsmWsdlUriFilePath);
         return instance;
     }
 	
-	public ServiceLocatorImpl(ComplexEventProcessor engine, String soapRequestFilePath, RuleTemplateManager ruleTemplateManager) {
+	public ServiceLocatorImpl(ComplexEventProcessor engine, String soapRequestFilePath, RuleTemplateManager ruleTemplateManager, String bsmWsdlUriFilePath) {
 		DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Starting ServiceLocator component ");
 
 		ServiceLocatorImpl.instance = this;
 		ServiceLocatorImpl.anEngine = engine;
 		ServiceLocatorImpl.localSoapRequestFilePath = soapRequestFilePath;
 		ServiceLocatorImpl.localRuleTemplateManager = ruleTemplateManager;
+		ServiceLocatorImpl.localBsmWsdlUriFilePath = bsmWsdlUriFilePath;
 	
 		theHashMapManager = new HashMapManager();
 		
@@ -78,20 +86,30 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	protected void triggeredCheck() {
 		
 		
-//		messageSendingAndGetResponse(
-//				createConnectionToService(),
-//				messageCreation(""),
-//				serviceWsdl);
-//		analyzeEasyESBResponse(
-//				messageSendingAndGetResponse(createConnectionToService(),
-//						messageCreation(
-//								readSoapRequest(soapRequestFilePath)),
-//								serviceWsdl));
+		analyzeEasyESBResponse(
+				messageSendingAndGetResponse(createConnectionToService(),
+						messageCreation(
+								localSoapRequestFilePath),
+								localBsmWsdlUriFilePath));
 		
 	}
 	
 	protected void analyzeEasyESBResponse(SOAPMessage messageFromEasyESB) {
 		
+		try {
+			ResponseDispatcher.LogViolation(
+					"",
+					"",
+					messageFromEasyESB.getSOAPBody().getTextContent()
+					);
+			
+		} catch (DOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SOAPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*
 		 * HERE WE MUST SETUP THE ANALYSIS OF THE MESSAGE 
 		 * COMING FROM EASYESB
@@ -117,38 +135,31 @@ public class ServiceLocatorImpl extends ServiceLocator {
         }
 	}
 	
-	protected SOAPMessage messageCreation(String soapMessageStringFile) {
+	protected SOAPMessage messageCreation(String soapMessageStringFilePath) {
 		
-		MessageFactory mf;
-		SOAPMessage soapMessage;
-		SOAPElement request;
-		
-		try {
-			
-			//begin Message creation
-			mf = MessageFactory.newInstance();
-			
-			soapMessage = mf.createMessage();
-
-			request = soapMessage.getSOAPBody().addChildElement("http://wsf.cdyne.com/WeatherWS/weather.asmx?op=GetCityForecastByZIP","http://wsf.cdyne.com/WeatherWS/weather.asmx?op=GetCityForecastByZIP","http://www.w3.org/2001/XMLSchema-instance");
-
-			System.out.println(request.getTextContent());
-            //TODO: Here we should put the message that must be sent to easyESB
-            //readSoapRequest(thePathOfTheStringWhereTheRequestToEasyESBisSaved);
-
-	        //end Message creation
-			return soapMessage;
-	        
-		} catch (SOAPException e) {
-			e.printStackTrace();
-			DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getCanonicalName(), "error during messageCreation");
-			return null;
-		}
+		 	SOAPMessage message = null;
+			try {
+				message = MessageFactory.newInstance().createMessage(); 
+	        SOAPPart soapPart = message.getSOAPPart();  
+	        soapPart.setContent(
+	        		new StreamSource(
+	        				new FileInputStream(soapMessageStringFilePath)));  
+	        message.saveChanges();  
+	        return message;  
+			} catch (SOAPException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return message; 
+	    
 	}
 	
-	protected SOAPMessage messageSendingAndGetResponse(SOAPConnection soapConnection, SOAPMessage soapMessage, String serviceWsdl) {
+	protected SOAPMessage messageSendingAndGetResponse(SOAPConnection soapConnection, SOAPMessage soapMessage, String serviceWsdlFilePath) {
 		SOAPMessage resp;
-        URLEndpoint endpoint = new URLEndpoint (serviceWsdl);
+        URLEndpoint endpoint = new URLEndpoint (Manager.ReadTextFromFile(serviceWsdlFilePath));
         
         try {
 			 resp = soapConnection.call(soapMessage, endpoint);
