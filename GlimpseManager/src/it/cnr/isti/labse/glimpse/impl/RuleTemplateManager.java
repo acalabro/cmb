@@ -28,19 +28,28 @@ public class RuleTemplateManager {
         return instance;
     }
 
-	public String setBody(InetAddress machineIP, RuleTemplateEnum templateType ) {
+	public String setBody(InetAddress machineIP, String serviceName, RuleTemplateEnum templateType ) {
 		String ruleSelected;
 		switch(templateType) {
-	      case EVENTAAFTEREVENTB:
-	        ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
+	      case EVENTAAFTEREVENTB: {
+	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
+	    	  ruleSelected.replaceAll("$$MACHINEIP$$", machineIP.getCanonicalHostName());
+	    	  ruleSelected.replaceAll("$$SERVICENAME$$", serviceName);
+	      }
 	        break;
 	     
-	      case EVENTABETWEENEVENTB:
-	       ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
+	      case EVENTABETWEENEVENTB: {
+	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
+	    	  ruleSelected.replaceAll("$$MACHINEIP$$", machineIP.getCanonicalHostName());
+	    	  ruleSelected.replaceAll("$$SERVICENAME$$", serviceName);
+	      }
 	       break;
 	       
-	      case INFRASTRUCTUREVIOLATION:
+	      case INFRASTRUCTUREVIOLATION: {
 	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
+		      ruleSelected.replaceAll("$$MACHINEIP$$", machineIP.getCanonicalHostName());
+		      ruleSelected.replaceAll("$$SERVICENAME$$", serviceName);
+	      }
 	    	 break;
 
 	      default:
@@ -52,7 +61,7 @@ public class RuleTemplateManager {
 	
 	
 	public ComplexEventRuleActionListDocument generateNewRuleToInjectInKnowledgeBase(
-			InetAddress machineName, RuleTemplateEnum ruleTemplateType) {
+			InetAddress machineName, String serviceName, RuleTemplateEnum ruleTemplateType) {
 		
 		ComplexEventRuleActionListDocument ruleDoc;			
 		ruleDoc = ComplexEventRuleActionListDocument.Factory.newInstance();
@@ -61,7 +70,7 @@ public class RuleTemplateManager {
 		ruleType.setRuleName(machineName.getHostAddress());
 		ruleType.setRuleType("drools");
 		
-		ruleType.setRuleBody(setBody(machineName,ruleTemplateType));
+		ruleType.setRuleBody(setBody(machineName, serviceName, ruleTemplateType));
 		
 		return ruleDoc;
 	}

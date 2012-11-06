@@ -2,8 +2,6 @@ package it.cnr.isti.labse.glimpse.impl;
 
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 
-import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
-import it.cnr.isti.labse.glimpse.services.ChoreosService;
 import it.cnr.isti.labse.glimpse.services.HashMapManager;
 import it.cnr.isti.labse.glimpse.services.ServiceLocator;
 
@@ -17,6 +15,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,18 +44,30 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	public static ServiceRegistryImpl dataSetForCollectedInformation;
 	public static RuleTemplateManager localRuleTemplateManager;
 	public static String localBsmWsdlUriFilePath;
+	public static String localRegexPatternFilePath;
 	
 	public static ServiceLocatorImpl instance = null;
 	public static HashMapManager theHashMapManager;
 	public static ComplexEventProcessor anEngine = null;
 	
+	public Properties regexPatternProperties;
+	
 	public static synchronized ServiceLocatorImpl getSingleton() {
         if (instance == null) 
-            instance = new ServiceLocatorImpl(anEngine,localSoapRequestFilePath, RuleTemplateManager.getSingleton(), localBsmWsdlUriFilePath);
+            instance = new ServiceLocatorImpl(anEngine,
+            		localSoapRequestFilePath,
+            		RuleTemplateManager.getSingleton(),
+            		localBsmWsdlUriFilePath,
+            		localRegexPatternFilePath);
         return instance;
     }
 	
-	public ServiceLocatorImpl(ComplexEventProcessor engine, String soapRequestFilePath, RuleTemplateManager ruleTemplateManager, String bsmWsdlUriFilePath) {
+	public ServiceLocatorImpl(ComplexEventProcessor engine,
+			String soapRequestFilePath,
+			RuleTemplateManager ruleTemplateManager,
+			String bsmWsdlUriFilePath,
+			String regexPatternFilePath) {
+		
 		DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Starting ServiceLocator component ");
 
 		ServiceLocatorImpl.instance = this;
@@ -62,8 +75,10 @@ public class ServiceLocatorImpl extends ServiceLocator {
 		ServiceLocatorImpl.localSoapRequestFilePath = soapRequestFilePath;
 		ServiceLocatorImpl.localRuleTemplateManager = ruleTemplateManager;
 		ServiceLocatorImpl.localBsmWsdlUriFilePath = bsmWsdlUriFilePath;
+		ServiceLocatorImpl.localRegexPatternFilePath = regexPatternFilePath;
 	
 		theHashMapManager = new HashMapManager();
+		regexPatternProperties = Manager.Read(regexPatternFilePath);
 		
 		DebugMessages.ok();
 
@@ -86,7 +101,7 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	protected void triggeredCheck() {
 		
 		
-		analyzeEasyESBResponse(
+		analyzeBSMResponse(
 				messageSendingAndGetResponse(createConnectionToService(),
 						messageCreation(
 								localSoapRequestFilePath),
@@ -94,28 +109,19 @@ public class ServiceLocatorImpl extends ServiceLocator {
 		
 	}
 	
-	protected void analyzeEasyESBResponse(SOAPMessage messageFromEasyESB) {
+	protected void analyzeBSMResponse(SOAPMessage messageFromBSM) {
 		
+		//TODO:analyzeResponse
 		try {
-			ResponseDispatcher.LogViolation(
-					"",
-					"",
-					messageFromEasyESB.getSOAPBody().getTextContent()
-					);
-			
+//			String receivedMessage = messageFromBSM.getSOAPBody().getElementsByTagName(name);
+//			receivedMessage
+//				Pattern regex = null;
+//				Matcher regexMatcher = regex.matcher(regexPatternProperties.getProperty("serviceName"));
+//				
 		} catch (DOMException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (SOAPException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		/*
-		 * HERE WE MUST SETUP THE ANALYSIS OF THE MESSAGE 
-		 * COMING FROM EASYESB
-		 */
-		dataSetForCollectedInformation.add(new ChoreosService(null,null));
-		
+		}		
 	}
 
 	protected SOAPConnection createConnectionToService() {
@@ -147,14 +153,11 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	        message.saveChanges();  
 	        return message;  
 			} catch (SOAPException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return message; 
-	    
 	}
 	
 	protected SOAPMessage messageSendingAndGetResponse(SOAPConnection soapConnection, SOAPMessage soapMessage, String serviceWsdlFilePath) {
@@ -216,7 +219,7 @@ public class ServiceLocatorImpl extends ServiceLocator {
 		
 		
 		//generate the new rule to monitor
-		ComplexEventRuleActionListDocument newRule = localRuleTemplateManager.generateNewRuleToInjectInKnowledgeBase(machineIP, ruleTemplateType);
+		ComplexEventRuleActionListDocument newRule = localRuleTemplateManager.generateNewRuleToInjectInKnowledgeBase(machineIP, serviceName, ruleTemplateType);
 		
 		//insert new rule into the knowledgeBase
 		localRuleTemplateManager.insertRule(newRule);
