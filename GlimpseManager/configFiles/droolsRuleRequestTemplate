@@ -14,8 +14,8 @@
 		salience 999
 		dialect "java"
 		when
-			$aEvent : GlimpseBaseEventChoreos(this.choreographySource == "CH1", this.isConsumed == false, this.isException == false, this.getEventData == "SLA Violation");
-			$bEvent : GlimpseBaseEventChoreos(this.choreographySource == "CH1", this.isConsumed == false, this.isException == false, this.getEventData == "Infrastructure Violation", this after $aEvent);
+			$aEvent : GlimpseBaseEventChoreos(this.choreographySource == "CH1", this.isConsumed == false, this.isException == false, this.getEventName == "SLA Violation");
+			$bEvent : GlimpseBaseEventChoreos(this.choreographySource == "CH1", this.isConsumed == false, this.isException == false, this.getEventName == "Infrastructure Violation", this after $aEvent);
 		then
 			$aEvent.setConsumed(true);
 			$bEvent.setConsumed(true);

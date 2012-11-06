@@ -14,14 +14,14 @@ public class HashMapManager {
 	
 	public HashMapManager() {
 		try {
-			test = InetAddress.getLocalHost();
+			test = InetAddress.getByName("pc-sabetta2.isti.cnr.it");
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		theCommonMapTable = new HashMap<String, InetAddress>();
-		theCommonMapTable.put("resp1", test);
+		theCommonMapTable.put("resp1",test);
 	}
 	
 	public InetAddress getMachine(String serviceName, String serviceType, String serviceRole) {
