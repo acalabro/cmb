@@ -1,2 +1,4 @@
 serviceName = $$SERVICENAME$$
-machineIP == $$MACHINEIP$$
+machineIP = $$MACHINEIP$$
+providerEndPoint = ns2:providerProxyEndpoint
+name = ns2:name 
