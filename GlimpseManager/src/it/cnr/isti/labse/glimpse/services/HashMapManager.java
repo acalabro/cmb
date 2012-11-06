@@ -6,9 +6,6 @@ import java.util.HashMap;
 
 public class HashMapManager {
 
-
-//	public HashMap<String, InetAddress> serviceTypeTable = new HashMap<String, InetAddress>();
-//	public HashMap<String, InetAddress> serviceRoleTable = new HashMap<String, InetAddress>();
 	public HashMap<String, InetAddress> theCommonMapTable;
 	public InetAddress test;
 	

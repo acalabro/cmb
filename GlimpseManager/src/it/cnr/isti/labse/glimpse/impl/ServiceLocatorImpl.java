@@ -36,6 +36,8 @@ import javax.xml.messaging.URLEndpoint;
 import org.apache.commons.net.ntp.TimeStamp;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class ServiceLocatorImpl extends ServiceLocator {
@@ -88,7 +90,7 @@ public class ServiceLocatorImpl extends ServiceLocator {
 		
 		while (this.getState() == State.RUNNABLE) {
 			try {
-				Thread.sleep(30000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -112,16 +114,15 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	protected void analyzeBSMResponse(SOAPMessage messageFromBSM) {
 		
 		//TODO:analyzeResponse
+		String soapMsg = "";
 		try {
-//			String receivedMessage = messageFromBSM.getSOAPBody().getElementsByTagName(name);
-//			receivedMessage
-//				Pattern regex = null;
-//				Matcher regexMatcher = regex.matcher(regexPatternProperties.getProperty("serviceName"));
-//				
-		} catch (DOMException e) {
+			soapMsg = messageFromBSM.getSOAPBody().getValue();
+		} catch (SOAPException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
+		DebugMessages.println(TimeStamp.getCurrentTime(), this.getName(),soapMsg);
+	
 	}
 
 	protected SOAPConnection createConnectionToService() {
@@ -207,17 +208,23 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	//it will generate a new rule that will be injected into the knowledge
 	//base. This new rule will check if there are (will be) infrastructure
 	//violation from the machine on which the service that call this method is running.
-	public static void GetMachineIP(String serviceName, String serviceType, String serviceRole, RuleTemplateEnum ruleTemplateType) {
+	public static void GetMachineIP(String serviceName, String serviceType, String serviceRole, RuleTemplateEnum ruleTemplateType, String payload) {
 		
 		DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getCanonicalName(), "getMachineIP method called");
 		ServiceLocatorImpl theLocator = ServiceLocatorImpl.getSingleton();
 		
+		//TODO:rimuovere sto schifo sotto
+		int startAlertPayload = payload.indexOf("<wscap:note>");
+		int endAlertPayload = payload.indexOf("</wscap:note>");
+		String alertPayload = payload.substring(startAlertPayload, endAlertPayload);
+		
+		//TODO: il serviceName va preso all'interno dell'alertPayload
+		//e da questo fatta la chiamata getMachineIP*_ ( serviceName, serviceType, serviceRole);
+		
 		InetAddress machineIP = theLocator.getMachineIPLocally(serviceName, serviceType, serviceRole);
 		if (machineIP == null) {
 			machineIP = theLocator.getMachineIPQueryingDSB(serviceName, serviceType, serviceRole);
-		}
-		
-		
+		}		
 		//generate the new rule to monitor
 		ComplexEventRuleActionListDocument newRule = localRuleTemplateManager.generateNewRuleToInjectInKnowledgeBase(machineIP, serviceName, ruleTemplateType);
 		
@@ -239,7 +246,9 @@ public class ServiceLocatorImpl extends ServiceLocator {
 	
 	@Override
 	public InetAddress getMachineIPQueryingDSB(String serviceName, String serviceType, String serviceRole) {
-		// TODO Auto-generated method stub
-		return null;
+		DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Forced service map cache update");
+		triggeredCheck();
+		DebugMessages.ok();
+		return getMachineIPLocally(serviceName, serviceType, serviceRole);
 	}
 }
