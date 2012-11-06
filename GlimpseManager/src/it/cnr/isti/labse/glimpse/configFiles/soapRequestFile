@@ -1,5 +1,4 @@
- 
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://com.petalslink.easierbsm/data/bsmadmin/1.0">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://com.petalslink.easyesb/data/admin/1.0">
    <soapenv:Header/>
    <soapenv:Body>
       <ns:getNodeInformations/>
