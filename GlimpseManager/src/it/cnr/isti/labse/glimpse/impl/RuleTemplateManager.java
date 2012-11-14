@@ -8,7 +8,6 @@ import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionList
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionType;
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleType;
 
-import java.net.InetAddress;
 
 import org.apache.commons.net.ntp.TimeStamp;
 
@@ -16,6 +15,8 @@ public class RuleTemplateManager {
 
 	public static String localDroolsRequestTemplatesFilePath;
 	public static RuleTemplateManager instance = null;
+	private String finalString;
+	private int startReplace;
 	
 	public RuleTemplateManager(String droolsRequestTemplatesFilePath) {
 		
@@ -28,28 +29,34 @@ public class RuleTemplateManager {
         return instance;
     }
 
-	public String setBody(InetAddress machineIP, String serviceName, RuleTemplateEnum templateType ) {
+	public String setBody(String machineIP, String serviceName, RuleTemplateEnum templateType ) {
 		String ruleSelected;
 		switch(templateType) {
 	      case EVENTAAFTEREVENTB: {
 	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
-	    	  ruleSelected.replaceAll("$$MACHINEIP$$", machineIP.getCanonicalHostName());
+	    	  ruleSelected.replaceAll("$$MACHINEIP$$", machineIP);
 	    	  ruleSelected.replaceAll("$$SERVICENAME$$", serviceName);
 	      }
 	        break;
 	     
 	      case EVENTABETWEENEVENTB: {
 	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
-	    	  ruleSelected.replaceAll("$$MACHINEIP$$", machineIP.getCanonicalHostName());
+	    	  ruleSelected.replaceAll("$$MACHINEIP$$", machineIP);
 	    	  ruleSelected.replaceAll("$$SERVICENAME$$", serviceName);
 	      }
 	       break;
 	       
 	      case INFRASTRUCTUREVIOLATION: {
 	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
-		      ruleSelected.replaceAll("$$MACHINEIP$$", machineIP.getCanonicalHostName());
-		      ruleSelected.replaceAll("$$SERVICENAME$$", serviceName);
-	      }
+		      startReplace = ruleSelected.indexOf("MACHINE_IP");
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  machineIP +
+		    		  ruleSelected.substring(startReplace+10,ruleSelected.length());
+		      startReplace = finalString.indexOf("SERVICE_NAME");
+		      ruleSelected = finalString.substring(0, startReplace) +
+		    		  serviceName 
+		    		  + finalString.substring(startReplace+12,finalString.length());
+	    	  }
 	    	 break;
 
 	      default:
@@ -61,17 +68,16 @@ public class RuleTemplateManager {
 	
 	
 	public ComplexEventRuleActionListDocument generateNewRuleToInjectInKnowledgeBase(
-			InetAddress machineName, String serviceName, RuleTemplateEnum ruleTemplateType) {
+			String machineIP, String serviceName, RuleTemplateEnum ruleTemplateType) {
 		
 		ComplexEventRuleActionListDocument ruleDoc;			
 		ruleDoc = ComplexEventRuleActionListDocument.Factory.newInstance();
 		ComplexEventRuleActionType ruleActions = ruleDoc.addNewComplexEventRuleActionList();
 		ComplexEventRuleType ruleType = ruleActions.addNewInsert();
-		ruleType.setRuleName(machineName.getHostAddress());
+		ruleType.setRuleName(machineIP);
 		ruleType.setRuleType("drools");
 		
-		ruleType.setRuleBody(setBody(machineName, serviceName, ruleTemplateType));
-		
+		ruleType.setRuleBody(setBody(machineIP, serviceName, ruleTemplateType));
 		return ruleDoc;
 	}
 
@@ -84,14 +90,12 @@ public class RuleTemplateManager {
 			rulesManager.loadRules(newRuleToInsert.getComplexEventRuleActionList());
 			DebugMessages.println(TimeStamp.getCurrentTime(), ServiceLocatorImpl.class.getCanonicalName(), "KnowledgeBase updated");
 		} catch (IncorrectRuleFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0;
 	}
 
 	public int unloadRule(int ruleInsertionID) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }

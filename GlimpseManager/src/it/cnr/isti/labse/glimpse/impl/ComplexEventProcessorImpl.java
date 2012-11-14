@@ -23,6 +23,7 @@ package it.cnr.isti.labse.glimpse.impl;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
+import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventChoreos;
 import it.cnr.isti.labse.glimpse.exceptions.UnknownMethodCallRuleException;
 import it.cnr.isti.labse.glimpse.rules.DroolsRulesManager;
 import it.cnr.isti.labse.glimpse.rules.RulesManager;
@@ -146,10 +147,22 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 		ObjectMessage msg = (ObjectMessage) arg0;
 		try {
 			GlimpseBaseEvent<?> receivedEvent = (GlimpseBaseEvent<?>) msg.getObject();
-			if (eventStream != null) {
+			if (eventStream != null && receivedEvent != null) {
 				try {
 					eventStream.insert(receivedEvent);
-					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"receives: " + receivedEvent.getEventData());	
+					if (receivedEvent instanceof GlimpseBaseEventChoreos<?>) {
+					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"receives:\n" +
+					"eventData: " + receivedEvent.getEventData() + "\n" +
+					"eventName: " + receivedEvent.getEventName() + "\n" +
+					"timestamp: " + receivedEvent.getTimeStamp() + "\n" +
+					"machineIP: " + ((GlimpseBaseEventChoreos<?>) receivedEvent).getMachineIP() + "\n" +
+					"choreographySource: " + ((GlimpseBaseEventChoreos<?>) receivedEvent).getChoreographySource());	
+					} else {
+						DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"receives:\n" +
+								"eventData: " + receivedEvent.getEventData() + "\n" +
+								"eventName: " + receivedEvent.getEventName() + "\n" +
+								"timestamp: " + receivedEvent.getTimeStamp());
+					}
 					DebugMessages.line();
 				} catch(org.drools.RuntimeDroolsException droolsCrashException) {
 					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), droolsCrashException.getMessage());

@@ -1,5 +1,13 @@
 package it.cnr.isti.labse.glimpse.impl;
 
+/**
+ * @author Antonello Calabr&ograve;
+ * @version 3.3
+ * 
+ */
+
+import it.cnr.isti.labse.glimpse.alertschoreos.NodeInformationsParser;
+import it.cnr.isti.labse.glimpse.alertschoreos.SLAAlertParser;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 
 import it.cnr.isti.labse.glimpse.services.HashMapManager;
@@ -10,14 +18,12 @@ import it.cnr.isti.labse.glimpse.utils.Manager;
 
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionListDocument;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,10 +40,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.messaging.URLEndpoint;
 
 import org.apache.commons.net.ntp.TimeStamp;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class ServiceLocatorImpl extends ServiceLocator {
@@ -80,8 +83,7 @@ public class ServiceLocatorImpl extends ServiceLocator {
 		ServiceLocatorImpl.localRegexPatternFilePath = regexPatternFilePath;
 	
 		theHashMapManager = new HashMapManager();
-		regexPatternProperties = Manager.Read(regexPatternFilePath);
-		
+		regexPatternProperties = Manager.Read(regexPatternFilePath);		
 		DebugMessages.ok();
 
 	}
@@ -90,41 +92,55 @@ public class ServiceLocatorImpl extends ServiceLocator {
 		
 		while (this.getState() == State.RUNNABLE) {
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(90000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Updating service map cache ");
-			triggeredCheck();
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass()
+					.getSimpleName(), "Updating service map cache ");
+			//automaticCacheUpdate();
 			DebugMessages.ok();
 		}
 	}
 	
-	protected void triggeredCheck() {
-		
-		
+	protected void triggeredCheck(String serviceName) {
 		analyzeBSMResponse(
 				messageSendingAndGetResponse(createConnectionToService(),
 						messageCreation(
 								localSoapRequestFilePath),
-								localBsmWsdlUriFilePath));
-		
+								localBsmWsdlUriFilePath), serviceName);
 	}
 	
-	protected void analyzeBSMResponse(SOAPMessage messageFromBSM) {
+	protected void analyzeBSMResponse(SOAPMessage messageFromBSM, String serviceName) {
+		String finalProviderAddress = "";
 		
-		//TODO:analyzeResponse
-		String soapMsg = "";
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
-			soapMsg = messageFromBSM.getSOAPBody().getValue();
+			messageFromBSM.writeTo(out);
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (SOAPException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		DebugMessages.println(TimeStamp.getCurrentTime(), this.getName(),soapMsg);
-	
-	}
 
+		//this is the SOAP response in XML format
+		String soapResponseRaw = new String(out.toByteArray());
+
+		NodeInformationsParser ourParser = new NodeInformationsParser(soapResponseRaw,serviceName);
+		ourParser.process();
+		finalProviderAddress = ourParser.getProcessedMachineName();
+
+		//add or update new data on commonmaptable
+		if (theHashMapManager.getMachine(serviceName, null,null) == null) {
+				theHashMapManager.theCommonMapTable.put(serviceName, finalProviderAddress);	
+		}
+		else {
+			theHashMapManager.theCommonMapTable.remove(serviceName);
+			theHashMapManager.theCommonMapTable.put(serviceName, finalProviderAddress);
+		}
+		
+	}
+			
 	protected SOAPConnection createConnectionToService() {
 		
 		SOAPConnectionFactory connectionFactory;
@@ -168,7 +184,6 @@ public class ServiceLocatorImpl extends ServiceLocator {
         try {
 			 resp = soapConnection.call(soapMessage, endpoint);
 			 soapConnection.close();
-			 System.out.println(resp.getSOAPBody().getTextContent());
 			 return resp;
 		}
 
@@ -204,50 +219,50 @@ public class ServiceLocatorImpl extends ServiceLocator {
 		return doc.getTextContent();
 	}
 
-	//this method is the only one that can/will be called by the rule
-	//it will generate a new rule that will be injected into the knowledge
-	//base. This new rule will check if there are (will be) infrastructure
-	//violation from the machine on which the service that call this method is running.
-	public static void GetMachineIP(String serviceName, String serviceType, String serviceRole, RuleTemplateEnum ruleTemplateType, String payload) {
+	public static void GetMachineIP(String senderName, String serviceType, String serviceRole, RuleTemplateEnum ruleTemplateType, String payload) {
 		
 		DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getCanonicalName(), "getMachineIP method called");
 		ServiceLocatorImpl theLocator = ServiceLocatorImpl.getSingleton();
 		
-		//TODO:rimuovere sto schifo sotto
-		int startAlertPayload = payload.indexOf("<wscap:note>");
-		int endAlertPayload = payload.indexOf("</wscap:note>");
-		String alertPayload = payload.substring(startAlertPayload, endAlertPayload);
-		
-		//TODO: il serviceName va preso all'interno dell'alertPayload
-		//e da questo fatta la chiamata getMachineIP*_ ( serviceName, serviceType, serviceRole);
-		
-		InetAddress machineIP = theLocator.getMachineIPLocally(serviceName, serviceType, serviceRole);
-		if (machineIP == null) {
-			machineIP = theLocator.getMachineIPQueryingDSB(serviceName, serviceType, serviceRole);
-		}		
-		//generate the new rule to monitor
-		ComplexEventRuleActionListDocument newRule = localRuleTemplateManager.generateNewRuleToInjectInKnowledgeBase(machineIP, serviceName, ruleTemplateType);
-		
-		//insert new rule into the knowledgeBase
-		localRuleTemplateManager.insertRule(newRule);
-		
-		//update the localTable with new information.
-		theHashMapManager.insertLocalTable(newRule.getComplexEventRuleActionList().getInsertArray(0).getRuleName().hashCode(),
-							serviceName,
-							machineIP,
-							serviceType,
-							serviceRole);		 
+		try{
+			SLAAlertParser slaParser = new SLAAlertParser(payload);
+			slaParser.process();
+			String alertServiceName = slaParser.getProcessedServiceName();
+			
+			String machineIP = theLocator.getMachineIPLocally(alertServiceName, serviceType, serviceRole);
+			if (machineIP == null) {
+				machineIP = theLocator.getMachineIPQueryingDSB(alertServiceName, serviceType, serviceRole);
+			}		
+			
+			DebugMessages.println(TimeStamp.getCurrentTime(),
+					ServiceLocatorImpl.class.getName(),
+					"\nSLA alert from: " + alertServiceName +"\nMachineAddress: "
+					+ machineIP);
+			//generate the new rule to monitor
+			ComplexEventRuleActionListDocument newRule = localRuleTemplateManager
+					.generateNewRuleToInjectInKnowledgeBase(machineIP, alertServiceName, ruleTemplateType);
+			
+			DebugMessages.println(TimeStamp.getCurrentTime(),
+					ServiceLocatorImpl.class.getName(),
+					newRule.getComplexEventRuleActionList().xmlText());
+			
+			//insert new rule into the knowledgeBase
+			localRuleTemplateManager.insertRule(newRule);
+		}
+		catch(IndexOutOfBoundsException e) {
+			DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getName(),"Not an SLA Alert");
+		}	 
 	}
 	
 	@Override
-	public InetAddress getMachineIPLocally(String serviceName, String serviceType, String serviceRole) {
+	public String getMachineIPLocally(String serviceName, String serviceType, String serviceRole) {
 		return theHashMapManager.getMachine(serviceName,serviceType,serviceRole);
 	}
 	
 	@Override
-	public InetAddress getMachineIPQueryingDSB(String serviceName, String serviceType, String serviceRole) {
+	public String getMachineIPQueryingDSB(String serviceName, String serviceType, String serviceRole) {
 		DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Forced service map cache update");
-		triggeredCheck();
+		triggeredCheck(serviceName);
 		DebugMessages.ok();
 		return getMachineIPLocally(serviceName, serviceType, serviceRole);
 	}
