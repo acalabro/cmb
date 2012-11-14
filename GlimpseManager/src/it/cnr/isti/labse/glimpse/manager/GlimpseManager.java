@@ -138,7 +138,7 @@ public class GlimpseManager extends Thread implements MessageListener {
 			//tPub = publishSession.createPublisher(connectionTopic);
 			DebugMessages.ok();
 			
-			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Setup ComplexEventProcessor with Enabler request.");
+			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Setting up ComplexEventProcessor with new rule.");
 			try {	
 				Object[] loadedKnowledgePackage = rulesManager.loadRules(rules);
 				//inserisco la coppia chiave valore dove la chiave è il KnowledgePackage
@@ -159,7 +159,7 @@ public class GlimpseManager extends Thread implements MessageListener {
 					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "KnowledgeBase packages loaded: " + rulesManager.getLoadedKnowledgePackageCardinality());
 				}
 				
-				DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"Communicate the answerTopic to the enabler");
+				DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"Communicate the answerTopic to the requester");
 				sendMessage(createMessage("AnswerTopic == " + answerTopic, sender));
 				DebugMessages.ok();
 			} catch (IncorrectRuleFormatException e) {
