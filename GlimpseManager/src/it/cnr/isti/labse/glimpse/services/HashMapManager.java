@@ -1,42 +1,32 @@
 package it.cnr.isti.labse.glimpse.services;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 
 public class HashMapManager {
 
-	public HashMap<String, InetAddress> theCommonMapTable;
+	public HashMap<String, String> theCommonMapTable;
 	public InetAddress test;
 	
 	public HashMapManager() {
-		try {
-			test = InetAddress.getByName("pc-sabetta2.isti.cnr.it");
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		theCommonMapTable = new HashMap<String, InetAddress>();
-		theCommonMapTable.put("resp1",test);
+		theCommonMapTable = new HashMap<String, String>();
 	}
 	
-	public InetAddress getMachine(String serviceName, String serviceType, String serviceRole) {
+	public String getMachine(String serviceName, String serviceType, String serviceRole) {
 		return localSearchName(serviceName);
 	}
 
-	private InetAddress localSearchName(String serviceName) {
+	private String localSearchName(String serviceName) {
 		return theCommonMapTable.get(serviceName);
 	}
 	
 	public boolean insertLocalTable(int ruleInsertionID, String serviceName,
-			InetAddress machineIP, String serviceType, String serviceRole) {
+			String machineIP, String serviceType, String serviceRole) {
 		
-		//TODO: here we should manage the insertion based on several kind of parameter
-				
 		theCommonMapTable.put(serviceName, machineIP);
 		
-		return false;
+		return true;
 	}
 
 	public boolean deleteLocalTable(int ruleInsertionID, String serviceName,
