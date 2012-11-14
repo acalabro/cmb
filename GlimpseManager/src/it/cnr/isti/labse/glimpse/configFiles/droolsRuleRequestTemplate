@@ -9,19 +9,12 @@
 	        @timestamp( timeStamp )
         end
         
-		rule "de"
+		rule "SERVICE_NAME"
 		no-loop
 		salience 999
 		dialect "java"
 		when
-			$aEvent : GlimpseBaseEventChoreos(this.choreographySource == "CH1", this.isConsumed == false, this.isException == false, this.getEventName == "SLA Violation");
-			$bEvent : GlimpseBaseEventChoreos(this.choreographySource == "CH1", this.isConsumed == false, this.isException == false, this.getEventName == "Infrastructure Violation", this after $aEvent);
+			$aEvent : GlimpseBaseEventChoreos(this.choreographySource == "CH1", this.isConsumed == false, this.isException == false, this.getEventName == "load_one", this.getMachineIP == "MACHINE_IP");
 		then
-			$aEvent.setConsumed(true);
-			$bEvent.setConsumed(true);
-			update( $aEvent );
-			retract( $aEvent );
-			update( $bEvent );
-			retract( $bEvent );
-			ResponseDispatcher.LogViolation(drools.getRule().getName(),"auto_generated_rule","SLA and Infrastructure violation occurred");
+			ResponseDispatcher.LogViolation(drools.getRule().getName()+"RULE","auto_generated_rule","\nSLA and Infrastructure violation\noccurred on: " + drools.getRule().getName() + "\npossibly due to an overload on machine: " + $aEvent.getMachineIP());
 		end

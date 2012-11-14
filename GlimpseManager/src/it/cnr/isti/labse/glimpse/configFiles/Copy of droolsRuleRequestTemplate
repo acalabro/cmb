@@ -1,0 +1,25 @@
+        import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventChoreos;
+        import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
+        import it.cnr.isti.labse.glimpse.utils.NotifierUtils;
+        import it.cnr.isti.labse.glimpse.impl.ServiceLocatorImpl;
+	import it.cnr.isti.labse.glimpse.impl.RuleTemplateEnum;
+        
+        declare GlimpseBaseEventChoreos
+	        @role( event )
+	        @timestamp( timeStamp )
+        end
+        
+		rule "de"
+		no-loop
+		salience 999
+		dialect "java"
+		when
+			$aEvent : GlimpseBaseEventChoreos(this.choreographySource == "CH1", this.isConsumed == false, this.isException == false, this.getEventName == "SLA Alert", this.getEventData matches "(?i).*SERVICE_NAME(.|\n|\r)*");
+			$bEvent : GlimpseBaseEventChoreos(this.choreographySource == "CH1", this.isConsumed == false, this.isException == false, this.getEventName == "host_down", this.getMachineIP == "MACHINE_IP", this after $aEvent);
+		then
+			$aEvent.setConsumed(true);
+			$bEvent.setConsumed(true);
+			update( $aEvent );
+			retract( $aEvent );
+			update( $bEvent );
+			retract( $bEvent );
