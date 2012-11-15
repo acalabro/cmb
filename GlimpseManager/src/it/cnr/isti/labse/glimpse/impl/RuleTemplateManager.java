@@ -59,6 +59,9 @@ public class RuleTemplateManager {
 		      ruleSelected = finalString.substring(0, startReplace) +
 		    		  serviceName 
 		    		  + finalString.substring(startReplace+12,finalString.length());
+		      startReplace = ruleSelected.indexOf("_TIMESTAMP_");
+		      ruleSelected = ruleSelected.substring(0,startReplace) + String.valueOf(timeStamp) +
+		    		  ruleSelected.substring(startReplace+11,ruleSelected.length());
 	      }
 	       break;
 	      
