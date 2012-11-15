@@ -1,0 +1,30 @@
+        import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventChoreos;
+        import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
+        import it.cnr.isti.labse.glimpse.utils.NotifierUtils;
+        import it.cnr.isti.labse.glimpse.impl.ServiceLocatorImpl;
+		import it.cnr.isti.labse.glimpse.impl.RuleTemplateEnum;
+        
+        declare GlimpseBaseEventChoreos
+	        @role( event )
+	        @timestamp( timeStamp )
+        end
+        
+        declare SlaAlertEvent
+	        @role( event )
+	        eventTime : long
+	       	@timestamp ( eventTime )
+	        eventName : String
+	        eventData : GlimpseBaseEventChoreos
+        end
+        
+		rule "SERVICE_NAME2_INFRASTRUCTURENOTRECEIVED"
+		no-loop
+		salience 1
+		dialect "java"
+		when
+			$g : SlaAlertEvent()
+			not(GlimpseBaseEventChoreos(this.choreographySource == "CH1", this.isConsumed == false, this.isException == false, this.getEventName == "load_one", this.getMachineIP == "MACHINE_IP", this after[0,10s] $g));
+		then
+			ResponseDispatcher.LogViolation("RULE","auto_generated_rule","\nSLA violation\noccurred");
+			retract($g);
+		end

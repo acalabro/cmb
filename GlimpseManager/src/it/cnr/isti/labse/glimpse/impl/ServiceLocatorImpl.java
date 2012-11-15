@@ -96,10 +96,6 @@ public class ServiceLocatorImpl extends ServiceLocator {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass()
-					.getSimpleName(), "Updating service map cache ");
-			//automaticCacheUpdate();
-			DebugMessages.ok();
 		}
 	}
 	
@@ -219,7 +215,7 @@ public class ServiceLocatorImpl extends ServiceLocator {
 		return doc.getTextContent();
 	}
 
-	public static void GetMachineIP(String senderName, String serviceType, String serviceRole, RuleTemplateEnum ruleTemplateType, String payload) {
+	public static void GetMachineIP(String senderName, String serviceType, String serviceRole, RuleTemplateEnum ruleTemplateType, String payload, Long timeStamp) {
 		
 		DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getCanonicalName(), "getMachineIP method called");
 		ServiceLocatorImpl theLocator = ServiceLocatorImpl.getSingleton();
@@ -234,13 +230,9 @@ public class ServiceLocatorImpl extends ServiceLocator {
 				machineIP = theLocator.getMachineIPQueryingDSB(alertServiceName, serviceType, serviceRole);
 			}		
 			
-			DebugMessages.println(TimeStamp.getCurrentTime(),
-					ServiceLocatorImpl.class.getName(),
-					"\nSLA alert from: " + alertServiceName +"\nMachineAddress: "
-					+ machineIP);
 			//generate the new rule to monitor
 			ComplexEventRuleActionListDocument newRule = localRuleTemplateManager
-					.generateNewRuleToInjectInKnowledgeBase(machineIP, alertServiceName, ruleTemplateType);
+					.generateNewRuleToInjectInKnowledgeBase(machineIP, alertServiceName, ruleTemplateType, timeStamp);
 			
 			DebugMessages.println(TimeStamp.getCurrentTime(),
 					ServiceLocatorImpl.class.getName(),

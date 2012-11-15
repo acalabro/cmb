@@ -13,41 +13,57 @@ import org.apache.commons.net.ntp.TimeStamp;
 
 public class RuleTemplateManager {
 
-	public static String localDroolsRequestTemplatesFilePath;
+	public static String localDroolsRequestTemplatesFilePathOne;
+	public static String localDroolsRequestTemplatesFilePathTwo;
 	public static RuleTemplateManager instance = null;
+	public static RulesManager rulesManager;
 	private String finalString;
 	private int startReplace;
 	
-	public RuleTemplateManager(String droolsRequestTemplatesFilePath) {
+	public RuleTemplateManager(String droolsRequestTemplatesFilePathOne, String droolsRequestTemplatesFilePathTwo) {
 		
-		RuleTemplateManager.localDroolsRequestTemplatesFilePath = droolsRequestTemplatesFilePath;
+		RuleTemplateManager.localDroolsRequestTemplatesFilePathOne = droolsRequestTemplatesFilePathOne;
+		RuleTemplateManager.localDroolsRequestTemplatesFilePathTwo = droolsRequestTemplatesFilePathTwo;
 	}
 	
 	public static synchronized RuleTemplateManager getSingleton() {
         if (instance == null) 
-            instance = new RuleTemplateManager(localDroolsRequestTemplatesFilePath);
+            instance = new RuleTemplateManager(localDroolsRequestTemplatesFilePathOne,localDroolsRequestTemplatesFilePathTwo);
         return instance;
     }
 
-	public String setBody(String machineIP, String serviceName, RuleTemplateEnum templateType ) {
+	public String setBody(String machineIP, String serviceName, RuleTemplateEnum templateType, long timeStamp) {
 		String ruleSelected;
 		switch(templateType) {
 	      case EVENTAAFTEREVENTB: {
-	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
+	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePathOne);
 	    	  ruleSelected.replaceAll("$$MACHINEIP$$", machineIP);
 	    	  ruleSelected.replaceAll("$$SERVICENAME$$", serviceName);
 	      }
 	        break;
 	     
 	      case EVENTABETWEENEVENTB: {
-	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
+	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePathOne);
 	    	  ruleSelected.replaceAll("$$MACHINEIP$$", machineIP);
 	    	  ruleSelected.replaceAll("$$SERVICENAME$$", serviceName);
 	      }
 	       break;
 	       
+	      case NOEVENTFROMINFRASTRUCTURE: {
+	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePathTwo);
+	    	  startReplace = ruleSelected.indexOf("MACHINE_IP");
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  machineIP +
+		    		  ruleSelected.substring(startReplace+10,ruleSelected.length());
+		      startReplace = finalString.indexOf("SERVICE_NAME");
+		      ruleSelected = finalString.substring(0, startReplace) +
+		    		  serviceName 
+		    		  + finalString.substring(startReplace+12,finalString.length());
+	      }
+	       break;
+	      
 	      case INFRASTRUCTUREVIOLATION: {
-	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePath);
+	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePathOne);
 		      startReplace = ruleSelected.indexOf("MACHINE_IP");
 		      finalString = ruleSelected.substring(0, startReplace) +
 		    		  machineIP +
@@ -56,6 +72,9 @@ public class RuleTemplateManager {
 		      ruleSelected = finalString.substring(0, startReplace) +
 		    		  serviceName 
 		    		  + finalString.substring(startReplace+12,finalString.length());
+		      startReplace = ruleSelected.indexOf("_TIMESTAMP_");
+		      ruleSelected = ruleSelected.substring(0,startReplace) + String.valueOf(timeStamp) +
+		    		  ruleSelected.substring(startReplace+11,ruleSelected.length());
 	    	  }
 	    	 break;
 
@@ -68,7 +87,7 @@ public class RuleTemplateManager {
 	
 	
 	public ComplexEventRuleActionListDocument generateNewRuleToInjectInKnowledgeBase(
-			String machineIP, String serviceName, RuleTemplateEnum ruleTemplateType) {
+			String machineIP, String serviceName, RuleTemplateEnum ruleTemplateType, Long timeStamp) {
 		
 		ComplexEventRuleActionListDocument ruleDoc;			
 		ruleDoc = ComplexEventRuleActionListDocument.Factory.newInstance();
@@ -77,16 +96,16 @@ public class RuleTemplateManager {
 		ruleType.setRuleName(machineIP);
 		ruleType.setRuleType("drools");
 		
-		ruleType.setRuleBody(setBody(machineIP, serviceName, ruleTemplateType));
+		ruleType.setRuleBody(setBody(machineIP, serviceName, ruleTemplateType, timeStamp));
 		return ruleDoc;
 	}
 
 	public int insertRule(ComplexEventRuleActionListDocument newRuleToInsert) {
 		try {
-			RulesManager rulesManager = ServiceLocatorImpl.anEngine.getRuleManager();
+			rulesManager = ServiceLocatorImpl.anEngine.getRuleManager();
 			DebugMessages.println(TimeStamp.getCurrentTime(), ServiceLocatorImpl.class.getCanonicalName(), "Updating knowledgeBase " +
 			rulesManager.getLoadedKnowledgePackageCardinality());
-			rulesManager.getLoadedRulesInfo();
+
 			rulesManager.loadRules(newRuleToInsert.getComplexEventRuleActionList());
 			DebugMessages.println(TimeStamp.getCurrentTime(), ServiceLocatorImpl.class.getCanonicalName(), "KnowledgeBase updated");
 		} catch (IncorrectRuleFormatException e) {

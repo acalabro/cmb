@@ -43,25 +43,26 @@ public class DroolsRulesManager extends RulesManager {
 
 	private KnowledgeBuilder kbuilder;
 	private KnowledgeBase kbase;
-	private KnowledgeBuilder newKnowledgeBuilder;
 	
 	public DroolsRulesManager(Object knowledgeBuilder, Object knowledgeBase, Object knowledgeSession) {
 		super(knowledgeBuilder, knowledgeBase, knowledgeSession);
 		kbuilder = (KnowledgeBuilder) knowledgeBuilder;
 		kbase = (KnowledgeBase) knowledgeBase;
+
+		kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 	}
 
 	@Override
 	public void insertRule(final String rule, final String ruleName) throws IncorrectRuleFormatException {
 
 		//try {
-			newKnowledgeBuilder.add(ResourceFactory.newByteArrayResource(rule.trim().getBytes()), ResourceType.DRL);
+		kbuilder.add(ResourceFactory.newByteArrayResource(rule.trim().getBytes()), ResourceType.DRL);
 //		} catch (RuntimeDroolsException droolsExceptionOnLoading) {
 //			newKnowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 //			throw new UnknownMethodCallRuleException();
 //		}
 		
-		if (newKnowledgeBuilder.getErrors().size() > 0)
+		if (kbuilder.getErrors().size() > 0)
 			 throw new IncorrectRuleFormatException();
 		 
 	}
@@ -91,8 +92,6 @@ public class DroolsRulesManager extends RulesManager {
 	}
 	
 	public Object[] loadRules(final ComplexEventRuleActionType rules) throws IncorrectRuleFormatException {
-		
-		newKnowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 		
 		final ComplexEventRuleType[] insertRules = rules.getInsertArray();
 		for(int i = 0; i < insertRules.length; i++)
@@ -151,8 +150,9 @@ public class DroolsRulesManager extends RulesManager {
 				e.printStackTrace();
 			}
 		}
-			kbase.addKnowledgePackages(newKnowledgeBuilder.getKnowledgePackages());
-		return newKnowledgeBuilder.getKnowledgePackages().toArray();
+			kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+			this.getLoadedRulesInfo();
+		return kbuilder.getKnowledgePackages().toArray();
 	}
 	
 	public int getLoadedKnowledgePackageCardinality() {
@@ -162,7 +162,8 @@ public class DroolsRulesManager extends RulesManager {
 	public void getLoadedRulesInfo()
 	{
 		DebugMessages.line();
-		Collection<KnowledgePackage> pkg = kbuilder.getKnowledgePackages();
+		Collection<KnowledgePackage> pkg = kbase.getKnowledgePackages();
+		//Collection<KnowledgePackage> pkg = kbuilder.getKnowledgePackages();
 		Object[] pkgArray = pkg.toArray();
 		KnowledgePackage pkgPd = (org.drools.definition.KnowledgePackage)pkgArray[0];
 		Collection<Rule> loadedRules = pkgPd.getRules();

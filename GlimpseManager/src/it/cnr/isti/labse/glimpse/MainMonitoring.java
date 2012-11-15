@@ -62,7 +62,8 @@ public class MainMonitoring {
 	protected static String DROOLSPARAMETERFILE;
 	protected static String MANAGERPARAMETERFILE;
 	protected static String SOAPREQUESTFILE;
-	protected static String DROOLSRULEREQUESTTEMPLATE;
+	protected static String DROOLSRULEREQUESTTEMPLATE1;
+	protected static String DROOLSRULEREQUESTTEMPLATE2;
 	protected static String BSMWSDLURIFILEPATH;
 	protected static String REGEXPATTERNFILEPATH;
 	// end settings
@@ -90,8 +91,10 @@ public class MainMonitoring {
 					.getProperty("MANAGERPARAMETERFILE");
 			SOAPREQUESTFILE = systemProps
 					.getProperty("SOAPREQUESTFILE");
-			DROOLSRULEREQUESTTEMPLATE = systemProps
-					.getProperty("DROOLSRULEREQUESTTEMPLATE");		
+			DROOLSRULEREQUESTTEMPLATE1 = systemProps
+					.getProperty("DROOLSRULEREQUESTTEMPLATE1");	
+			DROOLSRULEREQUESTTEMPLATE2 = systemProps
+					.getProperty("DROOLSRULEREQUESTTEMPLATE2");	
 			BSMWSDLURIFILEPATH = systemProps
 					.getProperty("BSMWSDLURIFILEPATH");		
 			REGEXPATTERNFILEPATH = systemProps
@@ -135,7 +138,7 @@ public class MainMonitoring {
 					e.printStackTrace();
 				}
 
-				RuleTemplateManager templateManager = new RuleTemplateManager(DROOLSRULEREQUESTTEMPLATE);
+				RuleTemplateManager templateManager = new RuleTemplateManager(DROOLSRULEREQUESTTEMPLATE1,DROOLSRULEREQUESTTEMPLATE2);
 				
 				//the component in charge to locate services and load specific rules.
 				ServiceLocator serviceLocator = new ServiceLocatorImpl(engine,SOAPREQUESTFILE, templateManager, BSMWSDLURIFILEPATH, REGEXPATTERNFILEPATH);

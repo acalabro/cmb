@@ -21,6 +21,9 @@
 package it.cnr.isti.labse.glimpse.manager;
 
 import it.cnr.isti.labse.glimpse.consumer.ConsumerProfile;
+import it.cnr.isti.labse.glimpse.exceptions.UnknownRuleException;
+import it.cnr.isti.labse.glimpse.rules.DroolsRulesManager;
+import it.cnr.isti.labse.glimpse.rules.RulesManager;
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
 import it.cnr.isti.labse.glimpse.xml.complexEventException.ComplexEventException;
 import it.cnr.isti.labse.glimpse.xml.complexEventResponse.ComplexEventResponse;
@@ -49,15 +52,18 @@ public class ResponseDispatcher {
 	private static TopicPublisher tPub;
 	private static HashMap<Object, ConsumerProfile> requestMap;
 	private static TopicConnection connection;
+	private static RulesManager rulesManager;
+	
 	@SuppressWarnings("unused")
 	private static TopicSession publicSession;
 	
 	public ResponseDispatcher(InitialContext initConn,
 			TopicConnectionFactory connectionFact,
-			HashMap<Object, ConsumerProfile> requestMap) {
+			HashMap<Object, ConsumerProfile> requestMap, RulesManager rulesManager) {
 
 		ResponseDispatcher.requestMap = requestMap;
 		ResponseDispatcher.initConn = initConn;
+		ResponseDispatcher.rulesManager = rulesManager;
 		try {
 			connection = connectionFact.createTopicConnection();
 			publishSession = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -170,9 +176,21 @@ public class ResponseDispatcher {
 	public static void LogViolation(String ruleMatched,
 			String whoGenerateIt, String whatToLog)
 	{
+		DebugMessages.line();
+		DebugMessages.line();
+		DebugMessages.line();
 		DebugMessages.println(TimeStamp.getCurrentTime(), ResponseDispatcher.class.getSimpleName(),
-				"ruleMatched: " + ruleMatched
-				+ " - whoGeneratedIt: " + whoGenerateIt
-				+ " - what happens: " + whatToLog);
+				"ruleMatched:\n" + ruleMatched
+				+ "whoGeneratedIt: " + whoGenerateIt
+				+ "\nwhat happens: " + whatToLog);
+		DebugMessages.line();
+		DebugMessages.line();
+		DebugMessages.line();
+//		try {
+//			rulesManager.deleteRule(whoGenerateIt);
+//		} catch (UnknownRuleException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }
