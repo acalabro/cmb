@@ -1,0 +1,27 @@
+		import it.cnr.isti.labse.glimpse.event.GlimpseBaseEventChoreos;
+        import it.cnr.isti.labse.glimpse.manager.ResponseDispatcher;
+        import it.cnr.isti.labse.glimpse.utils.NotifierUtils;
+        import it.cnr.isti.labse.glimpse.impl.ServiceLocatorImpl;
+		import it.cnr.isti.labse.glimpse.impl.RuleTemplateEnum;
+        
+        declare GlimpseBaseEventChoreos
+	        @role( event )
+	        @timestamp( timeStamp )
+        end
+            
+		rule "SERVICE_NAME_INFRASTRUCTUREVIOLATION"
+		no-loop
+		salience 10
+		dialect "java"
+		when
+			$aEvent : GlimpseBaseEventChoreos(this.isConsumed == true, this.getTimeStamp == _TIMESTAMP_, this.getEventName == "SLA Alert");
+			$bEvent : GlimpseBaseEventChoreos(this.isConsumed == false, this.getEventName == "load_one", this.getMachineIP == "MACHINE_IP" , this after[0,10s] $aEvent);
+		then
+			$bEvent.setConsumed(true);
+			update($bEvent);
+			
+			ResponseDispatcher.LogViolation("RULE","auto_generated_rule","\nSLA and Infrastructure violation by service: SERVICE_NAME" + "\npossibly due to an overload on machine: " + $bEvent.getMachineIP());
+			
+			retract($aEvent);
+			retract($bEvent);
+		end
