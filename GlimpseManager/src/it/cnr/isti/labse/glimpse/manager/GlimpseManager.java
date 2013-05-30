@@ -48,7 +48,7 @@ import javax.naming.NamingException;
 import org.apache.commons.net.ntp.TimeStamp;
 import org.apache.xmlbeans.XmlException;
 import org.drools.definitions.impl.KnowledgePackageImp;
-import org.drools.definition.rule.*;
+import org.drools.rule.Rule;
 
 public class GlimpseManager extends Thread implements MessageListener {
 	
