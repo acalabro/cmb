@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 1. Introduction</title><link rel="stylesheet" href="css/jbossorg.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Drools Fusion User Guide"/><link rel="up" href="index.html" title="Drools Fusion User Guide"/><link rel="prev" href="pr01.html" title=""/><link rel="next" href="ch02.html" title="Chapter 2. Drools Fusion Features"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.jboss.org" class="site_href"><strong>JBoss.org</strong></a><a href="http://docs.jboss.org/" class="doc_href"><strong>Community Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="pr01.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch02.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e23"/>Chapter 1. Introduction</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="ch01.html#d0e28">1.1. Complex Event Processing</a></span></dt><dt><span class="section"><a href="ch01.html#d0e79">1.2. Drools Fusion</a></span></dt></dl></div><p>In the Drools vision of a unified behavioral modelling platform,
+  Drools Fusion is the module responsible for enabling event processing
+  behavior.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e28"/>1.1. Complex Event Processing</h2></div></div></div><p>Although several tries were made, there isn't up to date any broadly
+  accepted definition on the term Complex Event Processing. The term Event by
+  itself is frequently overloaded and used to refer to several different
+  things, depending on the context it is used. Defining terms is not the goal
+  of this guide and as so, lets adopt a loose definition that, although not
+  formal, will allow us to proceed with a common understanding.</p><p>So, in the scope of this guide:</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p><a id="d0e37" class="indexterm"/> <span class="bold"><strong>Event</strong></span>, is a record of a
+    significant change of state in the application domain.</p></div><p>For instance, on a Stock Broker application, when a sell operation is
+  executed, it causes a change of state in the domain. This change of state
+  can be observed on several entities in the domain, like the price of the
+  securities that changed to match the value of the operation, the owner of
+  the individual traded assets that change from the seller to the buyer, the
+  balance of the accounts from both seller and buyer that are credited and
+  debited, etc. Depending on how the domain is modelled, this change of state
+  may be represented by a single event, multiple atomic events or even
+  hierarchies of correlated events. In any case, in the context of this guide,
+  Event is the record of the change on a particular data in the domain.</p><p>Events are processed by computer systems since they were invented, and
+  throughout the history, systems responsible for that were given different
+  names and different methodologies were employed. It wasn't until the 90's
+  though, that a more focused work started on EDA (Event Driven Architecture)
+  with a more formal definition on the requirements and goals for event
+  processing. Old messaging systems started to change to address such
+  requirements and new systems started to be developed with the single purpose
+  of event processing. Two trends were born under the names of Event Stream
+  Processing and Complex Event Processing.</p><p>In the very begginings, Event Stream Processing was focused on the
+  capabilities of processing streams of events in (near) real time, where the
+  main focus of Complex Event Processing was on the correlation and
+  composition of atomic events into complex (compound) events. An important
+  (maybe the most important) milestone was the publishing of the Dr. David
+  Luckham's book "The Power of Events" in 2002. In the book, Dr Luckham
+  introduces the concept of Complex Event Processing and how it can be used to
+  enhance systems that deal with events. Over the years, both trends converged
+  to a common understanding and today these systems are all refered as CEP
+  systems.</p><p>This is a very simplistic explanation to a really complex and fertile
+  field of research, but sets a very highlevel and common understanding for
+  the concepts this guide will introduce.</p><p>The current understanding of what Complex Event Processing is may be
+  briefly described as the following quote from Wikipedia:</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><div class="blockquote"><table border="0" width="100%" cellspacing="0" cellpadding="0" class="blockquote" summary="Block quote"><tr><td width="10%" valign="top"> </td><td width="80%" valign="top"><p>"<a id="d0e62" class="indexterm"/><span class="bold"><strong>Complex Event
+      Processing</strong></span>, or CEP, is primarily an event processing concept
+      that deals with the task of processing multiple events with the goal of
+      identifying the meaningful events within the event cloud. CEP employs
+      techniques such as detection of complex patterns of many events, event
+      correlation and abstraction, event hierarchies, and relationships
+      between events such as causality, membership, and timing, and
+      event-driven processes."</p></td><td width="10%" valign="top"> </td></tr><tr><td width="10%" valign="top"> </td><td colspan="2" align="right" valign="top">--<span class="attribution"><em class="citetitle"><a class="link" href="http://en.wikipedia.org/wiki/Complex_event_processing" target="">Wikipedia</a></em></span></td></tr></table></div></div><p>In other words, CEP is about detecting and selecting the interesting
+  events (and only them) from an event cloud, finding their relationships and
+  infering new data from them and their relationships.</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>For the remaining of this guide, we will use the terms 
+   <span class="bold"><strong>Complex Event Processing</strong></span>
+  and <span class="bold"><strong>CEP</strong></span> as a broad reference for any of 
+  the related technologies
+  and techniques, including but not limited to, CEP, Complex Event Processing,
+  ESP, Event Stream Processing and Event Processing in general.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e79"/>1.2. Drools Fusion</h2></div></div></div><p>Event Processing use cases, in general, share several requirements and
+  goals with Business Rules use cases. These overlaps happen both on the
+  business side and on the technical side.</p><p>On the Business side:</p><div class="itemizedlist"><ul><li><p>Business rules are frequently defined based on the occurrence of
+      scenarios triggered by events. Examples could be:</p><div class="itemizedlist"><ul><li><p>On an algorithmic trading application: take an action if the
+          security price increases X% compared to the day opening price, where
+          the price increases are usually denoted by events on a Stock Trade
+          application.</p></li><li><p>On a monitoring application: take an action if the temperature
+          on the server room increases X degrees in Y minutes, where sensor
+          readings are usually denoted by events.</p></li></ul></div></li><li><p>Both business rules and event processing queries change frequently
+      and require immediate response for the business to adapt itself to new
+      market conditions, new regulations and new enterprise policies.</p></li></ul></div><p>From a technical perspective:</p><div class="itemizedlist"><ul><li><p>Both require seemless integration with the enterprise
+      infrastructure and applications, specially on autonomous governance,
+      including, but not limited to, lifecycle management, auditing, security,
+      etc.</p></li><li><p>Both have functional requirements like pattern matching and
+      non-functional requirements like response time and query/rule
+      explanation.</p></li></ul></div><p>Even sharing requirements and goals, historically, both fields were
+  born appart and although the industry evolved and one can find good products
+  on the market, they either focus on event processing or on business rules
+  management. That is due not only because of historical reasons but also
+  because, even overlapping in part, use cases do have some different
+  requirements.</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p>Drools was also born as a rules engine several years ago, but
+    following the vision of becoming a single platform for behavioral
+    modelling, it soon realized that it could only achieve this goal by
+    crediting the same importante to the three complementary business
+    modelling techniques:</p><div class="itemizedlist"><ul><li><p>Business Rules Management</p></li><li><p>Business Processes Management</p></li><li><p>Complex Event Processing</p></li></ul></div></div><p>In this context, Drools Fusion is the module responsible for adding
+  event processing capabilities into the platform. </p><p>Supporting Complex Event Processing, though, is much more than simply
+  understanding what an event is. CEP scenarios share several common and
+  distiguishing characteristics:</p><div class="itemizedlist"><ul><li><p>Usually required to process huge volumes of events, but only a
+      small percentage of the events are of real interest.</p></li><li><p>Events are usually immutable, since they are a record of state
+      change.</p></li><li><p>Usually the rules and queries on events must run in reactive
+      modes, i.e., react to the detection of event patterns.</p></li><li><p>Usually there are strong temporal relationships between related
+      events.</p></li><li><p>Individual events are usually not important. The system is
+      concerned about patterns of related events and their
+      relationships.</p></li><li><p>Usually, the system is required to perform composition and
+      aggregation of events.</p></li></ul></div><p>Based on this general common characteristics, Drools Fusion defined a
+  set of goals to be achieved in order to support Complex Event Processing
+  appropriately:</p><div class="itemizedlist"><ul><li><p>Support Events, with their propper semantics, as first class
+      citizens.</p></li><li><p>Allow detection, correlation, aggregation and composition of
+      events.</p></li><li><p>Support processing of Streams of events.</p></li><li><p>Support temporal constraints in order to model the temporal
+      relationships between events.</p></li><li><p>Support sliding windows of interesting events.</p></li><li><p>Support a session scoped unified clock.</p></li><li><p>Support the required volumes of events for CEP use cases.</p></li><li><p>Support to (re)active rules.</p></li><li><p>Support adapters for event input into the engine
+      (pipeline).</p></li></ul></div><p>The above list of goals are based on the requirements not covered by
+  Drools Expert itself, since in a unified platform, all features of one
+  module are leveraged by the other modules. This way, Drools Fusion is born
+  with enterprise grade features like Pattern Matching, that is paramount to a
+  CEP product, but that is already provided by Drools Expert. In the same way,
+  all features provided by Drools Fusion are leveraged by Drools Flow (and
+  vice-versa) making process management aware of event processing and
+  vice-versa.</p><p>For the remaining of this guide, we will go through each of the
+  features Drools Fusion adds to the platform. All these features are
+  available to support different use cases in the CEP world, and the user is
+  free to select and use the ones that will help him model his business use
+  case.</p></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="pr01.html"><strong>Prev</strong></a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="ch02.html"><strong>Next</strong>Chapter 2. Drools Fusion Features</a></li></ul></body></html>

@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 2. Quick Start</title><link rel="stylesheet" href="css/jbossorg.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Drools Expert User Guide"/><link rel="up" href="index.html" title="Drools Expert User Guide"/><link rel="prev" href="ch01.html" title="Chapter 1. The Rule Engine"/><link rel="next" href="ch03.html" title="Chapter 3. Advanced Concepts and Theory"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.jboss.org" class="site_href"><strong>JBoss.org</strong></a><a href="http://docs.jboss.org/" class="doc_href"><strong>Community Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="ch01.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch03.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e248"/>Chapter 2. Quick Start</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="ch02.html#d0e251">2.1. The Basics</a></span></dt><dd><dl><dt><span class="section"><a href="ch02.html#d0e254">2.1.1. Stateless Knowledge Session</a></span></dt><dt><span class="section"><a href="ch02.html#d0e401">2.1.2. Stateful Knowledge Session</a></span></dt></dl></dd><dt><span class="section"><a href="ch02.html#d0e573">2.2. A Little Theory</a></span></dt><dd><dl><dt><span class="section"><a href="ch02.html#d0e576">2.2.1. Methods versus Rules</a></span></dt><dt><span class="section"><a href="ch02.html#d0e608">2.2.2. Cross Products</a></span></dt><dt><span class="section"><a href="ch02.html#d0e633">2.2.3. Activations, Agenda and Conflict Sets.</a></span></dt><dt><span class="section"><a href="ch02.html#d0e795">2.2.4. Inference</a></span></dt><dt><span class="section"><a href="ch02.html#d0e864">2.2.5. Inference and TruthMaintenance</a></span></dt></dl></dd><dt><span class="section"><a href="ch02.html#d0e887">2.3. More on building and deploying</a></span></dt><dd><dl><dt><span class="section"><a href="ch02.html#d0e890">2.3.1. Knowledge Base by Configuration Using Changesets</a></span></dt><dt><span class="section"><a href="ch02.html#d0e918">2.3.2. Knowledge Agent</a></span></dt></dl></dd></dl></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e251"/>2.1. The Basics</h2></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e254"/>2.1.1. Stateless Knowledge Session</h3></div></div></div><p>So where do we get started, there are so many use cases and so much
+    functionality in a rule engine such as Drools that it becomes beguiling.
+    Have no fear my intrepid adventurer, the complexity is layered and you can
+    ease yourself into with simple use cases.</p><p>Stateless session, not utilising inference, forms the simplest use
+    case. A stateless session can be called like a function passing it some
+    data and then receiving some results back. Some common use cases for
+    stateless sessions are, but not limited to:</p><div class="itemizedlist"><ul><li><p>Validation</p><div class="itemizedlist"><ul><li><p>Is this person eligible for a mortgage?</p></li></ul></div></li><li><p>Calculation</p><div class="itemizedlist"><ul><li><p>Compute a mortgage premium.</p></li></ul></div></li><li><p>Routing and Filtering</p><div class="itemizedlist"><ul><li><p>Filter incoming messages, such as emails, into
+            folders.</p></li><li><p>Send incoming messages to a destination.</p></li></ul></div></li></ul></div><p>So let's start with a very simple example using a driving license
+    application.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_keyword">public</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_keyword">class</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">Applicant</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">String</span><span class="java_plain">&nbsp;name</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">int</span><span class="java_plain">&nbsp;age</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">boolean</span><span class="java_plain">&nbsp;valid</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_operator">//</span><span class="java_plain">&nbsp;getter&nbsp;and&nbsp;setter&nbsp;methods&nbsp;here</span>
+<!--  --><br/><span class="java_separator">}</span>
+</pre><p>Now that we have our data model we can write our first rule. We
+    assume that the application uses rules to refute invalid applications. As
+    this is a simple validation use case we will add a single rule to
+    disqualify any applicant younger than 18.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">package com.company.license
+
+rule "Is of valid age"
+when
+    $a : Applicant( age &lt; 18 )
+then
+    $a.setValid( false );
+end</pre><p>To make the engine aware of data, so it can be processed against the
+    rules, we have to <span class="emphasis"><em>insert</em></span> the data, much like with a
+    database. When the Applicant instance is inserted into the engine it is
+    evaluated against the constraints of the rules, in this case just two
+    constraints for one rule. We say <span class="emphasis"><em>two</em></span> because the type
+    Applicant is the first object type constraint, and <code class="code">age &lt;
+    18</code> is the second field constraint. An object type constraint plus
+    its zero or more field constraints is referred to as a pattern. When an
+    inserted instance satisfies both the object type constraint and all the
+    field constraints, it is said to be matched. The <code class="code">$a</code> is a
+    binding variable which permits us to reference the matched object in the
+    consequence. There its properties can be updated. The dollar character
+    ('$') is optional, but it helps to differentiate variable names from field
+    names. The process of matching patterns against the inserted data is, not
+    surprisingly, often referred to as <span class="emphasis"><em>pattern
+    matching</em></span>.</p><p>Let's assume that the rules are in the same folder as the classes,
+    so we can use the classpath resource loader to build our first
+    <code class="code">KnowledgeBase</code>. A Knowledge Base is what we call our
+    collection of compiled definitions, such as rules and processes, which are
+    compiled using the <code class="code">KnowledgeBuilder</code>. Both the
+    KnowledgeBuilder and KnowledgeBase can be created from the factories
+    KnowledeBuilderFactory and KnowledgeBaseFactory.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeBuilder</span><!-- <br/> --><span class="java_plain">&nbsp;kbuilder&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeBuilderFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeBuilder</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">kbuilder</span><span class="java_separator">.</span><span class="java_plain">add</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">ResourceFactory</span><span class="java_separator">.</span><span class="java_plain">newClassPathResource</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;licenseApplication.drl&quot;</span><span class="java_separator">,</span><span class="java_plain">&nbsp;getClass</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">),</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">ResourceType</span><span class="java_separator">.</span><span class="java_plain">DRL&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_keyword">if</span><span class="java_plain">&nbsp;</span><span class="java_separator">(</span><span class="java_plain">&nbsp;kbuilder</span><span class="java_separator">.</span><span class="java_plain">hasErrors</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">System</span><span class="java_separator">.</span><span class="java_plain">err</span><span class="java_separator">.</span><span class="java_plain">println</span><span class="java_separator">(</span><span class="java_plain">&nbsp;kbuilder</span><span class="java_separator">.</span><span class="java_plain">getErrors</span><span class="java_separator">().</span><span class="java_plain">toString</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_separator">}</span>
+<!--  --><br/><span class="java_type">KnowledgeBase</span><span class="java_plain">&nbsp;kbase&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_type">KnowledgeBaseFactory</span><span class="java_separator">.</span><span class="java_plain">newKnowledgeBase</span><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">kbase</span><span class="java_separator">.</span><span class="java_plain">addKnowledgePackages</span><span class="java_separator">(</span><span class="java_plain">&nbsp;kbuilder</span><span class="java_separator">.</span><span class="java_plain">getKnowledgePackages</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span></pre><p>The above code snippet looks on the classpath for the
+    <code class="filename">licenseApplication.drl</code> file, using the method
+    <code class="code">newClassPathResource()</code>. The resource type is DRL, short for
+    "Drools Rule Language". Once the DRL file has been added we can check the
+    Knowledge Builder object for any errors. If there are no errors, we can
+    add the resulting packages to our Knowledge Base. Now we are ready to
+    build our session and execute against some data:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">StatelessKnowledgeSession</span><!-- <br/> --><span class="java_plain">&nbsp;ksession&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;kbase</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newStatelessKnowledgeSession</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_type">Applicant</span><span class="java_plain">&nbsp;applicant&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">Applicant</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;Mr&nbsp;John&nbsp;Smith&quot;</span><span class="java_separator">,</span><span class="java_plain">&nbsp;</span><span class="java_literal">16</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">assertTrue</span><span class="java_separator">(</span><span class="java_plain">&nbsp;applicant</span><span class="java_separator">.</span><span class="java_plain">isValid</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">ksession</span><span class="java_separator">.</span><span class="java_plain">execute</span><span class="java_separator">(</span><span class="java_plain">&nbsp;applicant&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">assertFalse</span><span class="java_separator">(</span><span class="java_plain">&nbsp;applicant</span><span class="java_separator">.</span><span class="java_plain">isValid</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+</pre><p>The preceding code executes the data against the rules. Since the
+    applicant is under the age of 18, the application is marked as
+    invalid.</p><p>So far we've only used a single instance, but what if we want to use
+    more than one? We can execute against any object implementing Iterable,
+    such as a collection. Let's add another class called
+    <code class="code">Application</code>, which has the date of the application, and we'll
+    also move the boolean valid field to the <code class="code">Application</code>
+    class.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_keyword">public</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_keyword">class</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">Applicant</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">String</span><span class="java_plain">&nbsp;name</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">int</span><span class="java_plain">&nbsp;age</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_operator">//</span><span class="java_plain">&nbsp;getter&nbsp;and&nbsp;setter&nbsp;methods&nbsp;here</span>
+<!--  --><br/><span class="java_separator">}</span>
+</span>
+<!--  --><br/><span class="java_keyword">public</span><span class="java_plain">&nbsp;</span><span class="java_keyword">class</span><span class="java_plain">&nbsp;</span><span class="java_type">Application</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">Date</span><span class="java_plain">&nbsp;dateApplied</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">boolean</span><span class="java_plain">&nbsp;valid</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_operator">//</span><span class="java_plain">&nbsp;getter&nbsp;and&nbsp;setter&nbsp;methods&nbsp;here</span>
+<!--  --><br/><span class="java_separator">}</span></pre><p>We can also add another rule to validate that the application was
+    made within a period of time.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">package com.company.license
+
+rule "Is of valid age"
+when
+    Applicant( age &lt; 18 )
+    $a : Application()     
+then
+    $a.setValid( false );
+end
+
+rule "Application was made this year"
+when
+    $a : Application( dateApplied &gt; "01-jan-2009" )     
+then
+    $a.setValid( false );
+end
+</pre><p>Unfortunately a Java array does not implement the
+    <code class="code">Iterable</code> interface, so we have to use the JDK converter
+    method <code class="code">Arrays.asList(...)</code>. The code shown below executes
+    against an iterable list, where all collection elements are inserted
+    before any matched rules are fired.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">StatelessKnowledgeSession</span><!-- <br/> --><span class="java_plain">&nbsp;ksession&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;kbase</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newStatelessKnowledgeSession</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_type">Applicant</span><span class="java_plain">&nbsp;applicant&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">Applicant</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;Mr&nbsp;John&nbsp;Smith&quot;</span><span class="java_separator">,</span><span class="java_plain">&nbsp;</span><span class="java_literal">16</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">Application</span><span class="java_plain">&nbsp;application&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">Application</span><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">assertTrue</span><span class="java_separator">(</span><span class="java_plain">&nbsp;application</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">ksession</span><span class="java_separator">.</span><span class="java_plain">execute</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">Arrays</span><span class="java_separator">.</span><span class="java_plain">asList</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">Object</span><span class="java_separator">[]</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span><span class="java_plain">&nbsp;application</span><span class="java_separator">,</span><span class="java_plain">&nbsp;applicant&nbsp;</span><span class="java_separator">}</span><span class="java_plain">&nbsp;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">assertFalse</span><span class="java_separator">(</span><span class="java_plain">&nbsp;application</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+</pre><p>The two execute methods <code class="code">execute(Object object)</code> and
+    <code class="code">execute(Iterable objects)</code> are actually convenience methods
+    for the interface <code class="code">BatchExecutor</code>'s method
+    <code class="code">execute(Command command)</code>.</p><p>A <code class="code">CommandFactory</code> is used to create commands, so that
+    the following is equivalent to <code class="code">execute(Iterable it)</code>:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_plain">ksession</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">execute</span><!-- <br/> --><span class="java_separator">(</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">CommandFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newInsertIterable</span><!-- <br/> --><span class="java_separator">(</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_keyword">new</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">Object</span><!-- <br/> --><span class="java_separator">[]</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_separator">{</span><!-- <br/> --><span class="java_plain">&nbsp;application</span><!-- <br/> --><span class="java_separator">,</span><!-- <br/> --><span class="java_plain">&nbsp;applicant&nbsp;</span><!-- <br/> --><span class="java_separator">}</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_separator">)</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_separator">);</span>
+</pre><p>Batch Executor and Command Factory are particularly useful when
+    working with multiple Commands and with output identifiers for obtaining
+    results.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">List</span><!-- <br/> --><span class="java_operator">&lt;</span><!-- <br/> --><span class="java_type">Command</span><!-- <br/> --><span class="java_operator">&gt;</span><!-- <br/> --><span class="java_plain">&nbsp;cmds&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_keyword">new</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">ArrayList</span><!-- <br/> --><span class="java_operator">&lt;</span><!-- <br/> --><span class="java_type">Command</span><!-- <br/> --><span class="java_operator">&gt;</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">cmds</span><span class="java_separator">.</span><span class="java_plain">add</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">CommandFactory</span><span class="java_separator">.</span><span class="java_plain">newInsert</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">Person</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;Mr&nbsp;John&nbsp;Smith&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">),</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;mrSmith&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">cmds</span><span class="java_separator">.</span><span class="java_plain">add</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">CommandFactory</span><span class="java_separator">.</span><span class="java_plain">newInsert</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">Person</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;Mr&nbsp;John&nbsp;Doe&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">),</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;mrDoe&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">BatchExecutionResults</span><span class="java_plain">&nbsp;results&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;ksession</span><span class="java_separator">.</span><span class="java_plain">execute</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">CommandFactory</span><span class="java_separator">.</span><span class="java_plain">newBatchExecution</span><span class="java_separator">(</span><span class="java_plain">&nbsp;cmds&nbsp;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">assertEquals</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">Person</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;Mr&nbsp;John&nbsp;Smith&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">),</span><span class="java_plain">&nbsp;results</span><span class="java_separator">.</span><span class="java_plain">getValue</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;mrSmith&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+</pre><p><code class="code">CommandFactory</code> supports many other Commands that can be
+    used in the <code class="code">BatchExecutor</code> like <code class="code">StartProcess</code>,
+    <code class="code">Query</code>, and <code class="code">SetGlobal</code>.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e401"/>2.1.2. Stateful Knowledge Session</h3></div></div></div><p>Stateful Sessions are longer lived and allow iterative changes over
+    time. Some common use cases for Stateful Sessions are, but not limited
+    to:</p><div class="itemizedlist"><ul><li><p>Monitoring</p><div class="itemizedlist"><ul><li><p>Stock market monitoring and analysis for semi-automatic
+            buying.</p></li></ul></div></li><li><p>Diagnostics</p><div class="itemizedlist"><ul><li><p>Fault finding, medical diagnostics</p></li></ul></div></li><li><p>Logistics</p><div class="itemizedlist"><ul><li><p>Parcel tracking and delivery provisioning</p></li></ul></div></li><li><p>Compliance</p><div class="itemizedlist"><ul><li><p>Validation of legality for market trades.</p></li></ul></div></li></ul></div><p>In contrast to a Stateless Session, the <code class="code">dispose()</code>
+    method must be called afterwards to ensure there are no memory leaks, as
+    the Knowledge Base contains references to Stateful Knowledge Sessions when
+    they are created. <code class="code">StatefulKnowledgeSession</code> also supports the
+    <code class="code">BatchExecutor</code> interface, like
+    <code class="code">StatelessKnowledgeSession</code>, the only difference being that the
+    <code class="code">FireAllRules</code> command is not automatically called at the end
+    for a Stateful Session.</p><p>We illustrate the monitoring use case with an example for raising a
+    fire alarm. Using just four classes, we represent rooms in a house, each
+    of which has one sprinkler. If a fire starts in a room, we represent that
+    with a single <code class="code">Fire</code> instance.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_keyword">public</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_keyword">class</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">Room</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">String</span><span class="java_plain">&nbsp;name</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_operator">//</span><span class="java_plain">&nbsp;getter&nbsp;and&nbsp;setter&nbsp;methods&nbsp;here</span>
+<!--  --><br/><span class="java_separator">}</span>
+<!--  --><br/><span class="java_keyword">public</span><span class="java_plain">&nbsp;classs&nbsp;</span><span class="java_type">Sprinkler</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">Room</span><span class="java_plain">&nbsp;room</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">boolean</span><span class="java_plain">&nbsp;on</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_operator">//</span><span class="java_plain">&nbsp;getter&nbsp;and&nbsp;setter&nbsp;methods&nbsp;here</span>
+<!--  --><br/><span class="java_separator">}</span>
+<!--  --><br/><span class="java_keyword">public</span><span class="java_plain">&nbsp;</span><span class="java_keyword">class</span><span class="java_plain">&nbsp;</span><span class="java_type">Fire</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">Room</span><span class="java_plain">&nbsp;room</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_operator">//</span><span class="java_plain">&nbsp;getter&nbsp;and&nbsp;setter&nbsp;methods&nbsp;here</span>
+<!--  --><br/><span class="java_separator">}</span>
+<!--  --><br/><span class="java_keyword">public</span><span class="java_plain">&nbsp;</span><span class="java_keyword">class</span><span class="java_plain">&nbsp;</span><span class="java_type">Alarm</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span>
+<!--  --><br/><span class="java_separator">}</span>
+</pre><p>In the previous section on Stateless Sessions the concepts of
+    inserting and matching against data was introduced. That example assumed
+    that only a single instance of each object type was ever inserted and thus
+    only used literal constraints. However, a house has many rooms, so rules
+    must express relationships between objects, such as a sprinkler being in a
+    certain room. This is best done by using a binding variable as a
+    constraint in a pattern. This "join" process results in what is called
+    cross products, which are covered in the next section.</p><p>When a fire occurs an instance of the <code class="code">Fire</code> class is
+    created, for that room, and inserted into the session. The rule uses a
+    binding on the <code class="code">room</code> field of the <code class="code">Fire</code> object to
+    constrain matching to the sprinkler for that room, which is currently off.
+    When this rule fires and the consequence is executed the sprinkler is
+    turned on.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "When there is a fire turn on the sprinkler"
+when
+    Fire($room : room)
+    $sprinkler : Sprinkler( room == $room, on == false )
+then
+    modify( $sprinkler ) { setOn( true ) };
+    System.out.println( "Turn on the sprinkler for room " + $room.getName() );
+end</pre><p>Whereas the Stateless Session uses standard Java syntax to modify a
+    field, in the above rule we use the <code class="literal">modify</code> statement,
+    which acts as a sort of "with" statement. It may contain a series of comma
+    separated Java expressions, i.e., calls to setters of the object selected
+    by the <code class="literal">modify</code> statement's control expression. This
+    modifies the data, and makes the engine aware of those changes so it can
+    reason over them once more. This process is called inference, and it's
+    essential for the working of a Stateful Session. Stateless Sessions
+    typically do not use inference, so the engine does not need to be aware of
+    changes to data. Inference can also be turned off explicitly by using the
+    <span class="emphasis"><em>sequential mode</em></span>.</p><p>So far we have rules that tell us when matching data exists, but
+    what about when it does <span class="emphasis"><em>not</em></span> exist? How do we
+    determine that a fire has been extinguished, i.e., that there isn't a
+    <code class="code">Fire</code> object any more? Previously the constraints have been
+    sentences according to Propositional Logic, where the engine is
+    constraining against individual intances. Drools also has support for
+    First Order Logic that allows you to look at sets of data. A pattern under
+    the keyword <code class="literal">not</code> matches when something does not exist.
+    The rule given below turns the sprinkler off as soon as the fire in that
+    room has disappeared.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "When the fire is gone turn off the sprinkler"
+when
+    $room : Room( )
+    $sprinkler : Sprinkler( room == $room, on == true )
+    not Fire( room == $room )
+then
+    modify( $sprinkler ) { setOn( false ) };
+    System.out.println( "Turn off the sprinkler for room " + $room.getName() );
+end</pre><p>While there is one sprinkler per room, there is just a single alarm
+    for the building. An <code class="code">Alarm</code> object is created when a fire
+    occurs, but only one <code class="code">Alarm</code> is needed for the entire building,
+    no matter how many fires occur. Previously <code class="literal">not</code> was
+    introduced to match the absence of a fact; now we use its complement
+    <code class="literal">exists</code> which matches for one or more instances of some
+    category.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Raise the alarm when we have one or more fires"
+when
+    exists Fire()
+then
+    insert( new Alarm() );
+    System.out.println( "Raise the alarm" );
+end</pre><p>Likewise, when there are no fires we want to remove the alarm, so
+    the <code class="literal">not</code> keyword can be used again.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Cancel the alarm when all the fires have gone"
+when
+    not Fire()
+    $alarm : Alarm()
+then
+    retract( $alarm );
+    System.out.println( "Cancel the alarm" );
+end
+
+</pre><p>Finally there is a general health status message that is printed
+    when the application first starts and after the alarm is removed and all
+    sprinklers have been turned off.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Status output when things are ok"
+when
+    not Alarm()
+    not Sprinkler( on == true ) 
+then
+    System.out.println( "Everything is ok" );
+end</pre><p>The above rules should be placed in a single DRL file and saved to
+    some directory on the classpath and using the file name
+    <code class="filename">fireAlarm.drl</code>, as in the Stateless Session example.
+    We can then build a Knowledge Base, as before, just using the new name
+    <code class="filename">fireAlarm.drl</code>. The difference is that this time we
+    create a Stateful Session from the Knowledge Base, whereas before we
+    created a Stateless Session.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeBuilder</span><!-- <br/> --><span class="java_plain">&nbsp;kbuilder&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeBuilderFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeBuilder</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">kbuilder</span><span class="java_separator">.</span><span class="java_plain">add</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">ResourceFactory</span><span class="java_separator">.</span><span class="java_plain">newClassPathResource</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;fireAlarm.drl&quot;</span><span class="java_separator">,</span><span class="java_plain">&nbsp;getClass</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">),</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">ResourceType</span><span class="java_separator">.</span><span class="java_plain">DRL&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_keyword">if</span><span class="java_plain">&nbsp;</span><span class="java_separator">(</span><span class="java_plain">&nbsp;kbuilder</span><span class="java_separator">.</span><span class="java_plain">hasErrors</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">System</span><span class="java_separator">.</span><span class="java_plain">err</span><span class="java_separator">.</span><span class="java_plain">println</span><span class="java_separator">(</span><span class="java_plain">&nbsp;builder</span><span class="java_separator">.</span><span class="java_plain">getErrors</span><span class="java_separator">().</span><span class="java_plain">toString</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_separator">}</span>
+<!--  --><br/><span class="java_plain">kbase</span><span class="java_separator">.</span><span class="java_plain">addKnowledgePackages</span><span class="java_separator">(</span><span class="java_plain">&nbsp;kbuilder</span><span class="java_separator">.</span><span class="java_plain">getKnowledgePackages</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">StatefulKnowledgeSession</span><span class="java_plain">&nbsp;ksession&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;kbase</span><span class="java_separator">.</span><span class="java_plain">newStatefulKnowledgeSession</span><span class="java_separator">();</span></pre><p>With the session created it is now possible to iteratvely work with
+    it over time. Four <code class="code">Room</code> objects are created and inserted, as
+    well as one <code class="code">Sprinkler</code> object for each room. At this point the
+    engine has done all of its matching, but no rules have fired yet. Calling
+    <code class="code">ksession.fireAllRules()</code> allows the matched rules to fire, but
+    without a fire that will just produce the health message.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">String</span><!-- <br/> --><span class="java_separator">[]</span><!-- <br/> --><span class="java_plain">&nbsp;names&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_keyword">new</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">String</span><!-- <br/> --><span class="java_separator">[]{</span><!-- <br/> --><span class="java_literal">&quot;kitchen&quot;</span><!-- <br/> --><span class="java_separator">,</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_literal">&quot;bedroom&quot;</span><!-- <br/> --><span class="java_separator">,</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_literal">&quot;office&quot;</span><!-- <br/> --><span class="java_separator">,</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_literal">&quot;livingroom&quot;</span><!-- <br/> --><span class="java_separator">};</span>
+<!--  --><br/><span class="java_type">Map</span><span class="java_operator">&lt;</span><span class="java_type">String</span><span class="java_separator">,</span><span class="java_type">Room</span><span class="java_operator">&gt;</span><span class="java_plain">&nbsp;name2room&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">HashMap</span><span class="java_operator">&lt;</span><span class="java_type">String</span><span class="java_separator">,</span><span class="java_type">Room</span><span class="java_operator">&gt;</span><span class="java_separator">();</span>
+<!--  --><br/><span class="java_keyword">for</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">String</span><span class="java_plain">&nbsp;name</span><span class="java_operator">:</span><span class="java_plain">&nbsp;names&nbsp;</span><span class="java_separator">){</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">Room</span><span class="java_plain">&nbsp;room&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">Room</span><span class="java_separator">(</span><span class="java_plain">&nbsp;name&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;name2room</span><span class="java_separator">.</span><span class="java_plain">put</span><span class="java_separator">(</span><span class="java_plain">&nbsp;name</span><span class="java_separator">,</span><span class="java_plain">&nbsp;room&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;ksession</span><span class="java_separator">.</span><span class="java_plain">insert</span><span class="java_separator">(</span><span class="java_plain">&nbsp;room&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">Sprinkler</span><span class="java_plain">&nbsp;sprinkler&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">Sprinkler</span><span class="java_separator">(</span><span class="java_plain">&nbsp;room&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;ksession</span><span class="java_separator">.</span><span class="java_plain">insert</span><span class="java_separator">(</span><span class="java_plain">&nbsp;sprinkler&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_separator">}</span>
+</span>
+<!--  --><br/><span class="java_plain">ksession</span><span class="java_separator">.</span><span class="java_plain">fireAllRules</span><span class="java_separator">()</span>
+</pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&gt; Everything is ok</pre><p>We now create two fires and insert them; this time a reference is
+    kept for the returned <code class="code">FactHandle</code>. A Fact Handle is an
+    internal engine reference to the inserted instance and allows instances to
+    be retracted or modified at a later point in time. With the fires now in
+    the engine, once <code class="code">fireAllRules()</code> is called, the alarm is
+    raised and the respective sprinklers are turned on.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">Fire</span><!-- <br/> --><span class="java_plain">&nbsp;kitchenFire&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_keyword">new</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">Fire</span><!-- <br/> --><span class="java_separator">(</span><!-- <br/> --><span class="java_plain">&nbsp;name2room</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">get</span><!-- <br/> --><span class="java_separator">(</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_literal">&quot;kitchen&quot;</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_separator">)</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">Fire</span><span class="java_plain">&nbsp;officeFire&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">Fire</span><span class="java_separator">(</span><span class="java_plain">&nbsp;name2room</span><span class="java_separator">.</span><span class="java_plain">get</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;office&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+</span>
+<!--  --><br/><span class="java_type">FactHandle</span><span class="java_plain">&nbsp;kitchenFireHandle&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;ksession</span><span class="java_separator">.</span><span class="java_plain">insert</span><span class="java_separator">(</span><span class="java_plain">&nbsp;kitchenFire&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">FactHandle</span><span class="java_plain">&nbsp;officeFireHandle&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;ksession</span><span class="java_separator">.</span><span class="java_plain">insert</span><span class="java_separator">(</span><span class="java_plain">&nbsp;officeFire&nbsp;</span><span class="java_separator">);</span>
+</span>
+<!--  --><br/><span class="java_plain">ksession</span><span class="java_separator">.</span><span class="java_plain">fireAllRules</span><span class="java_separator">();</span></pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&gt; Raise the alarm
+&gt; Turn on the sprinkler for room kitchen
+&gt; Turn on the sprinkler for room office</pre><p>After a while the fires will be put out and the <code class="code">Fire</code>
+    instances are retracted. This results in the sprinklers being turned off,
+    the alarm being cancelled, and eventually the health message is printed
+    again.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_plain">ksession</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">retract</span><!-- <br/> --><span class="java_separator">(</span><!-- <br/> --><span class="java_plain">&nbsp;kitchenFireHandle&nbsp;</span><!-- <br/> --><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">ksession</span><span class="java_separator">.</span><span class="java_plain">retract</span><span class="java_separator">(</span><span class="java_plain">&nbsp;officeFireHandle&nbsp;</span><span class="java_separator">);</span>
+</span>
+<!--  --><br/><span class="java_plain">ksession</span><span class="java_separator">.</span><span class="java_plain">fireAllRules</span><span class="java_separator">();</span></pre><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">&gt; Turn on the sprinkler for room office
+&gt; Turn on the sprinkler for room kitchen
+&gt; Cancel the alarm
+&gt; Everything is ok</pre><p>Everyone still with me? That wasn't so hard and already I'm hoping
+    you can start to see the value and power of a declarative rule
+    system.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e573"/>2.2. A Little Theory</h2></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e576"/>2.2.1. Methods versus Rules</h3></div></div></div><p>People often confuse methods and rules, and new rule users regular
+    ask, "How do I call a rule?" After the last section, you are now feeling
+    like a rule expert and the answer to that is obvious, but let's summarize
+    the differences nonetheless.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_keyword">public</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">void</span><!-- <br/> --><span class="java_plain">&nbsp;helloWorld</span><!-- <br/> --><span class="java_separator">(</span><!-- <br/> --><span class="java_type">Person</span><!-- <br/> --><span class="java_plain">&nbsp;person</span><!-- <br/> --><span class="java_separator">)</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">if</span><span class="java_plain">&nbsp;</span><span class="java_separator">(</span><span class="java_plain">&nbsp;person</span><span class="java_separator">.</span><span class="java_plain">getName</span><span class="java_separator">().</span><span class="java_plain">equals</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;Chuck&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">System</span><span class="java_separator">.</span><span class="java_plain">out</span><span class="java_separator">.</span><span class="java_plain">println</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;Hello&nbsp;Chuck&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_separator">}</span>
+<!--  --><br/><span class="java_separator">}</span></pre><div class="itemizedlist"><ul><li><p>Methods are called directly.</p></li><li><p>Specific instances are passed.</p></li><li><p>One call results in a single execution.</p></li></ul></div><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Hello World"
+    when
+        Person( name == "Chuck" )
+    then
+        System.out.println( "Hello Chuck" );
+        end</pre><div class="itemizedlist"><ul><li><p>Rules execute by matching against any data as long it is
+        inserted into the engine.</p></li><li><p>Rules can never be called directly.</p></li><li><p>Specific instances cannot be passed to a rule.</p></li><li><p>Depending on the matches, a rule may fire once or several times,
+        or not at all.</p></li></ul></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e608"/>2.2.2. Cross Products</h3></div></div></div><p>Earlier the term "cross product" was mentioned, which is the result
+    of a join. Imagine for a moment that the data from the fire alarm example
+    were used in combination with the following rule where there ar no field
+    constraints:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule
+when
+    $room : Room()
+    $sprinkler : Sprinkler()
+then
+    System.out.println( "room:" + $room.getName() +
+                        " sprinkler:" + $sprinkler.getRoom().getName() );
+end</pre><p>In SQL terms this would be like doing <code class="code">select * from Room,
+    Sprinkler</code> and every row in the Room table would be joined with
+    every row in the Sprinkler table resulting in the following output:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">room:office sprinker:office
+room:office sprinkler:kitchen
+room:office sprinkler:livingroom
+room:office sprinkler:bedroom
+room:kitchen sprinkler:office
+room:kitchen sprinkler:kitchen
+room:kitchen sprinkler:livingroom
+room:kitchen sprinkler:bedroom
+room:livingroom sprinkler:office
+room:livingroom sprinkler:kitchen
+room:livingroom sprinkler:livingroom
+room:livingroom sprinkler:bedroom
+room:bedroom sprinkler:office
+room:bedroom sprinkler:kitchen
+room:bedroom sprinkler:livingroom
+room:bedroom sprinkler:bedroom</pre><p>These cross products can obviously become huge, and they may very
+    well contain spurious data. The size of cross products is often the source
+    of performance problems for new rule authors. From this it can be seen
+    that it's always desirable to constrain the cross products, which is done
+    with the variable constraint.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule
+when
+    $room : Room()
+    $sprinkler : Sprinkler( room == $room )
+then
+    System.out.println( "room:" + $room.getName() +
+                        " sprinkler:" + $sprinkler.getRoom().getName() );
+end</pre><p>This results in just four rows of data, with the correct Sprinkler
+    for each Room. In SQL (actually HQL) the corresponding query would be
+    <code class="code">select * from Room, Sprinkler where Room ==
+    Sprinkler.room</code>.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">room:office sprinkler:office
+room:kitchen sprinkler:kitchen
+room:livingroom sprinkler:livingroom
+room:bedroom sprinkler:bedroom</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e633"/>2.2.3. Activations, Agenda and Conflict Sets.</h3></div></div></div><p>So far the data and the matching process has been simple and small.
+    To mix things up a bit a new example will be explored that handles
+    cashflow calculations over date periods. The state of the engine will be
+    illustratively shown at key stages to help get a better understanding of
+    what is actually going on under the hood. Three classes will be used, as
+    shown below.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_keyword">public</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_keyword">class</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">CashFlow</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">Date</span><span class="java_plain">&nbsp;&nbsp;&nbsp;date</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">double</span><span class="java_plain">&nbsp;amount</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">int</span><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;type</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">long</span><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;accountNo</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_operator">//</span><span class="java_plain">&nbsp;getter&nbsp;and&nbsp;setter&nbsp;methods&nbsp;here</span>
+<!--  --><br/><span class="java_separator">}</span>
+</span>
+<!--  --><br/><span class="java_keyword">public</span><span class="java_plain">&nbsp;</span><span class="java_keyword">class</span><span class="java_plain">&nbsp;</span><span class="java_type">Account</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">long</span><span class="java_plain">&nbsp;&nbsp;&nbsp;accountNo</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">double</span><span class="java_plain">&nbsp;balance</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_operator">//</span><span class="java_plain">&nbsp;getter&nbsp;and&nbsp;setter&nbsp;methods&nbsp;here</span>
+<!--  --><br/><span class="java_separator">}</span>
+</span>
+<!--  --><br/><span class="java_keyword">public</span><span class="java_plain">&nbsp;</span><span class="java_type">AccountPeriod</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">Date</span><span class="java_plain">&nbsp;start</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">Date</span><span class="java_plain">&nbsp;end</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_operator">//</span><span class="java_plain">&nbsp;getter&nbsp;and&nbsp;setter&nbsp;methods&nbsp;here</span>
+<!--  --><br/><span class="java_separator">}</span></pre><p>By now you already know how to create Knowledge Bases and how to
+    instantiate facts to populate the <code class="code">StatefulKnowledgeSession</code>,
+    so tables will be used to show the state of the inserted data, as it makes
+    things clearer for illustration purposes. The tables below show that a
+    single fact was inserted for the <code class="code">Account</code>. Also inserted are a
+    series of debits and credits as <code class="code">CashFlow</code> objects for that
+    account, extending over two quarters.</p><div class="figure"><a id="d0e651"/><div class="figure-contents"><div class="mediaobject"><img src="images/Chapter-Quick_Start/tables1.png" alt="CashFlows and Account"/></div></div><p class="title"><b>Figure 2.1. CashFlows and Account</b></p></div><br class="figure-break"/><p>Two rules can be used to determine the debit and credit for that
+    quarter and update the Account balance. The two rules below constrain the
+    cashflows for an account for a given time period. Notice the "&amp;&amp;"
+    which use short cut syntax to avoid repeating the field name twice.</p><table frame="void"><tbody><tr>
+          <td align="left" valign="top"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "increase balance for credits"
+when
+  ap : AccountPeriod()
+  acc : Account( $accountNo : accountNo )
+  CashFlow( type == CREDIT,
+            accountNo == $accountNo,
+            date &gt;= ap.start &amp;&amp; &lt;= ap.end,
+            $amount : amount )
+then
+  acc.balance  += $amount;
+end</pre></td>
+
+          <td align="left" valign="top"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "decrease balance for debits" 
+when 
+  ap : AccountPeriod() 
+  acc : Account( $accountNo : accountNo ) 
+  CashFlow( type == DEBIT, 
+            accountNo == $accountNo,
+            date &gt;= ap.start &amp;&amp; &lt;= ap.end, 
+            $amount : amount ) 
+then 
+  acc.balance -= $amount; 
+end</pre></td>
+        </tr></tbody></table><p>If the <code class="code">AccountPeriod</code> is set to the first quarter we
+    constrain the rule "increase balance for credits" to fire on two rows of
+    data and "decrease balance for debits" to act on one row of data.</p><div class="figure"><a id="d0e676"/><div class="figure-contents"><div class="mediaobject"><img src="images/Chapter-Quick_Start/tables2.png" alt="AccountingPeriod, CashFlows and Account"/></div></div><p class="title"><b>Figure 2.2. AccountingPeriod, CashFlows and Account</b></p></div><br class="figure-break"/><p>The two cashflow tables above represent the matched data for the two
+    rules. The data is matched during the insertion stage and, as you
+    discovered in the previous chapter, does not fire straight away, but only
+    after <code class="code">fireAllRules()</code> is called. Meanwhile, the rule plus its
+    matched data is placed on the Agenda and referred to as an Activation. The
+    Agenda is a table of Activations that are able to fire and have their
+    consequences executed, as soon as fireAllRules() is called. Activations on
+    the Agenda are executed in turn. Notice that the order of execution so far
+    is considered arbitrary.</p><div class="figure"><a id="d0e687"/><div class="figure-contents"><div class="mediaobject"><img src="images/Chapter-Quick_Start/tables7.png" alt="CashFlows and Account"/></div></div><p class="title"><b>Figure 2.3. CashFlows and Account</b></p></div><br class="figure-break"/><p>After all of the above activations are fired, the account has a
+    balance of -25.</p><div class="figure"><a id="d0e695"/><div class="figure-contents"><div class="mediaobject"><img src="images/Chapter-Quick_Start/tables3.png" alt="CashFlows and Account"/></div></div><p class="title"><b>Figure 2.4. CashFlows and Account</b></p></div><br class="figure-break"/><p>If the <code class="code">AccountPeriod</code> is updated to the second quarter,
+    we have just a single matched row of data, and thus just a single
+    Activation on the Agenda.</p><div class="figure"><a id="d0e706"/><div class="figure-contents"><div class="mediaobject"><img src="images/Chapter-Quick_Start/tables4.png" alt="CashFlows and Account"/></div></div><p class="title"><b>Figure 2.5. CashFlows and Account</b></p></div><br class="figure-break"/><p>The firing of that Activation results in a balance of 25.</p><div class="figure"><a id="d0e714"/><div class="figure-contents"><div class="mediaobject"><img src="images/Chapter-Quick_Start/tables5.png" alt="CashFlows and Account"/></div></div><p class="title"><b>Figure 2.6. CashFlows and Account</b></p></div><br class="figure-break"/><p>What if you don't want the order of Activation execution to be
+    arbitrary? When there is one or more Activations on the Agenda they are
+    said to be in conflict, and a conflict resolver strategy is used to
+    determine the order of execution. At the simplest level the default
+    strategy uses salience to determine rule priority. Each rule has a default
+    value of 0, the higher the value the higher the priority. To illustrate
+    this we add a rule to print the account balance, where we want this rule
+    to be executed after all the debits and credits have been applied for all
+    accounts. We achieve this by assigning a negative salience to this rule so
+    that it fires after all rules with the default salience 0.</p><table border="0" id="d0e722"><tbody><tr>
+          <td>
+            <pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Print balance for AccountPeriod"
+        salience -50
+    when
+        ap : AccountPeriod()
+        acc : Account()        
+    then
+        System.out.println( acc.accountNo + " : " + acc.balance );    
+end</pre>
+          </td>
+        </tr></tbody></table><p>The table below depicts the resulting Agenda. The three debit and
+    credit rules are shown to be in arbitrary order, while the print rule is
+    ranked last, to execute afterwards.</p><div class="figure"><a id="d0e734"/><div class="figure-contents"><div class="mediaobject"><img src="images/Chapter-Quick_Start/tables6.png" alt="CashFlows and Account"/></div></div><p class="title"><b>Figure 2.7. CashFlows and Account</b></p></div><br class="figure-break"/><p>Earlier we showed how rules would equate to SQL, which can often
+    help people with an SQL background to understand rules. The two rules
+    above can be represented with two views and a trigger for each view, as
+    below:</p><table border="0" id="d0e742"><tbody><tr>
+          <td align="left" valign="top">
+            <pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from Account acc,
+              Cashflow cf,
+              AccountPeriod ap      
+where acc.accountNo == cf.accountNo and 
+      cf.type == CREDIT and
+      cf.date &gt;= ap.start and 
+      cf.date &lt;= ap.end</pre>
+          </td>
+
+          <td align="left" valign="top">
+            <pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">select * from Account acc, 
+              Cashflow cf,
+              AccountPeriod ap 
+where acc.accountNo == cf.accountNo and 
+      cf.type == DEBIT and
+      cf.date &gt;= ap.start and 
+      cf.date &lt;= ap.end</pre>
+          </td>
+        </tr><tr>
+          <td align="left" valign="top">
+            <pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">trigger : acc.balance += cf.amount</pre>
+          </td>
+
+          <td align="left" valign="top">
+            <pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">trigger : acc.balance -= cf.amount</pre>
+          </td>
+        </tr></tbody></table><p>Drools also features ruleflow-group attributes which allows workflow
+    diagrams to declaratively specify when rules are allowed to fire. The
+    screenshot below is taken from Eclipse using the Drools plugin. It has two
+    ruleflow-group nodes which ensures that the calculation rules are executed
+    before the reporting rules.</p><div class="mediaobject"><img src="images/Chapter-Quick_Start/ruleflow.png"/></div><p>The use of the ruleflow-group attribute in a rule is shown
+    below.</p><table border="0" id="d0e779"><tbody><tr>
+          <td align="left" valign="top">
+            <pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "increase balance for credits"
+  ruleflow-group "calculation"
+when
+  ap : AccountPeriod()
+  acc : Account( $accountNo : accountNo )
+  CashFlow( type == CREDIT,
+            accountNo == $accountNo,
+            date &gt;= ap.start &amp;&amp; &lt;= ap.end,
+            $amount : amount )
+then
+  acc.balance  += $amount;
+end</pre>
+          </td>
+
+          <td align="left" valign="top">
+            <pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Print balance for AccountPeriod"
+  ruleflow-group "report"
+when
+  ap : AccountPeriod()
+  acc : Account()
+then
+  System.out.println( acc.accountNo +
+                      " : " + acc.balance );    
+end</pre>
+          </td>
+        </tr></tbody></table></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e795"/>2.2.4. Inference</h3></div></div></div><p>Inference has a bad names these days, as something not relevant to
+    business use cases and just too complicated to be useful. It is true that
+    contrived and complicated examples occur with inference, but that should
+    not detract from the fact that simple and useful ones exist too. But more
+    than this, correct use of inference can crate more agile and less error
+    prone businesses with easier to maintain software.</p><p>So what is inference? Something is inferred when we gain knowledge
+    of something from using previous knowledge. For example given a Person
+    fact with an age field and a rule that provides age policy control, we can
+    infer whether a Person is an adult or a child and act on this.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Infer Adult"
+when
+  $p : Person( age &gt;= 18 )
+then
+  insert( new IsAdult( $p ) )
+end</pre><p>So in the above every Person who is 18 or over will have an instance
+    of IsAdult inserted for them. This fact is special in that it is known as
+    a relation. We can use this inferred relation in any rule:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$p : Person()
+IsAdult( person == $p )</pre><p>So now we know what inference is, and have a basic example, how does
+    this facilitate good rule design and maintenance?</p><p>Let's take a government department that are responsible for issuing
+    ID cards when children become adults, hence forth referred to as ID
+    department. They might have a decision table that includes logic like
+    this, which says when an adult living in london is 18 or over, issue the
+    card:</p><div class="mediaobject"><img src="images/Chapter-Quick_Start/monolithic.png"/></div><p>However the ID department does not set the policy on who an adult
+    is. That's done at a central government level. If the central government
+    where to change that age to 21 there is a change management process.
+    Someone has to liaise with the ID department and make sure their systems
+    are updated, in time for the law going live.</p><p>This change management process and communication between departments
+    is not ideal for an agile environment and change become costly and error
+    prone. Also the card department is managing more information than it needs
+    to be aware of with its "monolothic" approach to rules management which is
+    "leaking" information better placed else where. By this I mean that it
+    doesn't care what explicit "age &gt;= 18" information determines whether
+    someone is an adult, only that they are an adult.</p><p>Instead what if we were to split (de-couple) the authoring
+    responsibility, so the central government maintains its rules and the ID
+    department maintains its.</p><p>So its the central governments job to determine who is an adult and
+    if they change the law they just update their central repository with the
+    new rules, which others use:</p><div class="mediaobject"><img src="images/Chapter-Quick_Start/InferIsAdult.png"/></div><p>The IsAdult fact, as discussed previously, is inferred from the
+    policy rules. It encapsulates the seemingly arbitrary piece of logic "age
+    &gt;= 18" and provides semantic abstractions for it's meaning. Now if
+    anyone uses the above rules, they no longer need to be aware of explicit
+    information that determines whether someone is an adult or not. They can
+    just use the inferred fact:</p><div class="mediaobject"><img src="images/Chapter-Quick_Start/IssueIdCard.png"/></div><p>While the example is very minimal and trivial it illustrates some
+    important points. We started with a monolithic and leaky approach to our
+    knowledge engineering. We create a single decision table that had all
+    possible information in it that leaks information from central government
+    that the ID department did not care about and did not want to
+    manage.</p><p>We first de-coupled the knowledge process so each department was
+    responsible for only what it needed to know. We then encapsulated this
+    leaky knowledge using an inferred fact IsAdult. The use of the term
+    IsAdult also gave a semantic abstraction to the previously arbitrary logic
+    "age &gt;= 18".</p><p>So a general rule or thumb when doing your knowledge engineering
+    is:</p><p/><div class="itemizedlist"><ul><li><p><span class="bold"><strong>Bad</strong></span></p><div class="itemizedlist"><ul><li><p>Monolithic</p></li><li><p>Leaky</p></li></ul></div></li><li><p><span class="bold"><strong>Good</strong></span></p><div class="itemizedlist"><ul><li><p>De-couple knowledge responsibilities</p></li><li><p>Encapsulate knowledge</p></li><li><p>Provide semantic abstractions for those
+            encapsulations</p></li></ul></div></li></ul></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e864"/>2.2.5. Inference and TruthMaintenance</h3></div></div></div><p>The previous example was issuing ID cards to over 18s, in this
+    example we now issue bus passes, either a child or adult pass.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Issue Child Bus Pass" when
+  $p : Person( age &lt; 16 )
+then
+  insert(new ChildBusPass( $p ) );
+end
+ 
+rule "Issue Adult Bus Pass" when
+  $p : Person( age &gt;= 16 )
+then
+  insert(new AdultBusPass( $p ) );
+end</pre><p>As before the above example is considered monolithic, leaky and
+    providing poor separation of concerns.</p><p>As before we can provide a more robust application with a separation
+    of concerns using inference. Notice this time we don't just insert the
+    inferred object, we use "logicalInsert":</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Infer Child" when
+  $p : Person( age &lt; 16 )
+then
+    logicalInsert( new IsChild( $p ) )
+end
+rule "Infer Adult" when
+  $p : Person( age &gt;= 16 )
+then
+    logicalInsert( new IsAdult( $p ) )
+end</pre><p>A "logicalInsert" is part of the Drools Truth Maintenance System
+    (TMS). Here the fact is logically inserted, this fact is dependant on the
+    truth of the "when" clause. It means that when the rule becomes false the
+    fact is automatically retracted. This works particularly well as the two
+    rules are mutually exclusive. So in the above rules if the person is under
+    16 it inserts an IsChild fact, once the person is 16 or over the IsChild
+    fact is automatically retracted and the IsAdult fact inserted.</p><p>We can now bring back in the code to issue the passes, these two can
+    also be logically inserted, as the TMS supports chaining of logical
+    insertions for a cascading set of retracts.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Issue Child Bus Pass" when
+  $p : Person( )
+       IsChild( person == $p )
+then
+  logicalInsert(new ChildBusPass( $p ) );
+end
+ 
+rule "Issue Adult Bus Pass" when
+  $p : Person( age &gt;= 16 )
+       IsAdult( person =$p )
+then
+  logicalInsert(new AdultBusPass( $p ) );
+end</pre><p>Now when the person changes from being 15 to 16, not only is the
+    IsChild fact automatically retracted, so is the person's ChildBusPass
+    fact. For bonus points we can combine this with the 'not' conditional
+    element to handle notifications, in this situation a request for the
+    returning of the pass. So when the TMS automatically retracts the
+    ChildBusPass object, this rule triggers and sends a request to the
+    person:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Return ChildBusPass Request "when
+  $p : Person( )
+       not( ChildBusPass( person == $p ) )
+then
+    requestChildBusPass( $p );
+end</pre></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e887"/>2.3. More on building and deploying</h2></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e890"/>2.3.1. Knowledge Base by Configuration Using Changesets</h3></div></div></div><p>So far, the programmatic API has been used to build a Knowledge
+    Base. Quite often it's more desirable to do this via configuration. To
+    facilitate this, Drools supports the "Changeset" feature. The file
+    <code class="filename">changeset.xml</code> contains a list of resources, and it
+    may also point recursively to another changeset XML file. Currently there is 
+    no XML schema for the changeset XML, but we hope to add one soon.
+    A few examples will be shown to give you the gist of things. A resource
+    approach is employed that uses a prefix to indicate the protocol. All the
+    protocols provided by <code class="code">java.net.URL</code>, such as "file" and "http",
+    are supported, as well as an additional "classpath".
+    Currently the type attribute must always be specified for a resource, as
+    it is not inferred from the file name extension. Here is a simple example
+    that points to a http location for some rules.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="XML"><!-- XML : generated by JHighlight v1.0 (http://jhighlight.dev.java.net) -->
+<span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">change-set</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">xmlns</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'http://drools.org/drools-5.0/change-set'</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_attribute_name">xmlns:xs</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'http://www.w3.org/2001/XMLSchema-instance'</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_attribute_name">xs:schemaLocation</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'http://drools.org/drools-5.0/change-set&nbsp;http://anonsvn.jboss.org/repos/labs/labs/jbossrules/trunk/drools-api/src/main/resources/change-set-1.0.0.xsd'</span><span class="xml_plain">&nbsp;</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">add</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">source</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'http:org/domain/myrules.drl'</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">type</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'DRL'</span><span class="xml_plain">&nbsp;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">add</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">change-set</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+</pre><p>To use the above XML, the code is almost identical as before, except
+    we change the resource type to <code class="code">CHANGE_SET</code>.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeBuilder</span><!-- <br/> --><span class="java_plain">&nbsp;kbuilder&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeBuilderFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeBuilder</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">kbuilder</span><span class="java_separator">.</span><span class="java_plain">add</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">ResourceFactory</span><span class="java_separator">.</span><span class="java_plain">newClasspathResource</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;myChangeSet.xml&quot;</span><span class="java_separator">,</span><span class="java_plain">&nbsp;getClass</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">),</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">ResourceType</span><span class="java_separator">.</span><span class="java_plain">CHANGE_SET&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_keyword">if</span><span class="java_plain">&nbsp;</span><span class="java_separator">(</span><span class="java_plain">&nbsp;kbuilder</span><span class="java_separator">.</span><span class="java_plain">hasErrors</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">System</span><span class="java_separator">.</span><span class="java_plain">err</span><span class="java_separator">.</span><span class="java_plain">println</span><span class="java_separator">(</span><span class="java_plain">&nbsp;builder</span><span class="java_separator">.</span><span class="java_plain">getErrors</span><span class="java_separator">().</span><span class="java_plain">toString</span><span class="java_separator">()</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_separator">}</span></pre><p>Changesets can include any number of resources, and they even
+    support additional configuration information, which currently is only
+    needed for decision tables. The example below is expanded to load the
+    rules from a http URL location, and an Excel decision table from the
+    classpath.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="XML"><!-- XML : generated by JHighlight v1.0 (http://jhighlight.dev.java.net) -->
+<span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">change-set</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">xmlns</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'http://drools.org/drools-5.0/change-set'</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_attribute_name">xmlns:xs</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'http://www.w3.org/2001/XMLSchema-instance'</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_attribute_name">xs:schemaLocation</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'http://drools.org/drools-5.0/change-set.xsd&nbsp;http://anonsvn.jboss.org/repos/labs/labs/jbossrules/trunk/drools-api/src/main/resources/change-set-1.0.0.xsd'</span><span class="xml_plain">&nbsp;</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">add</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">source</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'http:org/domain/myrules.drl'</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">type</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'DRL'</span><span class="xml_plain">&nbsp;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">source</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'classpath:data/IntegrationExampleTest.xls'</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">type</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;DTABLE&quot;</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">decisiontable-conf</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">input-type</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;XLS&quot;</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">worksheet-name</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">&quot;Tables_2&quot;</span><span class="xml_plain">&nbsp;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">resource</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">add</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">change-set</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+</pre><p>It is also possible to specify a directory, to add the contents of
+    that directory. It is expected that all the files are of the specified
+    type, since type is not yet inferred from the file name extensions.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="XML"><!-- XML : generated by JHighlight v1.0 (http://jhighlight.dev.java.net) -->
+<span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">change-set</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">xmlns</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'http://drools.org/drools-5.0/change-set'</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_attribute_name">xmlns:xs</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'http://www.w3.org/2001/XMLSchema-instance'</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_attribute_name">xs:schemaLocation</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'http://drools.org/drools-5.0/change-set.xsd&nbsp;http://anonsvn.jboss.org/repos/labs/labs/jbossrules/trunk/drools-api/src/main/resources/change-set-1.0.0.xsd'</span><span class="xml_plain">&nbsp;</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">add</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">source</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'file://myfolder/'</span><span class="xml_plain">&nbsp;</span><span class="xml_attribute_name">type</span><span class="xml_tag_symbols">=</span><span class="xml_attribute_value">'DRL'</span><span class="xml_plain">&nbsp;</span><span class="xml_tag_symbols">/&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">add</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">change-set</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e918"/>2.3.2. Knowledge Agent</h3></div></div></div><p>The Knowlege Agent provides automatic loading, caching and
+    re-loading of resources and is configured from a properties files. The
+    Knowledge Agent can update or rebuild this Knowlege Base as the resources
+    it uses are changed. The strategy for this is determined by the
+    configuration given to the factory, but it is typically pull-based using
+    regular polling. We hope to add push-based updates and rebuilds in future
+    versions.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeAgent</span><!-- <br/> --><span class="java_plain">&nbsp;kagent&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeAgentFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeAgent</span><!-- <br/> --><span class="java_separator">(</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_literal">&quot;MyAgent&quot;</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">kagent</span><span class="java_separator">.</span><span class="java_plain">applyChangeSet</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">ResourceFactory</span><span class="java_separator">.</span><span class="java_plain">newUrlResource</span><span class="java_separator">(</span><span class="java_plain">&nbsp;url&nbsp;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">KnowledgeBase</span><span class="java_plain">&nbsp;kbase&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;kagent</span><span class="java_separator">.</span><span class="java_plain">getKnowledgeBase</span><span class="java_separator">();</span></pre><p>A <code class="code">KnowledgeAgent</code> object will continuously scan all the
+    added resources, using a default polling interval of 60 seconds and, when
+    some last modification date is updated, it will applied the changes into the
+    cached Knowledge Base using the new resources. Note that the previous
+    <code class="code">KnowledgeBase</code> reference will still exist and you'll have to
+    call <code class="code">getKnowledgeBase()</code> to access the newly built
+    <code class="code">KnowledgeBase</code>. If a directory is specified as part of the
+    change set, the entire contents of that directory will be scanned for
+    changes. The way modifications are applied depends on
+    <code class="code">drools.agent.newInstance</code> property present in the
+    KnowledgeAgentConfiguration object passed to the agent.
+    </p><p>For polling to occur, the polling and notifier services must be started:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">ResourceFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">getResourceChangeNotifierService</span><!-- <br/> --><span class="java_separator">().</span><!-- <br/> --><span class="java_plain">start</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_type">ResourceFactory</span><span class="java_separator">.</span><span class="java_plain">getResourceChangeScannerService</span><span class="java_separator">().</span><span class="java_plain">start</span><span class="java_separator">();</span></pre><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e946"/>2.3.2.1. Knowledge Agent and Custom ClassLoaders</h4></div></div></div><p>Because Knowledge Agent could scan and process remote resources, it
+      could ends up failing when compiling or executing rules, queries, functions,
+      etc. that use classes outside the agent's classloader.
+      If this is your case, you could take 2 approach: use a custom classloader
+      for agent's kbuilder or force the agent to use the same classloader that
+      its kbase has.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h5 class="title"><a id="d0e951"/>2.3.2.1.1. Custom ClassLoaders for KnowledgeBuilder</h5></div></div></div><p>Knowledge Agent uses KnowledgeBuilder internally in order to
+        compile managed resources. If you need to pass custom configuration to
+        these compilers you could pass a KnowledgeBuilderConfiguration object
+        to KnowledgeAgentFactory.newKnowledgeAgent(). This object will be used
+        in every builder the agent creates. Using a KnowledgeBuilderConfiguration
+        you can specify a custom classloader.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h5 class="title"><a id="d0e956"/>2.3.2.1.2. Reuse KnowledgeBase ClassLoader</h5></div></div></div><p>Most of the times, the classloader you wan't to use in the
+        compilation process of remote resources is the same needed in the
+        agent's kbase, so the rules could be executed. If you want to use this
+        approach, you will need to setup the desired ClassLoader to the
+        agen't kbase and use the "drools.agent.useKBaseClassLoaderForCompiling"
+        property of KnowledgeAgentConfiguration object.</p><p>This approach lets you modify agent's kbuilder classloader in
+        runtime by modifying the classloader the agent's kbase uses. This will
+        serve also when not using incremental change set processing (see the
+        section below). When the kbase is recreated its configuration is
+        reused, so the classloader is maintained.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeBaseConfiguration</span><!-- <br/> --><span class="java_plain">&nbsp;kbaseConfig&nbsp;</span><!-- <br/> --><span class="java_operator">=</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">KnowledgeBaseFactory</span><span class="java_separator">.</span><span class="java_plain">newKnowledgeBaseConfiguration</span><span class="java_separator">(</span><span class="java_literal">null</span><span class="java_separator">,</span><span class="java_plain">&nbsp;customClassLoader</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">KnowledgeBase</span><span class="java_plain">&nbsp;kbase&nbsp;</span><span class="java_operator">=</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">KnowledgeBaseFactory</span><span class="java_separator">.</span><span class="java_plain">newKnowledgeBase</span><span class="java_separator">(</span><span class="java_plain">kbaseConfig</span><span class="java_separator">);</span><span class="java_plain">&nbsp;</span><span class="java_operator">//</span><span class="java_plain">kbase&nbsp;with&nbsp;custom&nbsp;classloader</span>
+<!--  --><br/><span class="java_type">KnowledgeAgentConfiguration</span><span class="java_plain">&nbsp;aconf&nbsp;</span><span class="java_operator">=</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_type">KnowledgeAgentFactory</span><span class="java_separator">.</span><span class="java_plain">newKnowledgeAgentConfiguration</span><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">aconf</span><span class="java_separator">.</span><span class="java_plain">setProperty</span><span class="java_separator">(</span><span class="java_literal">&quot;drools.agent.newInstance&quot;</span><span class="java_separator">,</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;false&quot;</span><span class="java_separator">);</span><span class="java_plain">&nbsp;</span><span class="java_operator">//</span><span class="java_plain">incremental&nbsp;change&nbsp;set&nbsp;processing&nbsp;enabled</span>
+<!--  --><br/><span class="java_plain">aconf</span><span class="java_separator">.</span><span class="java_plain">setProperty</span><span class="java_separator">(</span><span class="java_literal">&quot;drools.agent.useKBaseClassLoaderForCompiling&quot;</span><span class="java_separator">,</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;true&quot;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">KnowledgeAgent</span><span class="java_plain">&nbsp;kagent&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_type">KnowledgeAgentFactory</span><span class="java_separator">.</span><span class="java_plain">newKnowledgeAgent</span><span class="java_separator">(</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_literal">&quot;test&nbsp;agent&quot;</span><span class="java_separator">,</span><span class="java_plain">&nbsp;kbase</span><span class="java_separator">,</span><span class="java_plain">&nbsp;aconf</span><span class="java_separator">);</span></pre></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e965"/>2.3.2.2. Incremental Change Set Processing</h4></div></div></div><p>
+            Knowledge Agent can process change sets in two different ways:
+            recreating the knowledge base every time a new change set is
+            processed or applying the change set in the cached knowledge base
+            without destroying it.
+            This behavior is controlled by the "newInstance" property of the
+            KnowledgeAgentConfiguration object passed to the Agent's constructor.
+        </p><p>
+            When "newInstace" is set to true (the default value), the agent
+            will destroy the cached Knowledge Base it contains and populate a
+            new one containing the change set modifications. When "newInstance"
+            is set to "false" change sets are applied directly to the cached
+            Knowledge Base. The rule that were not modified in the change sets'
+            resources are not replaced in the Knowledge Base, the modified or
+            deleted rules are modified or deleted from the cached Knowledge Base.
+            Functions, Queries and Definition Types are always replaced in the
+            cached Knowledge Base whether they are modified or not.
+        </p><p>
+            The following code snippet creates a new Knowledge Agent with its
+            "newInstace" property set to false
+        </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeAgentConfiguration</span><!-- <br/> --><span class="java_plain">&nbsp;aconf&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeAgentFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeAgentConfiguration</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">aconf</span><span class="java_separator">.</span><span class="java_plain">setProperty</span><span class="java_separator">(</span><span class="java_literal">&quot;drools.agent.newInstance&quot;</span><span class="java_separator">,</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;false&quot;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">KnowledgeAgent</span><span class="java_plain">&nbsp;kagent&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_type">KnowledgeAgentFactory</span><span class="java_separator">.</span><span class="java_plain">newKnowledgeAgent</span><span class="java_separator">(</span><span class="java_literal">&quot;test&nbsp;agent&quot;</span><span class="java_separator">,</span><span class="java_plain">&nbsp;</span><span class="java_literal">null</span><span class="java_separator">,</span><span class="java_plain">&nbsp;aconf</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e976"/>2.3.2.3. Remote HTTP resource caching</h4></div></div></div><p>A note on remote HTTP Url Resources: if your knowledge agent is
+    "pulling" resources from a http(s) URL, then you might rightly be
+    concerned if that resource (remote web server) suddenly disappears. To
+    survive a restart when a resource is no longer available remotely (eg the
+    remote server is being restarted) then you can set a System Property:
+    drools.resource.urlcache to a directory that has write permissions for the
+    application: the Knowledge Agent will cache copies of the remote resources
+    in that local directory. </p><p>For example, using the java command line:
+    -Ddrools.resource.urlcache=/users/someone/KnowledgeCache - will keep local
+    copies of the resources (rules, packages etc) in that directory, for the
+    agent to use should it be restarted (when a remote resource becomes
+    available, and is updated, it will automatically update the local cache
+    copy). </p></div></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="ch01.html"><strong>Prev</strong>Chapter 1. The Rule Engine</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="ch03.html"><strong>Next</strong>Chapter 3. Advanced Concepts and Theory</a></li></ul></body></html>

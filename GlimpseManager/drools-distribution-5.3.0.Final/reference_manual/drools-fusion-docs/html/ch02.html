@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 2. Drools Fusion Features</title><link rel="stylesheet" href="css/jbossorg.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Drools Fusion User Guide"/><link rel="up" href="index.html" title="Drools Fusion User Guide"/><link rel="prev" href="ch01.html" title="Chapter 1. Introduction"/><link rel="next" href="ch03.html" title="Chapter 3. References"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.jboss.org" class="site_href"><strong>JBoss.org</strong></a><a href="http://docs.jboss.org/" class="doc_href"><strong>Community Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="ch01.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch03.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e181"/>Chapter 2. Drools Fusion Features</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="ch02.html#d0e184">2.1. Events</a></span></dt><dd><dl><dt><span class="section"><a href="ch02.html#d0e189">2.1.1. Event Semantics</a></span></dt><dt><span class="section"><a href="ch02.html#d0e241">2.1.2. Event Declaration</a></span></dt><dt><span class="section"><a href="ch02.html#d0e289">2.1.3. Event Metadata</a></span></dt></dl></dd><dt><span class="section"><a href="ch02.html#d0e433">2.2. Session Clock</a></span></dt><dd><dl><dt><span class="section"><a href="ch02.html#d0e464">2.2.1. Available Clock Implementations</a></span></dt></dl></dd><dt><span class="section"><a href="ch02.html#d0e491">2.3. Streams Support</a></span></dt><dd><dl><dt><span class="section"><a href="ch02.html#d0e513">2.3.1. Declaring and Using Entry Points</a></span></dt></dl></dd><dt><span class="section"><a href="ch02.html#d0e547">2.4. Temporal Reasoning</a></span></dt><dd><dl><dt><span class="section"><a href="ch02.html#d0e611">2.4.1. Temporal Operators</a></span></dt></dl></dd><dt><span class="section"><a href="ch02.html#d0e1037">2.5. Event Processing Modes</a></span></dt><dd><dl><dt><span class="section"><a href="ch02.html#d0e1044">2.5.1. Cloud Mode</a></span></dt><dt><span class="section"><a href="ch02.html#d0e1075">2.5.2. Stream Mode</a></span></dt></dl></dd><dt><span class="section"><a href="ch02.html#d0e1148">2.6. Sliding Windows</a></span></dt><dd><dl><dt><span class="section"><a href="ch02.html#d0e1158">2.6.1. Sliding Time Windows</a></span></dt><dt><span class="section"><a href="ch02.html#d0e1178">2.6.2. Sliding Length Windows</a></span></dt></dl></dd><dt><span class="section"><a href="ch02.html#d0e1198">2.7. Knowledgebase Partitioning</a></span></dt><dd><dl><dt><span class="section"><a href="ch02.html#d0e1213">2.7.1. When partitioning is useful</a></span></dt><dt><span class="section"><a href="ch02.html#d0e1233">2.7.2. How to configure partitioning</a></span></dt><dt><span class="section"><a href="ch02.html#d0e1249">2.7.3. Multithreading management</a></span></dt></dl></dd><dt><span class="section"><a href="ch02.html#d0e1270">2.8. Memory Management for Events</a></span></dt><dd><dl><dt><span class="section"><a href="ch02.html#d0e1288">2.8.1. Explicit expiration offset</a></span></dt><dt><span class="section"><a href="ch02.html#d0e1300">2.8.2. Inferred expiration offset</a></span></dt></dl></dd></dl></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e184"/>2.1. Events</h2></div></div></div><p>Events, from a Drools perspective are just a special type of fact. In
+  this way, we can say that all events are facts, but not all facts are
+  events. In the next few sections the specific differences that characterize
+  an event are presented.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e189"/>2.1.1. Event Semantics</h3></div></div></div><p>An <span class="emphasis"><em>event</em></span> is a fact that present a few
+  distinguishing characteristics:</p><div class="itemizedlist"><ul><li><p><span class="bold"><strong>Usually immutables:</strong></span> since, by the
+      previously discussed definition, events are a record of a state change
+      in the application domain, i.e., a record of something that already
+      happened, and the past can not be "changed", events are immutables. This
+      constraint is an important requirement for the development of several
+      optimizations and for the specification of the event lifecycle. This
+      does not mean that the java object representing the object must be
+      immutable. Quite the contrary, the engine does not enforce immutability
+      of the object model, because one of the most common usecases for rules
+      is event data enrichment.</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>As a best practice, the application is allowed to populate
+        un-populated event attributes (to enrich the event with infered data),
+        but already populated attributes should never be changed.</p></div></li><li><p><span class="bold"><strong>Strong temporal constraints:</strong></span>
+      rules involving events usually require the correlation of multiple
+      events, specially temporal correlations where events are said to happen
+      at some point in time relative to other events.</p></li><li><p><span class="bold"><strong>Managed lifecycle:</strong></span> due to their
+      immutable nature and the temporal constraints, events usually will only
+      match other events and facts during a limited window of time, making it
+      possible for the engine to manage the lifecycle of the events
+      automatically. In other words, one an event is inserted into the working
+      memory, it is possible for the engine to find out when an event can no
+      longer match other facts and automatically retract it, releasing its
+      associated resources.</p></li><li><p><span class="bold"><strong>Use of sliding windows:</strong></span> since all
+      events have timestamps associated to them, it is possible to define and
+      use sliding windows over them, allowing the creation of rules on
+      aggregations of values over a period of time. Example: average of an
+      event value over 60 minutes.</p></li></ul></div><p>Drools supports the declaration and usage of events with both
+  semantics: <span class="bold"><strong>point-in-time</strong></span> events and
+  <span class="bold"><strong>interval-based</strong></span> events. </p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>A simplistic way to understand the unitification of the semantics is
+    to consider a <span class="emphasis"><em>point-in-time</em></span> event as an
+    <span class="emphasis"><em>interval-based</em></span> event whose <span class="emphasis"><em>duration is
+    zero</em></span>.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e241"/>2.1.2. Event Declaration</h3></div></div></div><p>To declare a fact type as an event, all it is required is to assign
+  the @role metadata tag to the fact type. The @role metadata tag accepts two
+  possible values:</p><div class="itemizedlist"><ul><li><p>fact : this is the default, declares that the type is to be
+      handled as a regular fact.</p></li><li><p>event : declares that the type is to be handled as an
+      event.</p></li></ul></div><p>For instance, the example below is declaring that the fact type
+  StockTick in a stock broker application shall be handled as an event.</p><div class="example"><a id="d0e255"/><p class="title"><b>Example 2.1. declaring a fact type as an event</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""><span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>import</strong></span> some.package.StockTick
+
+<span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>declare</strong></span> StockTick
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@role</em></span>( event )
+<span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>end</strong></span>
+</pre></div></div><br class="example-break"/><p>The same applies to facts declared inline. So, if StockTick was a fact
+  type declared in the DRL itself, instead of a previously existing class, the
+  code would be:</p><div class="example"><a id="d0e273"/><p class="title"><b>Example 2.2. declaring a fact type and assiging it the event role</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""><span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>declare</strong></span> StockTick 
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@role</em></span>( event )
+
+    datetime : java.util.Date
+    symbol : String
+    price : double
+<span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>end</strong></span>
+</pre></div></div><br class="example-break"/><p>For more information on type declarations, please check the Rule
+  Language section of the Drools Expert documentation.</p><p/></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e289"/>2.1.3. Event Metadata</h3></div></div></div><p>All events have a set of metadata associated to them. Most of the
+  metadata values have defaults that are automatically assigned to each event
+  when they are inserted into the working memory, but it is possible to change
+  the default on an event type basis, using the metadata tags listed
+  below.</p><p>For the examples, lets assume the user has the following class in the
+  application domain model:</p><div class="example"><a id="d0e296"/><p class="title"><b>Example 2.3. the VoiceCall fact class</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_javadoc_comment">/**</span>
+<!--  --><br/><span class="java_javadoc_comment">&nbsp;*&nbsp;A&nbsp;class&nbsp;that&nbsp;represents&nbsp;a&nbsp;voice&nbsp;call&nbsp;in&nbsp;</span>
+<!--  --><br/><span class="java_javadoc_comment">&nbsp;*&nbsp;a&nbsp;Telecom&nbsp;domain&nbsp;model</span>
+<!--  --><br/><span class="java_javadoc_comment">&nbsp;*/</span>
+<!--  --><br/><span class="java_keyword">public</span><span class="java_plain">&nbsp;</span><span class="java_keyword">class</span><span class="java_plain">&nbsp;</span><span class="java_type">VoiceCall</span><span class="java_plain">&nbsp;</span><span class="java_separator">{</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">String</span><span class="java_plain">&nbsp;&nbsp;originNumber</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">String</span><span class="java_plain">&nbsp;&nbsp;destinationNumber</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">Date</span><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;callDateTime</span><span class="java_separator">;</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_keyword">private</span><span class="java_plain">&nbsp;</span><span class="java_type">long</span><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;callDuration</span><span class="java_separator">;</span><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_operator">//</span><span class="java_plain">&nbsp;in&nbsp;milliseconds</span>
+</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="java_operator">//</span><span class="java_plain">&nbsp;constructors</span><span class="java_separator">,</span><span class="java_plain">&nbsp;getters&nbsp;and&nbsp;setters</span>
+<!--  --><br/><span class="java_separator">}</span>
+</pre></div></div><br class="example-break"/><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e301"/>2.1.3.1. @role</h4></div></div></div><p>The @role meta data was already discussed in the previous section
+    and is presented here for completeness:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""><span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@role</em></span>( &lt;fact|event&gt; )
+</pre><p>It annotates a given fact type as either a regular fact or event. It
+    accepts either "fact" or "event" as a parameter. Default is "fact".</p><div class="example"><a id="d0e312"/><p class="title"><b>Example 2.4. declaring VoiceCall as an event type</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""><span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>declare</strong></span> VoiceCall
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@role</em></span>( event )
+<span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>end</strong></span>
+</pre></div></div><br class="example-break"/><p/></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e326"/>2.1.3.2. @timestamp</h4></div></div></div><p>Every event has an associated timestamp assigned to it. By default,
+    the timestamp for a given event is read from the Session Clock and
+    assigned to the event at the time the event is inserted into the working
+    memory. Although, sometimes, the event has the timestamp as one of it's
+    own attributes. In this case, the user may tell the engine to use the
+    timestamp from the event's attribute instead of reading it from the
+    Session Clock.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""><span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@timestamp</em></span>( &lt;attributeName&gt; )</pre><p>To tell the engine what attribute to use as the source of the
+    event's timestamp, just list the attribute name as a parameter to the
+    @timestamp tag.</p><div class="example"><a id="d0e337"/><p class="title"><b>Example 2.5. declaring the VoiceCall timestamp attribute</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""><span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>declare</strong></span> VoiceCall
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@role</em></span>( event )
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@timestamp</em></span>( callDateTime )
+<span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>end</strong></span>
+</pre></div></div><br class="example-break"/></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e353"/>2.1.3.3. @duration</h4></div></div></div><p>Drools supports both event semantics: point-in-time events and
+    interval-based events. A point-in-time event is represented as an
+    interval-based event whose duration is zero. By default, all events have
+    duration zero. The user may attribute a different duration for an event by
+    declaring which attribute in the event type contains the duration of the
+    event.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""><span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@duration</em></span>( &lt;attributeName&gt; )</pre><p>So, for our VoiceCall fact type, the declaration would be:</p><div class="example"><a id="d0e364"/><p class="title"><b>Example 2.6. declaring the VoiceCall duration attribute</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""><span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>declare</strong></span> VoiceCall
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@role</em></span>( event )
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@timestamp</em></span>( callDateTime )
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@duration</em></span>( callDuration )
+<span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>end</strong></span></pre></div></div><br class="example-break"/></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e382"/>2.1.3.4. @expires</h4></div></div></div><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p>This tag is only considered when running the engine in STREAM
+      mode. Also, additional discussion on the effects of using this tag is
+      made on the Memory Management section. It is included here for
+      completeness.</p></div><p>Events may be automatically expired after some time in the working
+    memory. Typically this happens when, based on the existing rules in the
+    knowledge base, the event can no longer match and activate any rules.
+    Although, it is possible to explicitly define when an event should
+    expire.</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""><span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@expires</em></span>( &lt;timeOffset&gt; )</pre><p>The value of <span class="emphasis"><em>timeOffset</em></span> is a temporal interval
+    in the form:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">[#d][#h][#m][#s][#[ms]]</pre><p>Where <span class="emphasis"><em>[ ]</em></span> means an optional parameter and
+    <span class="emphasis"><em>#</em></span> means a numeric value.</p><p>So, to declare that the VoiceCall facts should be expired after 1
+    hour and 35 minutes after they are inserted into the working memory, the
+    user would write:</p><div class="example"><a id="d0e411"/><p class="title"><b>Example 2.7. declaring the expiration offset for the VoiceCall
+        events</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""><span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>declare</strong></span> VoiceCall
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@role</em></span>( event )
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@timestamp</em></span>( callDateTime )
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@duration</em></span>( callDuration )
+    <span xmlns="http://www.w3.org/1999/xhtml" class="emphasis"><em>@expires</em></span>( 1h35m )
+<span xmlns="http://www.w3.org/1999/xhtml" class="bold"><strong>end</strong></span></pre></div></div><br class="example-break"/><p/></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e433"/>2.2. Session Clock</h2></div></div></div><p>Reasoning over time requires a reference clock. Just to mention one
+  example, if a rule reasons over the average price of a given stock over the
+  last 60 minutes, how the engine knows what stock price changes happened over
+  the last 60 minutes in order to calculate the average? The obvious response
+  is: by comparing the timestamp of the events with the "current time". How
+  the engine knows what <span class="bold"><strong>time is now</strong></span>? Again,
+  obviously, by querying the Session Clock.</p><p>The session clock implements a strategy pattern, allowing different
+  types of clocks to be plugged and used by the engine. This is very important
+  because the engine may be running in an array of different scenarios that
+  may require different clock implementations. Just to mention a few:</p><div class="itemizedlist"><ul><li><p><span class="bold"><strong>Rules testing:</strong></span> testing always
+      requires a controled environment, and when the tests include rules with
+      temporal constraints, it is necessary to not only control the input
+      rules and facts, but also the flow of time.</p></li><li><p><span class="bold"><strong>Regular execution:</strong></span> usually, when
+      running rules in production, the application will require a real time
+      clock that allows the rules engine to react immediately to the time
+      progression.</p></li><li><p><span class="bold"><strong>Special environments:</strong></span> specific
+      environments may have specific requirements on time control. Cluster
+      environments may require clock synchronization through heart beats, or
+      JEE environments may require the use of an AppServer provided clock,
+      etc.</p></li><li><p><span class="bold"><strong>Rules replay or simulation: </strong></span>to
+      replay scenarios or simulate scenarios it is necessary that the
+      application also controls the flow of time.</p></li></ul></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e464"/>2.2.1. Available Clock Implementations</h3></div></div></div><p>Drools 5 provides 2 clock implementations out of the box. The default
+  real time clock, based on the system clock, and an optional pseudo clock,
+  controlled by the application.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e469"/>2.2.1.1. Real Time Clock</h4></div></div></div><p>By default, Drools uses a real time clock implementation that
+    internally uses the system clock to determine the current
+    timestamp.</p><p>To explicitly configure the engine to use the real time clock, just
+    set the session configuration parameter to real time:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeSessionConfiguration</span><!-- <br/> --><span class="java_plain">&nbsp;config&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeBaseFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeSessionConfiguration</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">config</span><span class="java_separator">.</span><span class="java_plain">setOption</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">ClockTypeOption</span><span class="java_separator">.</span><span class="java_plain">get</span><span class="java_separator">(</span><span class="java_literal">&quot;realtime&quot;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e478"/>2.2.1.2. Pseudo Clock</h4></div></div></div><p>Drools also offers out of the box an implementation of a clock that
+    is controlled by the application that is called Pseudo Clock. This clock
+    is specially useful for unit testing temporal rules since it can be
+    controled by the application and so the results become
+    deterministic.</p><p>To configure the pseudo session clock, do:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeSessionConfiguration</span><!-- <br/> --><span class="java_plain">&nbsp;config&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeBaseFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeSessionConfiguration</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">config</span><span class="java_separator">.</span><span class="java_plain">setOption</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">ClockTypeOption</span><span class="java_separator">.</span><span class="java_plain">get</span><span class="java_separator">(</span><span class="java_literal">&quot;pseudo&quot;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span></pre><p>As an example of how to control the pseudo session clock:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeSessionConfiguration</span><!-- <br/> --><span class="java_plain">&nbsp;conf&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeBaseFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeSessionConfiguration</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">conf</span><span class="java_separator">.</span><span class="java_plain">setOption</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">ClockTypeOption</span><span class="java_separator">.</span><span class="java_plain">get</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;pseudo&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">StatefulKnowledgeSession</span><span class="java_plain">&nbsp;session&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;kbase</span><span class="java_separator">.</span><span class="java_plain">newStatefulKnowledgeSession</span><span class="java_separator">(</span><span class="java_plain">&nbsp;conf</span><span class="java_separator">,</span><span class="java_plain">&nbsp;</span><span class="java_literal">null</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<!--  --><br/><span class="java_type">SessionPseudoClock</span><span class="java_plain">&nbsp;clock&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;session</span><span class="java_separator">.</span><span class="java_plain">getSessionClock</span><span class="java_separator">();</span>
+</span>
+<!--  --><br/><span class="java_operator">//</span><span class="java_plain">&nbsp;then</span><span class="java_separator">,</span><span class="java_plain">&nbsp;</span><span class="java_keyword">while</span><span class="java_plain">&nbsp;inserting&nbsp;facts</span><span class="java_separator">,</span><span class="java_plain">&nbsp;advance&nbsp;the&nbsp;clock&nbsp;as&nbsp;necessary</span><span class="java_operator">:</span>
+<!--  --><br/><span class="java_type">FactHandle</span><span class="java_plain">&nbsp;handle1&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;session</span><span class="java_separator">.</span><span class="java_plain">insert</span><span class="java_separator">(</span><span class="java_plain">&nbsp;tick1&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">clock</span><span class="java_separator">.</span><span class="java_plain">advanceTime</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">10</span><span class="java_separator">,</span><span class="java_plain">&nbsp;</span><span class="java_type">TimeUnit</span><span class="java_separator">.</span><span class="java_plain">SECONDS&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">FactHandle</span><span class="java_plain">&nbsp;handle2&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;session</span><span class="java_separator">.</span><span class="java_plain">insert</span><span class="java_separator">(</span><span class="java_plain">&nbsp;tick2&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_plain">clock</span><span class="java_separator">.</span><span class="java_plain">advanceTime</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">30</span><span class="java_separator">,</span><span class="java_plain">&nbsp;</span><span class="java_type">TimeUnit</span><span class="java_separator">.</span><span class="java_plain">SECONDS&nbsp;</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_type">FactHandle</span><span class="java_plain">&nbsp;handle3&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;session</span><span class="java_separator">.</span><span class="java_plain">insert</span><span class="java_separator">(</span><span class="java_plain">&nbsp;tick3&nbsp;</span><span class="java_separator">);</span>
+</pre></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e491"/>2.3. Streams Support</h2></div></div></div><p>Most CEP use cases have to deal with streams of events. The streams
+  can be provided to the application in various forms, from JMS queues to flat
+  text files, from database tables to raw sockets or even through web service
+  calls. In any case, the streams share a common set of
+  characteristics:</p><div class="itemizedlist"><ul><li><p>events in the stream are ordered by a timestamp. The timestamp may
+      have different semantics for different streams but they are always
+      ordered internally.</p></li><li><p>volumes of events are usually high.</p></li><li><p>atomic events are rarely useful by themselves. Usually meaning is
+      extracted from the correlation between multiple events from the stream
+      and also from other sources.</p></li><li><p>streams may be homogeneous, i.e. contain a single type of events,
+      or heterogeneous, i.e. contain multiple types of events.</p></li></ul></div><p>Drools generalized the concept of a stream as an "entry point" into
+  the engine. An entry point is for drools a gate from which facts come. The
+  facts may be regular facts or special facts like events.</p><p>In Drools, facts from one entry point (stream) may join with facts
+  from any other entry point or event with facts from the working memory.
+  Although, they never mix, i.e., they never lose the reference to the entry
+  point through which they entered the engine. This is important because one
+  may have the same type of facts coming into the engine through several entry
+  points, but one fact that is inserted into the engine through entry point A
+  will never match a pattern from a entry point B, for example.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e513"/>2.3.1. Declaring and Using Entry Points</h3></div></div></div><p>Entry points are declared implicitly in Drools by directly making use
+  of them in rules. I.e. referencing an entry point in a rule will make the
+  engine, at compile time, to identify and create the proper internal
+  structures to suppor that entry point. </p><p>So, for instance, lets imagine a banking application, where
+  transactions are fed into the system coming from streams. One of the streams
+  contains all the transactions executed in ATM machines. So, if one of the
+  rules says: a withdraw is authorized if and only if the account balance is
+  over the requested withdraw amount, the rule would look like:</p><div class="example"><a id="d0e520"/><p class="title"><b>Example 2.8. Example of Stream Usage</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "authorize withdraw"
+when
+    WithdrawRequest( $ai : accountId, $am : amount ) from entry-point "ATM Stream"
+    CheckingAccount( accountId == $ai, balance &gt; $am )
+then
+    // authorize withdraw
+end
+</pre></div></div><br class="example-break"/><p>In the previous example, the engine compiler will identify that
+  the pattern is tied to the entry point "ATM Stream" and will both create all
+  the necessary structures for the rulebase to support the "ATM Stream" and
+  will only match WithdrawRequests coming from the "ATM Stream". In the
+  previous example, the rule is also joining the event from the stream with a
+  fact from the main working memory (CheckingAccount).</p><p>Now, lets imagine a second rule that states that a fee of $2 must be
+  applied to any account for which a withdraw request is placed at a bank
+  branch:</p><div class="example"><a id="d0e529"/><p class="title"><b>Example 2.9. Using a different Stream</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "apply fee on withdraws on branches"
+when
+    WithdrawRequest( $ai : accountId, processed == true ) from entry-point "Branch Stream"
+    CheckingAccount( accountId == $ai )
+then
+    // apply a $2 fee on the account
+end
+</pre></div></div><br class="example-break"/><p>The previous rule will match events of the exact same type as
+  the first rule (WithdrawRequest), but from two different streams, so an
+  event inserted into "ATM Stream" will never be evaluated against the pattern
+  on the second rule, because the rule states that it is only interested in
+  patterns coming from the "Branch Stream".</p><p>So, entry points, besides being a proper abstraction for streams, are
+  also a way to scope facts in the working memory, and a valuable tool for
+  reducing cross products explosions. But that is a subject for another
+  time.</p><p>Inserting events into an entry point is equally simple. Instead of
+  inserting events directly into the working memory, insert them into the
+  entry point as shown in the example below:</p><div class="example"><a id="d0e540"/><p class="title"><b>Example 2.10. Inserting facts into an entry point</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_operator">//</span><!-- <br/> --><span class="java_plain">&nbsp;create&nbsp;your&nbsp;rulebase&nbsp;and&nbsp;your&nbsp;session&nbsp;as&nbsp;usual</span>
+<!--  --><br/><span class="java_type">StatefulKnowledgeSession</span><span class="java_plain">&nbsp;session&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_separator">...</span>
+</span>
+<!--  --><br/><span class="java_operator">//</span><span class="java_plain">&nbsp;get&nbsp;a&nbsp;reference&nbsp;to&nbsp;the&nbsp;entry&nbsp;point</span>
+<!--  --><br/><span class="java_type">WorkingMemoryEntryPoint</span><span class="java_plain">&nbsp;atmStream&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;session</span><span class="java_separator">.</span><span class="java_plain">getWorkingMemoryEntryPoint</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;ATM&nbsp;Stream&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+</span>
+<!--  --><br/><span class="java_operator">//</span><span class="java_plain">&nbsp;and&nbsp;start&nbsp;inserting&nbsp;your&nbsp;facts&nbsp;into&nbsp;the&nbsp;entry&nbsp;point</span>
+<!--  --><br/><span class="java_plain">atmStream</span><span class="java_separator">.</span><span class="java_plain">insert</span><span class="java_separator">(</span><span class="java_plain">&nbsp;aWithdrawRequest&nbsp;</span><span class="java_separator">);</span>
+</pre></div></div><br class="example-break"/><p>The previous example shows how to manually insert facts into a given
+  entry point. Although, usually, the application will use one of the many
+  adapters to plug a stream end point, like a JMS queue, directly into the
+  engine entry point, without coding the inserts manually. The Drools pipeline
+  API has several adapters and helpers to do that as well as examples on how
+  to do it.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e547"/>2.4. Temporal Reasoning</h2></div></div></div><p>Temporal reasoning is another requirement of any CEP system. As
+  discussed previously, one of the distinguishing characteristics of events is
+  their strong temporal relationships.</p><p>Temporal reasoning is an extensive field of research, from its roots
+  on Temporal Modal Logic to its more practical applications in business
+  systems. There are hundreds of papers and thesis written and approches are
+  described for several applications. Drools once more takes a pragmatic and
+  simple approach based on several sources, but specially worth noting the
+  following papers:</p><div class="bibliolist"><div class="biblioentry"><a id="d0e556"/><p>[<abbr class="abbrev">ALLEN81</abbr>] <span class="author">Allen, J.F.. </span><span class="title"><i>An Interval-based Representation of Temporal Knowledge</i>. </span><span class="pubdate">1981. </span></p></div><div class="biblioentry"><a id="d0e567"/><p>[<abbr class="abbrev">ALLEN83</abbr>] <span class="author">Allen, J.F.. </span><span class="title"><i>Maintaining knowledge about temporal intervals</i>. </span><span class="pubdate">1983. </span></p></div><div class="biblioentry"><a id="d0e578"/><p>[<abbr class="abbrev">BENNE00</abbr>] <span class="authorgroup">by Bennet, Brandon and Galton, Antony P.. </span><span class="title"><i>A Unifying Semantics for Time and Events</i>. </span><span class="pubdate">2005. </span></p></div><div class="biblioentry"><a id="d0e593"/><p>[<abbr class="abbrev">YONEK05</abbr>] <span class="authorgroup">by Yoneki, Eiko and Bacon, Jean. </span><span class="title"><i>Unified Semantics for Event Correlation Over Time and Space in
+      Hybrid Network Environments</i>. </span><span class="pubdate">2005. </span></p></div></div><div class="blockquote"><blockquote class="blockquote"/></div><p>Drools implements the Interval-based Time Event Semantics described by
+  Allen, and represents Point-in-Time Events as Interval-based evens with
+  duration 0 (zero).</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e611"/>2.4.1. Temporal Operators</h3></div></div></div><p>Drools implements all 13 operators defined by Allen and also their
+  logical complement (negation). This section details each of the operators
+  and their parameters.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e616"/>2.4.1.1. After</h4></div></div></div><p>The after evaluator correlates two events and matches when the
+    temporal distance from the current event to the event being correlated
+    belongs to the distance range declared for the operator. </p><p>Lets look at an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this after[ 3m30s, 4m ] $eventB ) </pre><p>The previous pattern will match if and only if the temporal distance
+    between the time when $eventB finished and the time when $eventA started
+    is between ( 3 minutes and 30 seconds ) and ( 4 minutes ). In other
+    words:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""> 3m30s &lt;= $eventA.startTimestamp - $eventB.endTimeStamp &lt;= 4m </pre><p>The temporal distance interval for the after operator is optional:
+    </p><div class="itemizedlist"><ul><li><p>If two values are defined (like in the example below), the
+        interval starts on the first value and finishes on the second. </p></li><li><p>If only one value is defined, the interval starts on the value
+        and finishes on the positive infinity. </p></li><li><p>If no value is defined, it is assumed that the initial value is
+        1ms and the final value is the positive infinity. </p></li></ul></div><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>It is possible to define negative distances for this operator.
+      Example: </p><pre xmlns="" class="">$eventA : EventA( this after[ -3m30s, -2m ] $eventB ) </pre></div><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>If the first value is greater than the second value, the engine
+      automatically reverses them, as there is no reason to have the first
+      value greater than the second value. Example: the following two patterns
+      are considered to have the same semantics: </p><pre xmlns="" class="">$eventA : EventA( this after[ -3m30s, -2m ] $eventB ) 
+$eventA : EventA( this after[ -2m, -3m30s ] $eventB ) </pre></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e651"/>2.4.1.2. Before</h4></div></div></div><p>The before evaluator correlates two events and matches when the
+    temporal distance from the event being correlated to the current
+    correlated belongs to the distance range declared for the operator.
+    </p><p>Lets look at an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this before[ 3m30s, 4m ] $eventB ) </pre><p>The previous pattern will match if and only if the temporal distance
+    between the time when $eventA finished and the time when $eventB started
+    is between ( 3 minutes and 30 seconds ) and ( 4 minutes ). In other
+    words:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class=""> 3m30s &lt;= $eventB.startTimestamp - $eventA.endTimeStamp &lt;= 4m </pre><p>The temporal distance interval for the before operator is optional:
+    </p><div class="itemizedlist"><ul><li><p>If two values are defined (like in the example below), the
+        interval starts on the first value and finishes on the second. </p></li><li><p>If only one value is defined, then the interval starts on the
+        value and finishes on the positive infinity. </p></li><li><p>If no value is defined, it is assumed that the initial value is
+        1ms and the final value is the positive infinity.</p></li></ul></div><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>It is possible to define negative distances for this operator.
+      Example: </p><pre xmlns="" class="">$eventA : EventA( this before[ -3m30s, -2m ] $eventB ) </pre></div><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>If the first value is greater than the second value, the engine
+      automatically reverses them, as there is no reason to have the first
+      value greater than the second value. Example: the following two patterns
+      are considered to have the same semantics: </p><pre xmlns="" class="">$eventA : EventA( this before[ -3m30s, -2m ] $eventB ) 
+$eventA : EventA( this before[ -2m, -3m30s ] $eventB ) </pre></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e686"/>2.4.1.3. Coincides</h4></div></div></div><p>The coincides evaluator correlates two events and matches when both
+    happen at the same time. Optionally, the evaluator accept thresholds for
+    the distance between events' start and finish timestamps. </p><p>Lets look at an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this coincides $eventB ) </pre><p>The previous pattern will match if and only if the start timestamps
+    of both $eventA and $eventB are the same AND the end timestamp of both
+    $eventA and $eventB also are the same. </p><p>Optionally, this operator accepts one or two parameters. These
+    parameters are the thresholds for the distance between matching
+    timestamps. </p><div class="itemizedlist"><ul><li><p>If only one paratemer is given, it is used for both start and
+        end timestamps.</p></li><li><p>If two parameters are given, then the first is used as a
+        threshold for the start timestamp and the second one is used as a
+        threshold for the end timestamp.</p></li></ul></div><p>In other words: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this coincides[15s, 10s] $eventB ) </pre><p>Above pattern will match if and only if: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">abs( $eventA.startTimestamp - $eventB.startTimestamp ) &lt;= 15s &amp;&amp; 
+abs( $eventA.endTimestamp - $eventB.endTimestamp ) &lt;= 10s </pre><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="warning"><h2>Warning</h2><p>It makes no sense to use negative interval values for the
+      parameters and the engine will raise an error if that happens.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e717"/>2.4.1.4. During</h4></div></div></div><p>The during evaluator correlates two events and matches when the
+    current event happens during the occurrence of the event being correlated.
+    </p><p>Lets look at an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this during $eventB ) </pre><p>The previous pattern will match if and only if the $eventA starts
+    after $eventB starts and finishes before $eventB finishes. </p><p>In other words: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventB.startTimestamp &lt; $eventA.startTimestamp &lt;= $eventA.endTimestamp &lt; $eventB.endTimestamp </pre><p>The during operator accepts 1, 2 or 4 optional parameters as follow:
+    </p><div class="itemizedlist"><ul><li><p>If one value is defined, this will be the maximum distance
+        between the start timestamp of both event and the maximum distance
+        between the end timestamp of both events in order to operator match.
+        Example:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this during[ 5s ] $eventB )</pre><p>Will match if and only if:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">0 &lt; $eventA.startTimestamp - $eventB.startTimestamp &lt;= 5s &amp;&amp; 
+0 &lt; $eventB.endTimestamp - $eventA.endTimestamp &lt;= 5s</pre></li></ul></div><div class="itemizedlist"><ul><li><p>If two values are defined, the first value will be the minimum
+        distance between the timestamps of both events, while the second value
+        will be the maximum distance between the timestamps of both events.
+        Example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this during[ 5s, 10s ] $eventB )</pre><p>Will match if and only if:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">5s &lt;= $eventA.startTimestamp - $eventB.startTimestamp &lt;= 10s &amp;&amp; 
+5s &lt;= $eventB.endTimestamp - $eventA.endTimestamp &lt;= 10s</pre></li></ul></div><div class="itemizedlist"><ul><li><p>If four values are defined, the first two values will be the
+        minimum and maximum distances between the start timestamp of both
+        events, while the last two values will be the minimum and maximum
+        distances between the end timestamp of both events. Example:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this during[ 2s, 6s, 4s, 10s ] $eventB )</pre><p>Will match if and only if:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">2s &lt;= $eventA.startTimestamp - $eventB.startTimestamp &lt;= 6s &amp;&amp; 
+4s &lt;= $eventB.endTimestamp - $eventA.endTimestamp &lt;= 10s</pre></li></ul></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e764"/>2.4.1.5. Finishes</h4></div></div></div><p>The finishes evaluator correlates two events and matches when the
+    current event's start timestamp happens after the correlated event's start
+    timestamp, but both end timestamps occur at the same time. </p><p>Lets look at an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this finishes $eventB ) </pre><p>The previous pattern will match if and only if the $eventA starts
+    after $eventB starts and finishes at the same time $eventB finishes.
+    </p><p>In other words: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventB.startTimestamp &lt; $eventA.startTimestamp &amp;&amp; 
+$eventA.endTimestamp == $eventB.endTimestamp </pre><p>The finishes evaluator accepts one optional parameter. If it is
+    defined, it determines the maximum distance between the end timestamp of
+    both events in order for the operator to match. Example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this finishes[ 5s ] $eventB ) </pre><p>Will match if and only if: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventB.startTimestamp &lt; $eventA.startTimestamp &amp;&amp; 
+abs( $eventA.endTimestamp - $eventB.endTimestamp ) &lt;= 5s </pre><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="warning"><h2>Warning</h2><p>It makes no sense to use a negative interval value for the
+      parameter and the engine will raise an exception if that happens.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e790"/>2.4.1.6. Finished By</h4></div></div></div><p>The finishedby evaluator correlates two events and matches when the
+    current event start timestamp happens before the correlated event start
+    timestamp, but both end timestamps occur at the same time. This is the
+    symmetrical opposite of finishes evaluator. </p><p>Lets look at an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this finishedby $eventB ) </pre><p>The previous pattern will match if and only if the $eventA starts
+    before $eventB starts and finishes at the same time $eventB finishes.
+    </p><p>In other words: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA.startTimestamp &lt; $eventB.startTimestamp &amp;&amp; 
+$eventA.endTimestamp == $eventB.endTimestamp </pre><p>The finishedby evaluator accepts one optional parameter. If it is
+    defined, it determines the maximum distance between the end timestamp of
+    both events in order for the operator to match. Example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this finishedby[ 5s ] $eventB ) </pre><p>Will match if and only if: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA.startTimestamp &lt; $eventB.startTimestamp &amp;&amp; 
+abs( $eventA.endTimestamp - $eventB.endTimestamp ) &lt;= 5s </pre><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="warning"><h2>Warning</h2><p>It makes no sense to use a negative interval value for the
+      parameter and the engine will raise an exception if that happens.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e816"/>2.4.1.7. Includes</h4></div></div></div><p>The includes evaluator correlates two events and matches when the
+    event being correlated happens during the current event. It is the
+    symmetrical opposite of during evaluator. </p><p>Lets look at an example:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this includes $eventB ) </pre><p>The previous pattern will match if and only if the $eventB starts
+    after $eventA starts and finishes before $eventA finishes. </p><p>In other words: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA.startTimestamp &lt; $eventB.startTimestamp &lt;= $eventB.endTimestamp &lt; $eventA.endTimestamp </pre><p>The includes operator accepts 1, 2 or 4 optional parameters as
+    follow: </p><div class="itemizedlist"><ul><li><p>If one value is defined, this will be the maximum distance
+        between the start timestamp of both event and the maximum distance
+        between the end timestamp of both events in order to operator match.
+        Example:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this includes[ 5s ] $eventB )</pre><p>Will match if and only if:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">0 &lt; $eventB.startTimestamp - $eventA.startTimestamp &lt;= 5s &amp;&amp; 
+0 &lt; $eventA.endTimestamp - $eventB.endTimestamp &lt;= 5s</pre></li></ul></div><div class="itemizedlist"><ul><li><p>If two values are defined, the first value will be the minimum
+        distance between the timestamps of both events, while the second value
+        will be the maximum distance between the timestamps of both events.
+        Example:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this includes[ 5s, 10s ] $eventB )</pre><p>Will match if and only if:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">5s &lt;= $eventB.startTimestamp - $eventA.startTimestamp &lt;= 10s &amp;&amp; 
+5s &lt;= $eventA.endTimestamp - $eventB.endTimestamp &lt;= 10s</pre></li></ul></div><div class="itemizedlist"><ul><li><p>If four values are defined, the first two values will be the
+        minimum and maximum distances between the start timestamp of both
+        events, while the last two values will be the minimum and maximum
+        distances between the end timestamp of both events. Example:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this includes[ 2s, 6s, 4s, 10s ] $eventB )</pre><p>Will match if and only if: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">2s &lt;= $eventB.startTimestamp - $eventA.startTimestamp &lt;= 6s &amp;&amp; 
+4s &lt;= $eventA.endTimestamp - $eventB.endTimestamp &lt;= 10s </pre></li></ul></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e863"/>2.4.1.8. Meets</h4></div></div></div><p>The meets evaluator correlates two events and matches when the
+    current event's end timestamp happens at the same time as the correlated
+    event's start timestamp. </p><p>Lets look at an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this meets $eventB ) </pre><p>The previous pattern will match if and only if the $eventA finishes
+    at the same time $eventB starts.</p><p>In other words: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">abs( $eventB.startTimestamp - $eventA.endTimestamp ) == 0 </pre><p>The meets evaluator accepts one optional parameter. If it is
+    defined, it determines the maximum distance between the end timestamp of
+    current event and the start timestamp of the correlated event in order for
+    the operator to match. Example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this meets[ 5s ] $eventB ) </pre><p>Will match if and only if: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">abs( $eventB.startTimestamp - $eventA.endTimestamp) &lt;= 5s </pre><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="warning"><h2>Warning</h2><p>It makes no sense to use a negative interval value for the
+      parameter and the engine will raise an exception if that happens.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e889"/>2.4.1.9. Met By</h4></div></div></div><p>The metby evaluator correlates two events and matches when the
+    current event's start timestamp happens at the same time as the correlated
+    event's end timestamp. </p><p>Lets look at an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this metby $eventB ) </pre><p>The previous pattern will match if and only if the $eventA starts at
+    the same time $eventB finishes. </p><p>In other words: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">abs( $eventA.startTimestamp - $eventB.endTimestamp ) == 0 </pre><p>The metby evaluator accepts one optional parameter. If it is
+    defined, it determines the maximum distance between the end timestamp of
+    the correlated event and the start timestamp of the current event in order
+    for the operator to match. Example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this metby[ 5s ] $eventB ) </pre><p>Will match if and only if: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">abs( $eventA.startTimestamp - $eventB.endTimestamp) &lt;= 5s </pre><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="warning"><h2>Warning</h2><p>It makes no sense to use a negative interval value for the
+      parameter and the engine will raise an exception if that happens.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e915"/>2.4.1.10. Overlaps</h4></div></div></div><p>The overlaps evaluator correlates two events and matches when the
+    current event starts before the correlated event starts and finishes after
+    the correlated event starts, but before the correlated event finishes. In
+    other words, both events have an overlapping period. </p><p>Lets look at an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this overlaps $eventB ) </pre><p>The previous pattern will match if and only if: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA.startTimestamp &lt; $eventB.startTimestamp &lt; $eventA.endTimestamp &lt; $eventB.endTimestamp </pre><p>The overlaps operator accepts 1 or 2 optional parameters as
+    follow:</p><div class="itemizedlist"><ul><li><p>If one parameter is defined, this will be the maximum distance
+        between the start timestamp of the correlated event and the end
+        timestamp of the current event. Example:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this overlaps[ 5s ] $eventB )</pre><p>Will match if and only if:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA.startTimestamp &lt; $eventB.startTimestamp &lt; $eventA.endTimestamp &lt; $eventB.endTimestamp &amp;&amp; 
+0 &lt;= $eventA.endTimestamp - $eventB.startTimestamp &lt;= 5s</pre></li></ul></div><div class="itemizedlist"><ul><li><p>If two values are defined, the first value will be the minimum
+        distance and the second value will be the maximum distance between the
+        start timestamp of the correlated event and the end timestamp of the
+        current event. Example:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this overlaps[ 5s, 10s ] $eventB )</pre><p>Will match if and only if:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA.startTimestamp &lt; $eventB.startTimestamp &lt; $eventA.endTimestamp &lt; $eventB.endTimestamp &amp;&amp; 
+5s &lt;= $eventA.endTimestamp - $eventB.startTimestamp &lt;= 10s </pre></li></ul></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e950"/>2.4.1.11. Overlapped By</h4></div></div></div><p>The overlappedby evaluator correlates two events and matches when
+    the correlated event starts before the current event starts and finishes
+    after the current event starts, but before the current event finishes. In
+    other words, both events have an overlapping period. </p><p>Lets look at an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this overlappedby $eventB ) </pre><p>The previous pattern will match if and only if: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventB.startTimestamp &lt; $eventA.startTimestamp &lt; $eventB.endTimestamp &lt; $eventA.endTimestamp </pre><p>The overlappedby operator accepts 1 or 2 optional parameters as
+    follow: </p><div class="itemizedlist"><ul><li><p>If one parameter is defined, this will be the maximum distance
+        between the start timestamp of the current event and the end timestamp
+        of the correlated event. Example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this overlappedby[ 5s ] $eventB )</pre><p>Will match if and only if:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventB.startTimestamp &lt; $eventA.startTimestamp &lt; $eventB.endTimestamp &lt; $eventA.endTimestamp &amp;&amp; 
+0 &lt;= $eventB.endTimestamp - $eventA.startTimestamp &lt;= 5s</pre></li></ul></div><div class="itemizedlist"><ul><li><p>If two values are defined, the first value will be the minimum
+        distance and the second value will be the maximum distance between the
+        start timestamp of the current event and the end timestamp of the
+        correlated event. Example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this overlappedby[ 5s, 10s ] $eventB )</pre><p>Will match if and only if:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventB.startTimestamp &lt; $eventA.startTimestamp &lt; $eventB.endTimestamp &lt; $eventA.endTimestamp &amp;&amp; 
+5s &lt;= $eventB.endTimestamp - $eventA.startTimestamp &lt;= 10s</pre></li></ul></div><p> </p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e987"/>2.4.1.12. Starts</h4></div></div></div><p>The starts evaluator correlates two events and matches when the
+    current event's end timestamp happens before the correlated event's end
+    timestamp, but both start timestamps occur at the same time. </p><p>Lets look at an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this starts $eventB ) </pre><p>The previous pattern will match if and only if the $eventA finishes
+    before $eventB finishes and starts at the same time $eventB starts.
+    </p><p>In other words: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA.startTimestamp == $eventB.startTimestamp &amp;&amp; 
+$eventA.endTimestamp &lt; $eventB.endTimestamp </pre><p>The starts evaluator accepts one optional parameter. If it is
+    defined, it determines the maximum distance between the start timestamp of
+    both events in order for the operator to match. Example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this starts[ 5s ] $eventB ) </pre><p>Will match if and only if: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">abs( $eventA.startTimestamp - $eventB.startTimestamp ) &lt;= 5s &amp;&amp; 
+$eventA.endTimestamp &lt; $eventB.endTimestamp </pre><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="warning"><h2>Warning</h2><p>It makes no sense to use a negative interval value for the
+      parameter and the engine will raise an exception if that happens.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e1013"/>2.4.1.13. Started By</h4></div></div></div><p>The startedby evaluator correlates two events and matches when the
+    correlating event's end timestamp happens before the current event's end
+    timestamp, but both start timestamps occur at the same time. Lets look at
+    an example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this startedby $eventB ) </pre><p>The previous pattern will match if and only if the $eventB finishes
+    before $eventA finishes and starts at the same time $eventB starts.
+    </p><p>In other words: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA.startTimestamp == $eventB.startTimestamp &amp;&amp; 
+$eventA.endTimestamp &gt; $eventB.endTimestamp </pre><p>The startedby evaluator accepts one optional parameter. If it is
+    defined, it determines the maximum distance between the start timestamp of
+    both events in order for the operator to match. Example: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">$eventA : EventA( this starts[ 5s ] $eventB ) </pre><p>Will match if and only if: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">abs( $eventA.startTimestamp - $eventB.startTimestamp ) &lt;= 5s &amp;&amp; 
+$eventA.endTimestamp &gt; $eventB.endTimestamp </pre><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="warning"><h2>Warning</h2><p>It makes no sense to use a negative interval value for the
+      parameter and the engine will raise an exception if that happens.</p></div></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e1037"/>2.5. Event Processing Modes</h2></div></div></div><p>Rules engines in general have a well known way of processing data and
+  rules and provide the application with the results. Also, there is not many
+  requirements on how facts should be presented to the rules engine, specially
+  because in general, the processing itself is time independent. That is a
+  good assumption for most scenarios, but not for all of them. When the
+  requirements include the processing of real time or near real time events,
+  time becomes and important variable of the reasoning process.</p><p>The following sections will explain the impact of time on rules
+  reasoning and the two modes provided by Drools for the reasoning process.
+  </p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e1044"/>2.5.1. Cloud Mode</h3></div></div></div><p>The CLOUD processing mode is the default processing mode. Users of
+  rules engine are familiar with this mode because it behaves in exactly the
+  same way as any pure forward chaining rules engine, including previous
+  versions of Drools.</p><p>When running in CLOUD mode, the engine sees all facts in the working
+  memory, does not matter if they are regular facts or events, as a whole.
+  There is no notion of flow of time, although events have a timestamp as
+  usual. In other words, although the engine knows that a given event was
+  created, for instance, on January 1st 2009, at 09:35:40.767, it is not
+  possible for the engine to determine how "old" the event is, because there
+  is no concept of "now".</p><p>In this mode, the engine will apply its usual many-to-many pattern
+  matching algorithm, using the rules constraints to find the matching tuples,
+  activate and fire rules as usual.</p><p>This mode does not impose any kind of additional requirements on
+  facts. So for instance:</p><div class="itemizedlist"><ul><li><p>There is no notion of time. No requirements clock synchronization.
+      </p></li><li><p>There is no requirement on event ordering. The engine looks at the
+      events as an unnordered cloud against which the engine tries to match
+      rules.</p></li></ul></div><p>On the other hand, since there is no requirements, some benefits are
+  not available either. For instance, in CLOUD mode, it is not possible to use
+  sliding windows, because sliding windows are based on the concept of "now"
+  and there is no concept of "now" in CLOUD mode. </p><p>Since there is no ordering requirement on events, it is not possible
+  for the engine to determine when events can no longer match and as so, there
+  is no automatic life-cycle management for events. I.e., the application must
+  explicitly retract events when they are no longer necessary, in the same way
+  the application does with regular facts.</p><p>Cloud mode is the default execution mode for Drools, but in any case,
+  as any other configuration in Drools, it is possible to change this behavior
+  either by setting a system property, using configuration property files or
+  using the API. The corresponding property is:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeBaseConfiguration</span><!-- <br/> --><span class="java_plain">&nbsp;config&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeBaseFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeBaseConfiguration</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">config</span><span class="java_separator">.</span><span class="java_plain">setOption</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">EventProcessingOption</span><span class="java_separator">.</span><span class="java_plain">CLOUD&nbsp;</span><span class="java_separator">);</span></pre><p>The equivalent property is:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">drools.eventProcessingMode = cloud</pre><p/></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e1075"/>2.5.2. Stream Mode</h3></div></div></div><p>The STREAM processing mode is the mode of choice when the application
+  needs to process streams of events. It adds a few common requirements to the
+  regular processing, but enables a whole lot of features that make stream
+  event processing a lot simpler.</p><p>The main requirements to use STREAM mode are:</p><div class="itemizedlist"><ul><li><p>Events in each stream must be time-ordered. I.e., inside a given
+      stream, events that happened first must be inserted first into the
+      engine.</p></li><li><p>The engine will force synchronization between streams through the
+      use of the session clock, so, although the application does not need to
+      enforce time ordering between streams, the use of non-time-synchronized
+      streams may result in some unexpected results.</p></li></ul></div><p>Given that the above requirements are met, the application may enable
+  the STREAM mode using the following API:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeBaseConfiguration</span><!-- <br/> --><span class="java_plain">&nbsp;config&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeBaseFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeBaseConfiguration</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">config</span><span class="java_separator">.</span><span class="java_plain">setOption</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">EventProcessingOption</span><span class="java_separator">.</span><span class="java_plain">STREAM&nbsp;</span><span class="java_separator">);</span></pre><p>Or, the equivalent property: </p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">drools.eventProcessingMode = stream</pre><p>When using the STREAM, the engine knows the concept of flow of time
+  and the concept of "now", i.e., the engine understands how old events are
+  based on the current timestamp read from the Session Clock. This
+  characteristic allows the engine to provide the following additional
+  features to the application:</p><div class="itemizedlist"><ul><li><p>Sliding Window support</p></li><li><p>Automatic Event Lifecycle Management</p></li><li><p>Automatic Rule Delaying when using Negative Patterns</p></li></ul></div><p>All these features are explained in the following sections.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e1111"/>2.5.2.1. Role of Session Clock in Stream mode</h4></div></div></div><p>When running the engine in CLOUD mode, the session clock is used
+    only to time stamp the arriving events that don't have a previously
+    defined timestamp attribute. Although, in STREAM mode, the Session Clock
+    assumes an even more important role.</p><p>In STREAM mode, the session clock is responsible for keeping the
+    current timestamp, and based on it, the engine does all the temporal
+    calculations on event's aging, synchronizes streams from multiple sources,
+    schedules future tasks and so on.</p><p>Check the documentation on the Session Clock section to know how to
+    configure and use different session clock implementations.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a id="d0e1120"/>2.5.2.2. Negative Patterns in Stream Mode</h4></div></div></div><p>Negative patterns behave different in STREAM mode when compared to
+    CLOUD mode. In CLOUD mode, the engine assumes that all facts and events
+    are known in advance (there is no concept of flow of time) and so,
+    negative patterns are evaluated immediately.</p><p>When running in STREAM mode, negative patterns with temporal
+    constraints may require the engine to wait for a time period before
+    activating a rule. The time period is automatically calculated by the
+    engine in a way that the user does not need to use any tricks to achieve
+    the desired result.</p><p>For instance:</p><div class="example"><a id="d0e1129"/><p class="title"><b>Example 2.11. a rule that activates immediately upon matching</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Sound the alarm"
+when
+    $f : FireDetected( )
+    not( SprinklerActivated( ) )
+then
+    // sound the alarm
+end
+</pre></div></div><br class="example-break"/><p>The above rule has no temporal constraints that would require
+    delaying the rule, and so, the rule activates immediately. The following
+    rule on the other hand, must wait for 10 seconds before activating, since
+    it may take up to 10 seconds for the sprinklers to activate:</p><div class="example"><a id="d0e1136"/><p class="title"><b>Example 2.12. a rule that automatically delays activation due to temporal
+        constraints</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Sound the alarm"
+when
+    $f : FireDetected( )
+    not( SprinklerActivated( this after[0s,10s] $f ) )
+then
+    // sound the alarm
+end</pre></div></div><br class="example-break"/><p>This behaviour allows the engine to keep consistency when
+    dealing with negative patterns and temporal constraints at the same time.
+    The above would be the same as writing the rule as below, but does not
+    burden the user to calculate and explicitly write the appropriate duration
+    parameter:</p><div class="example"><a id="d0e1143"/><p class="title"><b>Example 2.13. same rule with explicit duration parameter</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Sound the alarm"
+    duration( 10s )
+when
+    $f : FireDetected( )
+    not( SprinklerActivated( this after[0s,10s] $f ) )
+then
+    // sound the alarm
+end</pre></div></div><br class="example-break"/></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e1148"/>2.6. Sliding Windows</h2></div></div></div><p>Sliding Window is a way to scope the events of interest as a the ones
+  belonging to a window that is constantly moving. The two most common sliding
+  window implementations are time based windows and length based windows.
+  </p><p>The next sections will detail each of them.</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p>Sliding Windows are only available when running the engine in STREAM
+    mode. Check the Event Processing Mode section for details on how the
+    STREAM mode works.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e1158"/>2.6.1. Sliding Time Windows</h3></div></div></div><p>Sliding Time Windows allow the user to write rules that will only
+  match events occurring in the last X time units. </p><p>For instance, if the user wants to consider only the Stock Ticks that
+  happened in the last 2 minutes, the pattern would look like this:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">StockTick() over window:time( 2m )</pre><p>Drools uses the "over" keyword to associate windows to patterns.
+  </p><p>On a more elaborate example, if the user wants to sound an alarm in
+  case the average temperature over the last 10 minutes read from a sensor is
+  above the threshold value, the rule would look like:</p><div class="example"><a id="d0e1171"/><p class="title"><b>Example 2.14. aggregating values over time windows</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Sound the alarm in case temperature rises above threshold"
+when
+    TemperatureThreshold( $max : max )
+    Number( doubleValue &gt; $max ) from accumulate(
+        SensorReading( $temp : temperature ) over window:time( 10m ),
+        average( $temp ) )
+then
+    // sound the alarm
+end
+</pre></div></div><br class="example-break"/><p>The engine will automatically discard any SensorReading older
+  than 10 minutes and keep the calculated average consistent.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e1178"/>2.6.2. Sliding Length Windows</h3></div></div></div><p>Sliding Length Windows work the same way as Time Windows, but discard
+  events based on the arrival of new events instead of flow of time.</p><p>For instance, if the user wants to consider only the last 10 IBM Stock
+  Ticks, independent of how old they are, the pattern would look like
+  this:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">StockTick( company == "IBM" ) over window:length( 10 )</pre><p>As you can see, the pattern is similar to the one presented in the
+  previous section, but instead of using window:time to define the sliding
+  window, it uses window:length.</p><p>Using a similar example to the one in the previous section, if the
+  user wants to sound an alarm in case the average temperature over the last
+  100 readings from a sensor is above the threshold value, the rule would look
+  like:</p><div class="example"><a id="d0e1191"/><p class="title"><b>Example 2.15. aggregating values over length windows</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "Sound the alarm in case temperature rises above threshold"
+when
+    TemperatureThreshold( $max : max )
+    Number( doubleValue &gt; $max ) from accumulate(
+        SensorReading( $temp : temperature ) over window:length( 100 ),
+        average( $temp ) )
+then
+    // sound the alarm
+end</pre></div></div><br class="example-break"/><p>The engine will keep only the last 100 readings.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e1198"/>2.7. Knowledgebase Partitioning</h2></div></div></div><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="warning"><h2>Warning</h2><p>This is an experimental feature, subject to changes in the
+    future.</p></div><p>The classic Rete algorithm is usually executed using a single thread.
+  Although, as confirmed in several opportunities by Dr. Forgy, the algorithm
+  itself is parallelizable. Drools implementation of the ReteOO algorithm
+  supports coarse grained parallelization through rulebase
+  partitioning.</p><p>When this option is enabled, the rulebase will be partitioned in
+  several independent partitions and a pool of worker threads will be used to
+  propagate facts through the partitions. The implementation guarantees that
+  at most one worker thread will be executing tasks for a given partition, but
+  multiple partitions may be "active" at a single point in time.</p><p>Everything should be transparent to the user, except that all working
+  memory actions (insert/retract/modify) are executed assynchronously.</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p>This feature enables parallel LHS evaluation, but does not change
+    the behavior of rule firing. I.e., rules will continue to fire
+    sequentially, according to the conflict resolution strategy.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e1213"/>2.7.1. When partitioning is useful</h3></div></div></div><p>Knowledge base partitioning is a very powerful feature for specific
+    scenarios, but it is not a general case solution. To understand if this
+    feature would be useful for a given scenario, the user may follow the
+    checklist below:</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>Does your hardware contains multiple processors?</p></li><li><p>Does your knowledge session process a high volume of
+        facts?</p></li><li><p>Are the LHS of your rules expensive to evaluate? (ex: use
+        expensive "from" expressions)</p></li><li><p>Does your knowledge base contains hundreds or more rules?</p></li></ol></div><p>If the answer to all the questions above is "yes", then this feature
+    will probably increase the overall performance of your rulebase
+    evaluation. </p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e1233"/>2.7.2. How to configure partitioning</h3></div></div></div><p>To enable knowledge base partitioning, set the following
+    option:</p><div class="example"><a id="d0e1238"/><p class="title"><b>Example 2.16. Enabling multithread evaluation (partitioning)</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeBaseConfiguration</span><!-- <br/> --><span class="java_plain">&nbsp;config&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeBaseFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeBaseConfiguration</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">config</span><span class="java_separator">.</span><span class="java_plain">setOption</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">MultithreadEvaluationOption</span><span class="java_separator">.</span><span class="java_plain">YES&nbsp;</span><span class="java_separator">);</span>
+</pre></div></div><br class="example-break"/><p>The equivalent property is:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">drools.multithreadEvaluation = &lt;true|false&gt;</pre><p>The default value for this option is "false" (disabled).</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e1249"/>2.7.3. Multithreading management</h3></div></div></div><p>Drools offers a simple configuration option for users to control the
+    size of the worker thread's pool.</p><p>To define the maximum size for the thread pool, the user may use the
+    following configuration option:</p><div class="example"><a id="d0e1256"/><p class="title"><b>Example 2.17. setting the maximum number of threads for rule evaluation to
+        5</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">KnowledgeBaseConfiguration</span><!-- <br/> --><span class="java_plain">&nbsp;config&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;</span><!-- <br/> --><span class="java_type">KnowledgeBaseFactory</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newKnowledgeBaseConfiguration</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_plain">config</span><span class="java_separator">.</span><span class="java_plain">setOption</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_type">MaxThreadsOption</span><span class="java_separator">.</span><span class="java_plain">get</span><span class="java_separator">(</span><span class="java_literal">5</span><span class="java_separator">)</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+</pre></div></div><br class="example-break"/><p>The equivalent property is:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">drools.maxThreads = &lt;-1|1..n&gt;</pre><p>The default value for this configuration is 3 and a negative number
+    means the engine will try to spawn as many threads as there are partitions
+    in the rulebase.</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="warning"><h2>Warning</h2><p>It is usually dangerous to set this option with a negative number.
+      Always set it with a sensible positive number of threads.</p></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e1270"/>2.8. Memory Management for Events</h2></div></div></div><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p>The automatic memory management for events is only performed when
+    running the engine in STREAM mode. Check the Event Processing Mode section
+    for details on how the STREAM mode works.</p></div><p>One of the benefits of running the engine in STREAM mode is that the
+  engine can detect when an event can no longer match any rule due to its
+  temporal constraints. When that happens, the engine can safely retract the
+  event from the session without side effects and release any resources used
+  by that event.</p><p>There are basically 2 ways for the engine to calculate the matching
+  window for a given event:</p><div class="itemizedlist"><ul><li><p>explicitly, using the expiration policy</p></li><li><p>implicitly, analyzing the temporal constraints on events</p></li></ul></div><p/><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e1288"/>2.8.1. Explicit expiration offset</h3></div></div></div><p>The first way of allowing the engine to calculate the window of
+  interest for a given event type is by explicitly setting it. To do that,
+  just use the declare statement and define an expiration for the fact
+  type:</p><div class="example"><a id="d0e1293"/><p class="title"><b>Example 2.18. explicitly defining an expiration offset of 30 minutes for
+      StockTick events</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">declare StockTick
+    @expires( 30m )
+end
+</pre></div></div><br class="example-break"/><p>The above example declares an expiration offset of 30 minutes
+  for StockTick events. After that time, assuming no rule still needs the
+  event, the engine will expire and remove the event from the session
+  automatically.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e1300"/>2.8.2. Inferred expiration offset</h3></div></div></div><p>Another way for the engine to calculate the expiration offset for a
+  given event is implicitly, by analyzing the temporal constraints in the
+  rules. For instance, given the following rule:</p><div class="example"><a id="d0e1305"/><p class="title"><b>Example 2.19. example rule with temporal constraints</b></p><div class="example-contents"><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="">rule "correlate orders"
+when
+    $bo : BuyOrderEvent( $id : id ) 
+    $ae : AckEvent( id == $id, this after[0,10s] $bo )
+then
+    // do something
+end
+</pre></div></div><br class="example-break"/><p>Analyzing the above rule, the engine automatically calculates
+  that whenever a BuyOrderEvent matches, it needs to store it for up to 10
+  seconds to wait for matching AckEvent's. So, the implicit expiration offset
+  for BuyOrderEvent will be 10 seconds. AckEvent, on the other hand, can only
+  match existing BuyOrderEvent's, and so its expiration offset will be zero
+  seconds.</p><p>The engine will make this analysis for the whole rulebase and find the
+  offset for every event type. Whenever an implicit expiration offset clashes
+  with the explicit expiration offset, then engine will use the greater of the
+  two.</p></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="ch01.html"><strong>Prev</strong>Chapter 1. Introduction</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="ch03.html"><strong>Next</strong>Chapter 3. References</a></li></ul></body></html>

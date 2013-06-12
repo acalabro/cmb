@@ -14,13 +14,24 @@
 		salience 10
 		dialect "java"
 		when
-			$aEvent : GlimpseBaseEventChoreos(this.isConsumed == true, this.getTimeStamp == _TIMESTAMP_, this.getEventName == "SLA Alert");
-			$bEvent : GlimpseBaseEventChoreos(this.isConsumed == false, this.getEventName == "load_one", this.getMachineIP == "MACHINE_IP" , this after[0,10s] $aEvent);
+			$aEvent : GlimpseBaseEventChoreos(
+			this.isConsumed == true,
+			this.getTimeStamp == _TIMESTAMP_,
+			this.getEventName == "SLA Alert");
+			
+			$bEvent : GlimpseBaseEventChoreos(
+			this.isConsumed == false,
+			this.getEventName == "load_one",
+			this.getMachineIP == "MACHINE_IP",
+			this after[0,10s] $aEvent);
 		then
 			$bEvent.setConsumed(true);
 			update($bEvent);
 			
-			ResponseDispatcher.LogViolation("RULE","auto_generated_rule","\nSLA and Infrastructure violation by service: SERVICE_NAME" + "\npossibly due to an overload on machine: " + $bEvent.getMachineIP());
+			ResponseDispatcher.LogViolation(
+			"RULE",
+			"auto_generated_rule",
+			"\nSLA and Infrastructure violation by service: SERVICE_NAME" + "\npossibly due to an overload on machine: " + $bEvent.getMachineIP());
 			
 			retract($aEvent);
 			retract($bEvent);

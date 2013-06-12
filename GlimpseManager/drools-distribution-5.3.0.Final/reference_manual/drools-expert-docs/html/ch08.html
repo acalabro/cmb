@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 8. The Rule IDE (Eclipse)</title><link rel="stylesheet" href="css/jbossorg.css" type="text/css"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL-NS Stylesheets V1.74.0"/><meta xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="home" href="index.html" title="Drools Expert User Guide"/><link rel="up" href="index.html" title="Drools Expert User Guide"/><link rel="prev" href="ch07.html" title="Chapter 7. The Java Rule Engine API"/><link rel="next" href="ch09.html" title="Chapter 9. Examples"/></head><body><p xmlns:d="http://docbook.org/ns/docbook" id="title"><a href="http://www.jboss.org" class="site_href"><strong>JBoss.org</strong></a><a href="http://docs.jboss.org/" class="doc_href"><strong>Community Documentation</strong></a></p><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="ch07.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ch09.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e7874"/>Chapter 8. The Rule IDE (Eclipse)</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="ch08.html#d0e7892">8.1. Features Outline</a></span></dt><dt><span class="section"><a href="ch08.html#d0e7948">8.2. Drools Runtimes</a></span></dt><dd><dl><dt><span class="section"><a href="ch08.html#d0e7953">8.2.1. Defining a Drools Runtime</a></span></dt><dt><span class="section"><a href="ch08.html#d0e7990">8.2.2. Selecting a runtime for your Drools project</a></span></dt></dl></dd><dt><span class="section"><a href="ch08.html#d0e8005">8.3. Creating a Rule Project</a></span></dt><dt><span class="section"><a href="ch08.html#d0e8028">8.4. Creating a New Rule and Wizards</a></span></dt><dt><span class="section"><a href="ch08.html#d0e8049">8.5. Textual Rule Editor</a></span></dt><dt><span class="section"><a href="ch08.html#d0e8072">8.6. Drools Views</a></span></dt><dd><dl><dt><span class="section"><a href="ch08.html#d0e8089">8.6.1. The Working Memory View</a></span></dt><dt><span class="section"><a href="ch08.html#d0e8103">8.6.2. The Agenda View</a></span></dt><dt><span class="section"><a href="ch08.html#d0e8117">8.6.3. The Global Data View</a></span></dt><dt><span class="section"><a href="ch08.html#d0e8131">8.6.4. The Audit View</a></span></dt></dl></dd><dt><span class="section"><a href="ch08.html#d0e8215">8.7. Domain Specific Languages</a></span></dt><dd><dl><dt><span class="section"><a href="ch08.html#d0e8222">8.7.1. Editing languages</a></span></dt></dl></dd><dt><span class="section"><a href="ch08.html#d0e8245">8.8. The Rete View</a></span></dt><dt><span class="section"><a href="ch08.html#d0e8261">8.9. Large DRL Files</a></span></dt><dt><span class="section"><a href="ch08.html#d0e8277">8.10. Debugging Rules</a></span></dt><dd><dl><dt><span class="section"><a href="ch08.html#d0e8288">8.10.1. Creating Breakpoints</a></span></dt><dt><span class="section"><a href="ch08.html#d0e8302">8.10.2. Debugging Rules</a></span></dt></dl></dd></dl></div><p>The Eclipse based IDE provides developers (and very technical users)
+  with an environment to edit and test rules in various formats, and integrate
+  it deeply with their applications. In cases where you prefer business rules
+  and web tooling, you will want to look at the BRMS (but using the BRMS and
+  the IDE together is not uncommon).</p><p>The Drools IDE is delivered as an Eclipse plug-in, which allows you to
+  author and manage rules from within Eclipse, as well as integrate rules with
+  your application. This is an optional tool, and not all components are
+  required to be used, you can use what components are relevant to you. The
+  Drools IDE is also a part of the Red Hat Developer Studio (formerly known as
+  JBoss IDE).</p><p>This guide will cover some of the features of JBoss Drools, in as far
+  as the IDE touches on them (it is assumed that the reader has some
+  familiarity with rule engines, and Drools in particular. It is important to
+  note that none of the underlying features of the rule engine are dependent
+  on Eclipse, and integrators are free to use their tools of choice, as always
+  ! Plenty of people use IntelliJ with rules, for instance.</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>You can get the plug-in either as a zip to download, or from an
+    update site. Refer to the chapter on installation.</p></div><div class="figure"><a id="d0e7886"/><div class="figure-contents"><div class="mediaobject"><img src="images/Chapter-IDE/all.png" alt="Overview"/></div></div><p class="title"><b>Figure 8.1. Overview</b></p></div><br class="figure-break"/><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e7892"/>8.1. Features Outline</h2></div></div></div><p>The rules IDE has the following features</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>Textual/graphical rule editor</p><div class="orderedlist"><ol><li><p>An editor that is aware of DRL syntax, and provides content
+            assistance (including an outline view)</p></li><li><p>An editor that is aware of DSL (domain specific langauge)
+            extensions, and provides content assistance.</p></li></ol></div></li><li><p>RuleFlow graphical editor</p><p>You can edit visual graphs which represent a process (a rule
+        flow). The RuleFlow can then be applied to your rule package to have
+        imperative control.</p></li><li><p>Wizards for fast creation of</p><div class="orderedlist"><ol><li><p>a "rules" project</p></li><li><p>a rule resource, either as a DRL file or a "guided rule
+            editor" file (.brl)</p></li><li><p>a Domain Specific language</p></li><li><p>a decision table</p></li><li><p>a ruleflow</p></li></ol></div></li><li><p>A domain specific language editor</p><div class="orderedlist"><ol><li><p>Create and manage mappings from your user's language to the
+            rule language</p></li></ol></div></li><li><p>Rule validation</p><div class="orderedlist"><ol><li><p>As rules are entered, the rule is "built" in the background
+            and errors reported via the problem view where possible</p></li></ol></div></li></ol></div><p>The above features make use of Eclipse infrastructure and features,
+    with all of the power of Eclipse being available.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e7948"/>8.2. Drools Runtimes</h2></div></div></div><p>A Drools runtime is a collection of jar files that represent one
+    specific release of the Drools project jars. To create a runtime, you must
+    point the IDE to the release of your choice. If you want to create a new
+    runtime based on the latest Drools project jars included in the plugin
+    itself, you can also easily do that. You are required to specify a default
+    Drools runtime for your Eclipse workspace, but each individual project can
+    override the default and select the appropriate runtime for that project
+    specifically.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e7953"/>8.2.1. Defining a Drools Runtime</h3></div></div></div><p>To define one or more Drools runtimes using the Eclipse
+      preferences view you open up your Preferences, by selecting the
+      "Preferences" menu item in the menu "Window". A "Preferences" dialog
+      should show all your settings. On the left side of this dialog, under
+      the Drools category, select "Installed Drools runtimes". The panel on
+      the right should then show the currently defined Drools runtimes. If you
+      have not yet defined any runtimes, it should look like the figure
+      below.</p><div class="mediaobject" align="center"><img src="images/Chapter-IDE/drools-runtimes.png" align="middle"/></div><p>To define a new Drools runtime, click on the add button. A dialog
+      such as the one shown below should pop up, asking for the name of your
+      runtime and the location on your file system where it can be
+      found.</p><div class="mediaobject" align="center"><img src="images/Chapter-IDE/drools-runtimes-add.png" align="middle"/></div><p>In general, you have two options:</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>If you simply want to use the default jar files as included in
+          the Drools Eclipse plugin, you can create a new Drools runtime
+          automatically by clicking the "Create a new Drools 5 runtime ..."
+          button. A file browser will show up, asking you to select the folder
+          on your file system where you want this runtime to be created. The
+          plugin will then automatically copy all required dependencies to the
+          specified folder. After selecting this folder, the dialog should
+          look like the figure shown below.</p></li><li><p>If you want to use one specific release of the Drools project,
+          you should create a folder on your file system that contains all the
+          necessary Drools libraries and dependencies. Instead of creating a
+          new Drools runtime as explained above, give your runtime a name and
+          select the location of this folder containing all the required
+          jars.</p></li></ol></div><div class="mediaobject" align="center"><img src="images/Chapter-IDE/drools-runtimes-add2.png" align="middle"/></div><p>After clicking the OK button, the runtime should show up in your
+      table of installed Drools runtimes, as shown below. Click on checkbox in
+      front of the newly created runtime to make it the default Drools
+      runtime. The default Drools runtime will be used as the runtime of all
+      your Drools project that have not selected a project-specific
+      runtime.</p><div class="mediaobject" align="center"><img src="images/Chapter-IDE/drools-runtimes2.png" align="middle"/></div><p>You can add as many Drools runtimes as you need. For example, the
+      screenshot below shows a configuration where two runtimes have been
+      defined: a Drools 5.1.1 runtime and a Drools 5.2.0.M2 runtime. The
+      Drools 5.1.1 runtime is selected as the default one.</p><div class="mediaobject" align="center"><img src="images/Chapter-IDE/drools-runtimes3.png" align="middle"/></div><p>Note that you will need to restart Eclipse if you changed the
+      default runtime and you want to make sure that all the projects that are
+      using the default runtime update their classpath accordingly.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e7990"/>8.2.2. Selecting a runtime for your Drools project</h3></div></div></div><p>Whenever you create a Drools project (using the New Drools Project
+      wizard or by converting an existing Java project to a Drools project
+      using the action "Convert to Drools Project" that is shown when you are
+      in the Drools perspective and you right-click an existing Java project),
+      the plugin will automatically add all the required jars to the classpath
+      of your project.</p><p>When creating a new Drools project, the plugin will automatically
+      use the default Drools runtime for that project, unless you specify a
+      project-specific one. You can do this in the final step of the New
+      Drools Project wizard, as shown below, by deselecting the "Use default
+      Drools runtime" checkbox and selecting the appropriate runtime in the
+      drop-down box. If you click the "Configure workspace settings ..." link,
+      the workspace preferences showing the currently installed Drools
+      runtimes will be opened, so you can add new runtimes there.</p><div class="mediaobject" align="center"><img src="images/Chapter-IDE/drools-runtimes-newproject.png" align="middle"/></div><p>You can change the runtime of a Drools project at any time by
+      opening the project properties and selecting the Drools category, as
+      shown below. Mark the "Enable project specific settings" checkbox and
+      select the appropriate runtime from the drop-down box. If you click the
+      "Configure workspace settings ..." link, the workspace preferences
+      showing the currently installed Drools runtimes will be opened, so you
+      can add new runtimes there. If you deselect the "Enable project specific
+      settings" checkbox, it will use the default runtime as defined in your
+      global preferences.</p><div class="mediaobject" align="center"><img src="images/Chapter-IDE/drools-runtimes-project.png" align="middle"/></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e8005"/>8.3. Creating a Rule Project</h2></div></div></div><p>The aim of the new project wizard is to set up an executable
+    scaffold project to start using rules immediately. This will set up a
+    basic structure, the classpath, sample rules and a test case to get you
+    started.</p><div class="figure"><a id="d0e8010"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/new_project1.png" align="middle" alt="New rule project scaffolding"/></div></div><p class="title"><b>Figure 8.2. New rule project scaffolding</b></p></div><br class="figure-break"/><p>When you choose to create a new "rule project" you will get a choice
+    to add some default artifacts to it, like rules, decision tables,
+    ruleflows, etc. These can serve as a starting point, and will give you
+    something executable almost immediately, which you can then modify and
+    mould to your needs. The simplest case (a hello world rule) is shown
+    below. Feel free to experiment with the plug-in at this point.</p><div class="figure"><a id="d0e8018"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/new_project2.png" align="middle" alt="New rule project result"/></div></div><p class="title"><b>Figure 8.3. New rule project result</b></p></div><br class="figure-break"/><p>The newly created project contains an example rule file (Sample.drl)
+    in the src/rules directory and an example Java file (DroolsTest.java) that
+    can be used to execute the rules in a Drools engine. You'll find this in
+    the folder src/java, in the com.sample package. All the other jars that
+    are necessary during execution are also added to the classpath in a custom
+    classpath container called Drools Library. Rules do not have to be kept in
+    "Java" projects at all, this is just a convenience for people who are
+    already using Eclipse as their Java IDE.</p><p>Important note: The Drools plug-in adds a "Drools Builder"
+    capability to your Eclipse instance. This means you can enable a builder
+    on any project that will build and validate your rules when resources
+    change. This happens automatically with the Rule Project Wizard, but you
+    can also enable it manually on any project. One downside of this is that
+    if you have rule files with a large number of rules (more than 500 rules
+    per file), it means that the background builder may be doing a lot of work
+    to build the rules on each change. An option here is to turn off the
+    builder, or put the large rules into .rule files, where you can still use
+    the rule editor, but it won't build them in the background. To fully
+    validate the rules you will need to run them in a unit test of
+    course.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e8028"/>8.4. Creating a New Rule and Wizards</h2></div></div></div><p>You can create a rule simple as an empty text ".drl" file, or use
+    the wizard to do so. The wizard menu can be invoked with Control+N, or by
+    choosing it from the toolbar, where there is a menu with the JBoss Drools
+    icon.</p><div class="figure"><a id="d0e8033"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/wizards.png" align="middle" alt="The wizard menu"/></div></div><p class="title"><b>Figure 8.4. The wizard menu</b></p></div><br class="figure-break"/><p>The wizard will ask for some basic options for generating a rule
+    resource. These are just hints - you can change your mind later. For
+    storing rule files you would typically create a directory src/rules and
+    create suitably named subdirectories. The package name is mandatory, and
+    is similar to a package name in Java; i.e., it establishes a namespace for
+    grouping related rules.</p><div class="figure"><a id="d0e8041"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/new_rule.jpg" align="middle" alt="New rule wizard"/></div></div><p class="title"><b>Figure 8.5. New rule wizard</b></p></div><br class="figure-break"/><p>The result of this wizard is a rule skeleton, for you to expand. As
+    with all wizards, they are an optional help - you don't have to use them
+    if you don't want to.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e8049"/>8.5. Textual Rule Editor</h2></div></div></div><p>The rule editor is where rule managers and developers will be
+    spending most of their time. The rule editor follows the pattern of a
+    normal text editor in Eclipse, with all the customary features of a text
+    editor. On top of this, the rule editor provides pop-up content
+    assistance. You invoke pop-up content assistance the "normal" way by
+    pressing Control+Space.</p><div class="figure"><a id="d0e8054"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/editor1.jpg" align="middle" alt="The rule editor in action"/></div></div><p class="title"><b>Figure 8.6. The rule editor in action</b></p></div><br class="figure-break"/><p>The rule editor works on files that have a .drl (or .rule)
+    extension. Usually these contain related rules, but it would also be
+    possible to have rules in individual files, grouped by being in the same
+    package "namespace", if you so prefer. These DRL files are plain text
+    files.</p><p>You can see from the example above that the rule group is using a
+    domain specific language. Note the expander keyword, which tells the rule
+    compiler to look for a dsl file of that name, to resolve the rule
+    language. Even with the domain specific language (DSL) the rules are still
+    stored as plain text as you see it onscreen, which allows simpler
+    management of rules and versions, e.g., comparing versions of
+    rules.</p><p>The editor has an outline view that is kept in sync with the
+    structure of the rules; it is updated on save. This provides a quick way
+    of navigating around rules by name, even in a file which may have hundreds
+    of rules. The items are sorted alphabetically by default.</p><div class="figure"><a id="d0e8066"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/outline.jpg" align="middle" alt="The rule outline view"/></div></div><p class="title"><b>Figure 8.7. The rule outline view</b></p></div><br class="figure-break"/></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e8072"/>8.6. Drools Views</h2></div></div></div><p>When debugging an application using a Drools engine, these views can
+    be used to check the state of the Drools engine itself: the Working Memory
+    View, the Agenda View, and the Global Data View. To be able to use these
+    views, create breakpoints in your code invoking the working memory. For
+    example, the line where you call workingMemory.fireAllRules() is a good
+    candidate. If the debugger halts at that joinpoint, you should select the
+    working memory variable in the debug variables view. The available views
+    can then be used to show the details of the selected working
+    memory:</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>The Working Memory View shows all elements of the Drools working
+        memory.</p></li><li><p>The Agenda View shows all elements on the agenda. For each rule
+        on the agenda, the rule name and bound variables are shown.</p></li><li><p>The Global Data View shows all global data currently defined in
+        the Drools working memory.</p></li></ol></div><p>The Audit view can be used to display audit logs containing events
+    that were logged during the execution of a rules engine, in tree
+    form.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e8089"/>8.6.1. The Working Memory View</h3></div></div></div><div class="mediaobject"><img src="images/Chapter-IDE/workingMemory.png"/></div><p>The Working Memory View shows all elements in the working memory
+      of the Drools engine.</p><p>An action is added to the right of the view, to customize what is
+      shown:</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>The Show Logical Structure toggles showing the logical
+          structure of the elements in the working memory, or all their
+          details. Logical structures allow for visualizing sets of elements
+          in a more obvious way.</p></li></ol></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e8103"/>8.6.2. The Agenda View</h3></div></div></div><div class="mediaobject"><img src="images/Chapter-IDE/agenda.png"/></div><p>The Agenda View shows all elements on the agenda. For each rule on
+      the agenda, the rule name and bound variables are shown.</p><p>An action is added to the right of the view, to customize what is
+      shown:</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>The Show Logical Structure toggles showing the logical
+          structure of the agenda item, or all their details. Logical
+          structures allow for example visualizing sets of elements in a more
+          obvious way. The logical structure of AgendaItems shows the rule
+          that is represented by the AgendaItem, and the values of all the
+          parameters used in the rule.</p></li></ol></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e8117"/>8.6.3. The Global Data View</h3></div></div></div><div class="mediaobject"><img src="images/Chapter-IDE/globals.png"/></div><p>The Global Data View shows all global data currently defined in
+      the Drools engine.</p><p>An action is added to the right of the view, to customize what is
+      shown:</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>The Show Logical Structure toggles showing the logical
+          structure of the elements in the working memory, or all their
+          details. Logical structures allow for example visualizing sets of
+          elements in a more obvious way.</p></li></ol></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e8131"/>8.6.4. The Audit View</h3></div></div></div><div class="mediaobject"><img src="images/Chapter-IDE/audit.jpg"/></div><p>The audit view visualizes an audit log, that is optionally created
+      when executing the rules engine. To create an audit log, use the
+      following code:</p><pre xmlns="" xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="JAVA"><!-- <br/> --><span class="java_type">WorkingMemory</span><!-- <br/> --><span class="java_plain">&nbsp;workingMemory&nbsp;</span><!-- <br/> --><span class="java_operator">=</span><!-- <br/> --><span class="java_plain">&nbsp;ruleBase</span><!-- <br/> --><span class="java_separator">.</span><!-- <br/> --><span class="java_plain">newWorkingMemory</span><!-- <br/> --><span class="java_separator">();</span>
+<!--  --><br/><span class="java_operator">//</span><span class="java_plain">&nbsp;</span><span class="java_type">Create</span><span class="java_plain">&nbsp;a&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">Working</span><span class="java_plain">&nbsp;</span><span class="java_type">Memory</span><span class="java_plain">&nbsp;</span><span class="java_type">Logger</span><span class="java_separator">,</span><span class="java_plain">&nbsp;that&nbsp;logs&nbsp;to&nbsp;file</span><span class="java_separator">.</span>
+<!--  --><br/><span class="java_type">WorkingMemoryFileLogger</span><span class="java_plain">&nbsp;logger&nbsp;</span><span class="java_operator">=</span><span class="java_plain">&nbsp;</span><span class="java_keyword">new</span><span class="java_plain">&nbsp;</span><span class="java_type">WorkingMemoryFileLogger</span><span class="java_separator">(</span><span class="java_plain">workingMemory</span><span class="java_separator">);</span>
+<!--  --><br/><span class="java_operator">//</span><span class="java_plain">&nbsp;</span><span class="java_type">An</span><span class="java_plain">&nbsp;event</span><span class="java_separator">.</span><span class="java_plain">log&nbsp;file&nbsp;is&nbsp;created&nbsp;in&nbsp;the&nbsp;subdirectory&nbsp;log&nbsp;</span><span class="java_separator">(</span><span class="java_plain">which&nbsp;must&nbsp;exist</span><span class="java_separator">)</span>
+<!--  --><br/><span class="java_operator">//</span><span class="java_plain">&nbsp;of&nbsp;the&nbsp;working&nbsp;directory</span><span class="java_separator">.</span>
+<!--  --><br/><span class="java_plain">logger</span><span class="java_separator">.</span><span class="java_plain">setFileName</span><span class="java_separator">(</span><span class="java_plain">&nbsp;</span><span class="java_literal">&quot;log/event&quot;</span><span class="java_plain">&nbsp;</span><span class="java_separator">);</span>
+</span>
+<!--  --><br/><span class="java_plain">workingMemory</span><span class="java_separator">.</span><span class="java_plain">assertObject</span><span class="java_separator">(...);</span>
+<!--  --><br/><span class="java_plain">workingMemory</span><span class="java_separator">.</span><span class="java_plain">fireAllRules</span><span class="java_separator">();</span>
+</span>
+<!--  --><br/><span class="java_operator">//</span><span class="java_plain">&nbsp;stop&nbsp;logging</span>
+<!--  --><br/><span class="java_plain">logger</span><span class="java_separator">.</span><span class="java_plain">writeToDisk</span><span class="java_separator">();</span></pre><p>Open the log by clicking the Open Log action, the first icon in
+      the Audit View, and select the file. The Audit View now shows all events
+      that where logged during the executing of the rules. There are different
+      types of events, each with a different icon:</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>Object inserted, a green square: <span class="inlinemediaobject"><img src="images/Chapter-IDE/greensquare.GIF"/></span></p></li><li><p>Object updated, a yellow square: <span class="inlinemediaobject"><img src="images/Chapter-IDE/yellowsquare.GIF"/></span></p></li><li><p>Object removed, a red square: <span class="inlinemediaobject"><img src="images/Chapter-IDE/redsquare.GIF"/></span></p></li><li><p>Activation created, a right arrow: <span class="inlinemediaobject"><img src="images/Chapter-IDE/arrowright.GIF"/></span></p></li><li><p>Activation cancelled, a left arrow: <span class="inlinemediaobject"><img src="images/Chapter-IDE/arrowleft.GIF"/></span></p></li><li><p>Activation executed, a blue diamond: <span class="inlinemediaobject"><img src="images/Chapter-IDE/bluediamond.GIF"/></span></p></li><li><p>Ruleflow start or end, the "process" icon: <span class="inlinemediaobject"><img src="images/Chapter-IDE/process.gif"/></span></p></li><li><p>Ruleflow-group activation or deactivation, the "activity"
+          icon: <span class="inlinemediaobject"><img src="images/Chapter-IDE/activity.gif"/></span></p></li><li><p>Rule package addition or removal, the Drools icon:
+          <span class="inlinemediaobject"><img src="images/Chapter-IDE/drools.gif"/></span></p></li><li><p>Rule addition or removal, the Drools icon: <span class="inlinemediaobject"><img src="images/Chapter-IDE/drools.gif"/></span></p></li></ol></div><p>All these events show extra information concerning the event, like
+      the id and toString representation of the object in case of working
+      memory events (insert, modify and retract), the name of the rule and all
+      the variables bound in the activation in case of an activation event
+      (created, cancelled or executed). If an event occurs when executing an
+      activation, it is shown as a child of the activation's execution event.
+      For some events, you can retrieve the "cause":</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>The cause of an object modified or retracted event is the last
+          object event for that object. This is either the object asserted
+          event, or the last object modified event for that object.</p></li><li><p>The cause of an activation cancelled or executed event is the
+          corresponding activation created event.</p></li></ol></div><p>When selecting an event, the cause of that event is shown in green
+      in the audit view (if visible of course). You can also right click the
+      action and select the "Show Cause" menu item. This will scroll you to
+      the cause of the selected event.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e8215"/>8.7. Domain Specific Languages</h2></div></div></div><p>Domain Specific Languages (DSL) enable you to create a language that
+    allows your rules to look like - rules! Most often the domain specific
+    language reads like natural language. Typically you would look at how a
+    business analyst would describe the rule, in their own words, and then map
+    this to your object model, via rule constructs. A side benefit of this is
+    that it can provide an insulation layer between your domain objects and
+    the rules themselves (as we know you like to refactor). A domain specific
+    language will grow as the rules grow, and works best when there are common
+    terms used over an over, with different parameters.</p><p>To aid with this, the rule workbench provides an editor for Domain
+    Specific Languages. They are stored in a plain text format, so you can use
+    any editor of your choice; this format is simply a slightly enhanced
+    version of the "Properties" file format. The editor will be invoked on any
+    files with a .dsl extension. There is also a wizard to create a sample
+    DSL.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e8222"/>8.7.1. Editing languages</h3></div></div></div><div class="figure"><a id="d0e8225"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/dsl_editor.jpg" align="middle" alt="The Domain Specific Language editor"/></div></div><p class="title"><b>Figure 8.8. The Domain Specific Language editor</b></p></div><br class="figure-break"/><p>The DSL editor provides a tabular view of the mapping of Language
+      to Rule Expressions. The Language Expression is what is used in the
+      rules. This also feeds the content assistance for the rule editor, so
+      that it can suggest Language Expressions from the DSL configuration.
+      (The rule editor loads the DSL configuration when the rule resource is
+      loaded for editing.) The Rule language mapping defines the "code" for
+      the rules into which the language expression will be compiled by the
+      rule engine compiler. The form of this Rule language expression depends
+      on it being intended for the condition or the action part of a rule.
+      (For the RHS it may be a snippet of Java, for instance). The "scope"
+      item indicates where the expression belongs, "when" indicating the LHS,
+      "then" the RHS, and "*" meaning anywhere. It's also possible to create
+      aliases for keywords.</p><p>By selecting a mapping item (a row in the table) you can see the
+      expression and mapping in the text fields below the table. Double
+      clicking or pressing the edit button will open the edit dialog. Other
+      buttons let you remove and add mappings. Don't remove mappings while
+      they are still in use.</p><div class="figure"><a id="d0e8235"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/mapping_editor.jpg" align="middle" alt="Language Mapping editor dialog"/></div></div><p class="title"><b>Figure 8.9. Language Mapping editor dialog</b></p></div><br class="figure-break"/><p>Here is a short description of the DSL translation process. The
+      parser reads the rule text in a DSL, line by line, and tries to match
+      some "Language Expression", depending on the scope. After a match, the
+      values that correspond to a placeholder between curly braces (e.g.,
+      {age}) are extracted from the rule source. The placeholders in the
+      corresponding "Rule Expression" are replaced by their corresponding
+      value. In the example above, the natural language expression maps to two
+      constraints on a fact of type Person, based on the fields age and
+      location, and the {age} and {location} values are extracted from the
+      original rule text.</p><p>If you do not wish to use a language mapping for a particular rule
+      in a drl, prefix the expression with &gt; and the compiler will not try
+      to translate it according to the language definition. Also note that
+      Domain Specific Languages are optional. When the rule is compiled, the
+      .dsl file will also need to be available.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e8245"/>8.8. The Rete View</h2></div></div></div><p>The Rete Tree View shows you the current Rete Network for your DRL
+    file. You display it by clicking on the tab "Rete Tree" at the bottom of
+    the DRL Editor window. With the Rete Network visualization being open, you
+    can use drag-and-drop on individual nodes to arrange optimal network
+    overview. You may also select multiple nodes by dragging a rectangle over
+    them; then the entire group can be moved around. The Eclips toolbar icons
+    for zooming in and out can be used in the customary manner.</p><p>In the current release there is no export function to creates a gif
+    or jpeg file. Meanwhile, please use ctrl + alt + print to create a copy of
+    your current Eclipse window, and cut it off.</p><div class="mediaobject"><img src="images/Chapter-IDE/thereteview.jpg"/></div><p>The Rete View is an advanced feature which takes full advantage of
+    the Eclipse Graphical Editing Framework (GEF).</p><p>The Rete view works only in Drools Rule Projects, where the Drools
+    Builder is set in the project´s properties.</p><p>If you are using Drools in another type of project where you are not
+    having a Drools Rule Project with the appropriate Drools Builder, you can
+    use a workaround: Set up a little Drools Rule Project next to it, putting
+    needed libraries into it, and the DRLs you want to inspect with the Rete
+    View. Just click on the right tab below in the DRL Editor, followed by a
+    click on "Generate Rete View".</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e8261"/>8.9. Large DRL Files</h2></div></div></div><p>Depending on the JDK you use, it may be necessary to increase the
+    permanent generation max size. Both the SUN and the IBM JDK have a
+    permanent generation, whereas BEA JRockit does not.</p><p>To increase the permanent generation, start Eclipse with
+    -XX:MaxPermSize=###m</p><p>Example: c:\Eclipse\Eclipse.exe -XX:MaxPermSize=128m</p><p>Rulesets of 4,000 rules or greater should set the permanent
+    generation to at least 128Mb.</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>This may also apply to compiling large numbers of rules in
+      general, as there is generally one or more classes per rule.</p></div><p>As an alternative to the above, you may put rules in a file with the
+    ".rule" extension, and the background builder will not try to compile them
+    with each change, which may provide performance improvements if your IDE
+    becomes sluggish with very large numbers of rules.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e8277"/>8.10. Debugging Rules</h2></div></div></div><div class="figure"><a id="d0e8280"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/debug-overview.png" align="middle" alt="Debugging"/></div></div><p class="title"><b>Figure 8.10. Debugging</b></p></div><br class="figure-break"/><p>You can debug rules during the execution of your Drools application.
+    You can add breakpoints in the consequences of your rules, and whenever
+    such a breakpoint is encountered during the execution of the rules,
+    execution is halted. You can then inspect the variables known at that
+    point and use any of the default debugging actions to decide what should
+    happen next: step over, continue, etc. You can also use the debug views to
+    inspect the content of the working memory and the Agenda.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e8288"/>8.10.1. Creating Breakpoints</h3></div></div></div><p>You can add and remove rule breakpoints in DRL files in two ways,
+      similar to adding breakpoints to Java files:</p><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>Double-click the ruler of the DRL editor at the line where you
+          want to add a breakpoint. Note that rule breakpoints can only be
+          created in the consequence of a rule. Double-clicking on a line
+          where no breakpoint is allowed will do nothing. A breakpoint can be
+          removed by double-clicking the ruler once more.</p></li><li><p>If you right-click the ruler, a popup menu will show up,
+          containing the "Toggle breakpoint" action. Note that rule
+          breakpoints can only be created in the consequence of a rule. The
+          action is automatically disabled if no rule breakpoint is allowed at
+          that line. Clicking the action will add a breakpoint at the selected
+          line, or remove it if there was one already.</p></li></ol></div><p>The Debug Perspective contains a Breakpoints view which can be
+      used to see all defined breakpoints, get their properties,
+      enable/disable or remove them, etc.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e8302"/>8.10.2. Debugging Rules</h3></div></div></div><p>Drools breakpoints are only enabled if you debug your application
+      as a Drools Application. You can do this like this:</p><div class="figure"><a id="d0e8307"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/debugAsDrools.png" align="middle" alt="Debug as Drools Application"/></div></div><p class="title"><b>Figure 8.11. Debug as Drools Application</b></p></div><br class="figure-break"/><div xmlns:d="http://docbook.org/ns/docbook" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="orderedlist"><ol><li><p>Select the main class of your application. Right click it and
+          select the "Debug As &gt;" sub-menu and select Drools Application.
+          Alternatively, you can also select the "Debug ..." menu item to open
+          a new dialog for creating, managing and running debug configurations
+          (see the screenshot below).</p></li><li><p>Select the "Drools Application" item in the left tree and
+          click the "New launch configuration" button (leftmost icon in the
+          toolbar above the tree). This will create a new configuration with
+          some of the properties (like project and main class)already filled
+          in, based on the main class you selected in the beginning. All
+          properties shown here are the same as for any standard Java
+          program.</p></li><li><p>Change the name of your debug configuration to something
+          meaningful. You can just accept the defaults for all other
+          properties. For more information about these properties, please
+          check the Eclipse JDT documentation.</p></li><li><p>Click the "Debug" button on the bottom to start debugging your
+          application. You only have to define your debug configuration once.
+          The next time you run your Drools application, you don't have to
+          create a new one but select the previously defined one in the tree
+          on the left, as a sub-element of the "Drools Application" tree node,
+          and then click the Debug button. The Eclipse toolbar also contains
+          shortcut buttons to quickly re-execute one of your previous
+          configurations (at least when one of the Java, Java Debug, or Drools
+          perspectives has been selected).</p></li></ol></div><div class="figure"><a id="d0e8326"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/debug_rules_configuration.png" align="middle" alt="Debug as Drools Application Configuration"/></div></div><p class="title"><b>Figure 8.12. Debug as Drools Application Configuration</b></p></div><br class="figure-break"/><p>After clicking the "Debug" button, the application starts
+      executing and will halt if any breakpoint is encountered. This can be a
+      Drools rule breakpoint, or any other standard Java breakpoint. Whenever
+      a Drools rule breakpoint is encountered, the corresponding DRL file is
+      opened and the active line is highlighted. The Variables view also
+      contains all rule parameters and their value. You can then use the
+      default Java debug actions to decide what to do next: resume, terminate,
+      step over, etc. The debug view can also be used to inspect the contents
+      of the Working Memory and the Agenda at that time as well. You don't
+      have to select a Working Memory now, as the current executing working
+      memory is automatically shown.</p><div class="figure"><a id="d0e8334"/><div class="figure-contents"><div class="mediaobject" align="center"><img src="images/Chapter-IDE/debug.png" align="middle" alt="Debugging"/></div></div><p class="title"><b>Figure 8.13. Debugging</b></p></div><br class="figure-break"/></div></div></div><ul xmlns:d="http://docbook.org/ns/docbook" class="docnav"><li class="previous"><a accesskey="p" href="ch07.html"><strong>Prev</strong>Chapter 7. The Java Rule Engine API</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="ch09.html"><strong>Next</strong>Chapter 9. Examples</a></li></ul></body></html>

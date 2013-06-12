@@ -15,10 +15,18 @@
 		dialect "java"
 		when
 		
-			$aEvent : GlimpseBaseEventChoreos(this.isConsumed == true, this.getTimeStamp == _TIMESTAMP_, this.getEventName == "SLA Alert")
-			not(GlimpseBaseEventChoreos(this.isConsumed == false, this.getEventName == "load_one", this.getMachineIP == "MACHINE_IP" , this after[0,10s] $aEvent));
+			$aEvent : GlimpseBaseEventChoreos(this.isConsumed == true,
+			this.getTimeStamp == _TIMESTAMP_, 
+			this.getEventName == "SLA Alert")
+			not(GlimpseBaseEventChoreos(this.isConsumed == false,
+			this.getEventName == "load_one",
+			this.getMachineIP == "MACHINE_IP" ,
+			this after[0,10s] $aEvent));
 		then
 						
-			ResponseDispatcher.LogViolation("RULE","auto_generated_rule","\nSLA violation\noccurred on: SERVICE_NAME");
+			ResponseDispatcher.LogViolation("RULE",
+			"auto_generated_rule",
+			"\nSLA violation\noccurred on: SERVICE_NAME");
+			
 			retract($aEvent);
 		end
