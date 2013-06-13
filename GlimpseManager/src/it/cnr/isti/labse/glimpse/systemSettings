@@ -1,7 +1,7 @@
-ENVIRONMENTPARAMETERSFILE = ./configFiles/environmentFile
-DROOLSPARAMETERFILE = 		./configFiles/droolsFile
-MANAGERPARAMETERFILE = 		./configFiles/managerFile
-SOAPREQUESTFILE = 		./configFiles/soapRequestFile
-DROOLSRULEREQUESTTEMPLATE = 	./configFiles/droolsRuleRequestTemplate
-BSMWSDLURIFILEPATH = 		./configFiles/bsmWsdl
-REGEXPATTERNFILEPATH = 		./configFiles/regexParameters
+ENVIRONMENTPARAMETERSFILE = /home/acalabro/workspace/GlimpseManager/bin/it/cnr/isti/labse/glimpse/configFiles/environmentFile
+DROOLSPARAMETERFILE = 		/home/acalabro/workspace/GlimpseManager/bin/it/cnr/isti/labse/glimpse/configFiles/droolsFile
+MANAGERPARAMETERFILE = 		/home/acalabro/workspace/GlimpseManager/bin/it/cnr/isti/labse/glimpse/configFiles/managerFile
+SOAPREQUESTFILE = 		/home/acalabro/workspace/GlimpseManager/bin/it/cnr/isti/labse/glimpse/configFiles/soapRequestFile
+DROOLSRULEREQUESTTEMPLATE = 	/home/acalabro/workspace/GlimpseManager/bin/it/cnr/isti/labse/glimpse/configFiles/droolsRuleRequestTemplate
+BSMWSDLURIFILEPATH = 		/home/acalabro/workspace/GlimpseManager/bin/it/cnr/isti/labse/glimpse/configFiles/bsmWsdl
+REGEXPATTERNFILEPATH = 		/home/acalabro/workspace/GlimpseManager/bin/it/cnr/isti/labse/glimpse/configFiles/regexParameters

@@ -22,13 +22,12 @@ package it.cnr.isti.labse.glimpse;
 
 import it.cnr.isti.labse.glimpse.impl.EventsBufferImpl;
 import it.cnr.isti.labse.glimpse.impl.RuleTemplateManager;
-import it.cnr.isti.labse.glimpse.impl.ServiceLocatorImpl;
 import it.cnr.isti.labse.glimpse.event.GlimpseBaseEvent;
 import it.cnr.isti.labse.glimpse.buffer.EventsBuffer;
 import it.cnr.isti.labse.glimpse.manager.GlimpseManager;
 import it.cnr.isti.labse.glimpse.cep.ComplexEventProcessor;
 import it.cnr.isti.labse.glimpse.impl.ComplexEventProcessorImpl;
-import it.cnr.isti.labse.glimpse.services.ServiceLocator;
+import it.cnr.isti.labse.glimpse.services.ServiceLocatorFactory;
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
 import it.cnr.isti.labse.glimpse.utils.Manager;
 import it.cnr.isti.labse.glimpse.utils.SplashScreen;
@@ -141,8 +140,7 @@ public class MainMonitoring {
 				RuleTemplateManager templateManager = new RuleTemplateManager(DROOLSRULEREQUESTTEMPLATE1,DROOLSRULEREQUESTTEMPLATE2);
 				
 				//the component in charge to locate services and load specific rules.
-				ServiceLocator serviceLocator = new ServiceLocatorImpl(engine,SOAPREQUESTFILE, templateManager, BSMWSDLURIFILEPATH, REGEXPATTERNFILEPATH);
-				serviceLocator.start();
+				ServiceLocatorFactory.getServiceLocatorParseViolationReceivedFromBSM(engine, templateManager, REGEXPATTERNFILEPATH).start();
 				
 				//the manager of all the architecture
 				GlimpseManager manager = new GlimpseManager(

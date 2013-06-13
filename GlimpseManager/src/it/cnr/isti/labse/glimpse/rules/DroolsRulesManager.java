@@ -24,6 +24,7 @@ import java.util.Collection;
 
 import org.apache.commons.net.ntp.TimeStamp;
 import org.drools.KnowledgeBase;
+import org.drools.RuntimeDroolsException;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
@@ -33,6 +34,7 @@ import org.drools.io.ResourceFactory;
 import org.w3c.dom.DOMException;
 
 import it.cnr.isti.labse.glimpse.exceptions.IncorrectRuleFormatException;
+import it.cnr.isti.labse.glimpse.exceptions.UnknownMethodCallRuleException;
 import it.cnr.isti.labse.glimpse.exceptions.UnknownRuleException;
 import it.cnr.isti.labse.glimpse.rules.RulesManager;
 import it.cnr.isti.labse.glimpse.utils.DebugMessages;
@@ -53,14 +55,13 @@ public class DroolsRulesManager extends RulesManager {
 	}
 
 	@Override
-	public void insertRule(final String rule, final String ruleName) throws IncorrectRuleFormatException {
+	public void insertRule(final String rule, final String ruleName) throws IncorrectRuleFormatException, UnknownMethodCallRuleException {
 
-		//try {
+		try {
 		kbuilder.add(ResourceFactory.newByteArrayResource(rule.trim().getBytes()), ResourceType.DRL);
-//		} catch (RuntimeDroolsException droolsExceptionOnLoading) {
-//			newKnowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-//			throw new UnknownMethodCallRuleException();
-//		}
+		} catch (RuntimeDroolsException droolsExceptionOnLoading) {
+			throw new UnknownMethodCallRuleException();
+		}
 		
 		if (kbuilder.getErrors().size() > 0)
 			 throw new IncorrectRuleFormatException();
@@ -99,6 +100,9 @@ public class DroolsRulesManager extends RulesManager {
 			try {
 				insertRule(insertRules[i].getRuleBody(),insertRules[i].getRuleName());
 			} catch (final DOMException e) {
+				e.printStackTrace();
+			} catch (UnknownMethodCallRuleException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -151,7 +155,7 @@ public class DroolsRulesManager extends RulesManager {
 			}
 		}
 			kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-			this.getLoadedRulesInfo();
+			//this.getLoadedRulesInfo();
 		return kbuilder.getKnowledgePackages().toArray();
 	}
 	
@@ -161,9 +165,8 @@ public class DroolsRulesManager extends RulesManager {
 	
 	public void getLoadedRulesInfo()
 	{
-		DebugMessages.line();
-		Collection<KnowledgePackage> pkg = kbase.getKnowledgePackages();
-		//Collection<KnowledgePackage> pkg = kbuilder.getKnowledgePackages();
+		//Collection<KnowledgePackage> pkg = kbase.getKnowledgePackages();
+		Collection<KnowledgePackage> pkg = kbuilder.getKnowledgePackages();
 		Object[] pkgArray = pkg.toArray();
 		KnowledgePackage pkgPd = (org.drools.definition.KnowledgePackage)pkgArray[0];
 		Collection<Rule> loadedRules = pkgPd.getRules();

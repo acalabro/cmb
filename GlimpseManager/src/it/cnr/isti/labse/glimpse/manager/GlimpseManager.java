@@ -47,8 +47,8 @@ import javax.naming.NamingException;
 
 import org.apache.commons.net.ntp.TimeStamp;
 import org.apache.xmlbeans.XmlException;
-import org.drools.definitions.impl.KnowledgePackageImp;
-import org.drools.rule.Rule;
+import org.drools.definition.rule.Rule;
+import org.drools.definitions.impl.*;
 
 public class GlimpseManager extends Thread implements MessageListener {
 	
@@ -148,17 +148,16 @@ public class GlimpseManager extends Thread implements MessageListener {
 				for (int i = 0; i<loadedKnowledgePackage.length;i++)
 				{
 					KnowledgePackageImp singleKnowlPack = (KnowledgePackageImp) loadedKnowledgePackage[i];
-					Rule singleRuleContainer[] = new Rule[singleKnowlPack.getRules().size()];
+					Rule[] singleRuleContainer = new Rule[singleKnowlPack.getRules().size()];
 					singleRuleContainer = singleKnowlPack.getRules().toArray(singleRuleContainer);
 					
 					for(int j = 0; j<singleRuleContainer.length;j++)
 					{
 						requestMap.put(singleRuleContainer[j].getName(), new ConsumerProfile(sender, answerTopic));
 					}
-					DebugMessages.ok();
-					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "KnowledgeBase packages loaded: " + rulesManager.getLoadedKnowledgePackageCardinality());
 				}
-				
+				DebugMessages.ok();
+				DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "KnowledgeBase packages loaded: " + rulesManager.getLoadedKnowledgePackageCardinality());
 				DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"Communicate the answerTopic to the requester");
 				sendMessage(createMessage("AnswerTopic == " + answerTopic, sender));
 				DebugMessages.ok();

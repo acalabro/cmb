@@ -17,6 +17,10 @@
 	<classpathentry exported="true" kind="lib" path="externallib/axis-jaxrpc-1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="externallib/activemq-all-5.7.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="externallib/jbosscx-client.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/DroolsLibraries"/>
+	<classpathentry exported="true" kind="lib" path="drools-distribution-5.5.0.Final/binaries/drools-core-5.5.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="drools-distribution-5.5.0.Final/binaries/knowledge-api-5.5.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="drools-distribution-5.5.0.Final/binaries/knowledge-internal-api-5.5.0.Final.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/DroolsLibraries"/>
+	<classpathentry kind="lib" path="drools-distribution-5.5.0.Final/binaries/drools-templates-5.5.0.Final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -21,6 +21,7 @@
 package it.cnr.isti.labse.glimpse.rules;
 
 import it.cnr.isti.labse.glimpse.exceptions.IncorrectRuleFormatException;
+import it.cnr.isti.labse.glimpse.exceptions.UnknownMethodCallRuleException;
 import it.cnr.isti.labse.glimpse.exceptions.UnknownRuleException;
 import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionType;
 
@@ -34,7 +35,7 @@ import it.cnr.isti.labse.glimpse.xml.complexEventRule.ComplexEventRuleActionType
 public abstract class RulesManager {
 	public RulesManager(Object knowledgeBuilder, Object knowledgeBase, Object knowledgeSession) {
 	}
-	public abstract void insertRule(String rule, String ruleName) throws IncorrectRuleFormatException;
+	public abstract void insertRule(String rule, String ruleName) throws IncorrectRuleFormatException, UnknownMethodCallRuleException;
 	public abstract void deleteRule(String ruleName) throws UnknownRuleException;
 	abstract void startRule(String ruleName) throws UnknownRuleException;
 	abstract void stopRule(String ruleName) throws UnknownRuleException;
