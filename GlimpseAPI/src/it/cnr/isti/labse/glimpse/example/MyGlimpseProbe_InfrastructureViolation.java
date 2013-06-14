@@ -50,23 +50,23 @@ import it.cnr.isti.labse.glimpse.utils.Manager;
  *
  */
 
-public class MyGlimpseProbe_One extends GlimpseAbstractProbe {
+public class MyGlimpseProbe_InfrastructureViolation extends GlimpseAbstractProbe {
 
-	public MyGlimpseProbe_One(Properties settings) {
+	public MyGlimpseProbe_InfrastructureViolation(Properties settings) {
 		super(settings);
 	}
 
 
 	private void generateAndSendExample_GlimpseBaseEvents_StringPayload(String data) throws UnknownHostException {
 		DebugMessages.ok();
-		DebugMessages.print(MyGlimpseProbe_One.class.getName(),
+		DebugMessages.print(MyGlimpseProbe_InfrastructureViolation.class.getName(),
 				"Creating GlimpseBaseEventChoreos message");
 		GlimpseBaseEventChoreos<String> message;
 		DebugMessages.ok();
 		DebugMessages.line();
 		message = new GlimpseBaseEventChoreos<String>(data, 
 						System.currentTimeMillis(), "load_one", false,
-						"chor", "service1", "localhost:8187");
+						"chor", "service1", "localhost");
 		try {
 			this.sendEventMessage(message, false);
 			System.out.println(System.currentTimeMillis());
@@ -95,8 +95,8 @@ public class MyGlimpseProbe_One extends GlimpseAbstractProbe {
 
 	public static void main(String[] args) throws UnknownHostException {
 		
-		MyGlimpseProbe_One aGenericProbe = new
-				MyGlimpseProbe_One(Manager.createProbeSettingsPropertiesObject(
+		MyGlimpseProbe_InfrastructureViolation aGenericProbe = new
+				MyGlimpseProbe_InfrastructureViolation(Manager.createProbeSettingsPropertiesObject(
 								"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
 								"tcp://atlantis.isti.cnr.it:61616",
 								"system",
@@ -108,7 +108,7 @@ public class MyGlimpseProbe_One extends GlimpseAbstractProbe {
 								"probeTopic")
 								);
 		
-		DebugMessages.println(MyGlimpseProbe_One.class.getName(),"Starting infinite loop");	
+		DebugMessages.println(MyGlimpseProbe_InfrastructureViolation.class.getName(),"Starting infinite loop");	
 		for(int i = 0; i<40;i++) {
 			try {
 				Thread.sleep(3000);
