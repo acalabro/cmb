@@ -155,8 +155,8 @@ public class DroolsRulesManager extends RulesManager {
 			}
 		}
 			kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-			//this.getLoadedRulesInfo();
-		return kbuilder.getKnowledgePackages().toArray();
+			this.getLoadedRulesInfo();
+		return kbase.getKnowledgePackages().toArray();
 	}
 	
 	public int getLoadedKnowledgePackageCardinality() {
@@ -166,17 +166,19 @@ public class DroolsRulesManager extends RulesManager {
 	public void getLoadedRulesInfo()
 	{
 		//Collection<KnowledgePackage> pkg = kbase.getKnowledgePackages();
+		System.out.println();
 		Collection<KnowledgePackage> pkg = kbuilder.getKnowledgePackages();
 		Object[] pkgArray = pkg.toArray();
-		KnowledgePackage pkgPd = (org.drools.definition.KnowledgePackage)pkgArray[0];
-		Collection<Rule> loadedRules = pkgPd.getRules();
-		Object[] rlsArray = loadedRules.toArray();
-		Rule rl;
-		for(int i = 0; i<rlsArray.length; i++) {
-			rl = (Rule) rlsArray[i];
-			DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getCanonicalName(),
-					"Package: " + pkgPd.getName() + " - RuleName: " + rl.getName());
+		for (int i = 0; i<pkgArray.length; i++) {
+			KnowledgePackage pkgPd = (org.drools.definition.KnowledgePackage)pkgArray[i];
+			Collection<Rule> loadedRules = pkgPd.getRules();
+			Object[] rlsArray = loadedRules.toArray();
+			Rule rl;
+			for(int j = 0; j<rlsArray.length; j++) {
+				rl = (Rule) rlsArray[j];
+				DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getCanonicalName(),
+						"Package: " + pkgPd.getName() + " - RuleName: " + rl.getName());
+			}
 		}
-		DebugMessages.line();
 	}	
 }

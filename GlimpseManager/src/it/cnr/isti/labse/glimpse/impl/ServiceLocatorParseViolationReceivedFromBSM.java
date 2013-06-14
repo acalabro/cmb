@@ -20,8 +20,10 @@ public class ServiceLocatorParseViolationReceivedFromBSM extends ServiceLocator 
 	public static ServiceRegistryImpl dataSetForCollectedInformation;
 	public static RuleTemplateManager localRuleTemplateManager;
 	public static String localRegexPatternFilePath;
+	public static ComplexEventProcessor localEngine;
 	
 	public static HashMapManager theHashMapManager;
+	
 	
 	public Properties regexPatternProperties;
 
@@ -30,7 +32,8 @@ public class ServiceLocatorParseViolationReceivedFromBSM extends ServiceLocator 
 			RuleTemplateManager ruleTemplateManager, String regexPatternFilePath) {
 		
 		DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Starting ServiceLocator component ");
-
+		
+		ServiceLocatorParseViolationReceivedFromBSM.localEngine = engine;
 		ServiceLocatorParseViolationReceivedFromBSM.localRuleTemplateManager = ruleTemplateManager;
 		ServiceLocatorParseViolationReceivedFromBSM.localRegexPatternFilePath = regexPatternFilePath;
 	
@@ -66,6 +69,7 @@ public static void GetMachineIP(String senderName, String serviceType, String se
 
 						
 			//generate the new rule to monitor
+			if (alertServiceName != null && machineIP != null) {
 			ComplexEventRuleActionListDocument newRule = localRuleTemplateManager
 					.generateNewRuleToInjectInKnowledgeBase(machineIP, alertServiceName, ruleTemplateType, timeStamp);
 			
@@ -74,7 +78,14 @@ public static void GetMachineIP(String senderName, String serviceType, String se
 					newRule.getComplexEventRuleActionList().xmlText());
 			
 			//insert new rule into the knowledgeBase
-			localRuleTemplateManager.insertRule(newRule);
+			localRuleTemplateManager.insertRule(newRule, localEngine.getRuleManager());
+			}
+			else {
+				DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getCanonicalName(),
+						"the payload (field DATA) is not compliant to the defined capnote standard." + 
+						"\nGlimpse is not able to instanciate correctly a new rule from the meta_rule already " + 
+						"loaded using the information provided through the GlimpseBaseEventChoreos message occurred");
+			}	
 		}
 		catch(IndexOutOfBoundsException e) {
 			DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getName(),"Not an SLA Alert");

@@ -239,7 +239,7 @@ public class ServiceLocatorImpl extends ServiceLocator {
 					newRule.getComplexEventRuleActionList().xmlText());
 			
 			//insert new rule into the knowledgeBase
-			localRuleTemplateManager.insertRule(newRule);
+			localRuleTemplateManager.insertRule(newRule,anEngine.getRuleManager());
 		}
 		catch(IndexOutOfBoundsException e) {
 			DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getName(),"Not an SLA Alert");

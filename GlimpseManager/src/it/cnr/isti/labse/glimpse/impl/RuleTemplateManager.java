@@ -115,9 +115,9 @@ public class RuleTemplateManager {
 		return ruleDoc;
 	}
 
-	public int insertRule(ComplexEventRuleActionListDocument newRuleToInsert) {
+	public int insertRule(ComplexEventRuleActionListDocument newRuleToInsert, RulesManager engine) {
 		try {
-			rulesManager = ServiceLocatorImpl.anEngine.getRuleManager();
+			rulesManager = engine;
 			DebugMessages.println(TimeStamp.getCurrentTime(), ServiceLocatorImpl.class.getCanonicalName(), "Updating knowledgeBase " +
 			rulesManager.getLoadedKnowledgePackageCardinality());
 
@@ -128,7 +128,7 @@ public class RuleTemplateManager {
 		}
 		return 0;
 	}
-
+	
 	public int unloadRule(int ruleInsertionID) {
 		return 0;
 	}
