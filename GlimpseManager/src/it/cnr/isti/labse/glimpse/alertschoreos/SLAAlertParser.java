@@ -49,7 +49,11 @@ public class SLAAlertParser extends AbstractParser{
 		 if (this.machineIP.contains("http://"))
 			 this.machineIP = this.machineIP.substring(7);
 		 int cutAt = this.machineIP.indexOf("/");
-		 this.machineIP = this.machineIP.substring(0, cutAt);
+		 if (cutAt != -1)
+			 this.machineIP = this.machineIP.substring(0, cutAt);
+		 cutAt = this.machineIP.indexOf(":");
+		 if (cutAt != -1)
+			 this.machineIP = this.machineIP.substring(0,cutAt);
 		 
 	}
 	
