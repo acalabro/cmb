@@ -27,8 +27,8 @@ import it.cnr.isti.labse.glimpse.utils.Manager;
  * {@link MyGlimpseConsumer} simply override the {@link MyGlimpseConsumer#messageReceived(javax.jms.Message)} method 
  * 
  * @author Antonello Calabr&ograve;
- * @version 3.2
- *
+ * @version 3.3
+ * 
  */
 public class MyGlimpseConsumerLauncher {
 

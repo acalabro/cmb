@@ -20,7 +20,6 @@
 */
 package it.cnr.isti.labse.glimpse.example;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Properties;
 
@@ -59,17 +58,26 @@ public class MyGlimpseProbe_One extends GlimpseAbstractProbe {
 
 
 	private void generateAndSendExample_GlimpseBaseEvents_StringPayload(String data) throws UnknownHostException {
-			GlimpseBaseEventChoreos<String> message = new GlimpseBaseEventChoreos<String>(data, 
-				System.currentTimeMillis(), "TheEventName", false,
-				"CH1", "service1", InetAddress.getLocalHost().toString());
+		DebugMessages.ok();
+		DebugMessages.print(MyGlimpseProbe_One.class.getName(),
+				"Creating GlimpseBaseEventChoreos message");
+		GlimpseBaseEventChoreos<String> message;
+		DebugMessages.ok();
+		DebugMessages.line();
+		message = new GlimpseBaseEventChoreos<String>(data, 
+						System.currentTimeMillis(), "load_one", false,
+						"chor", "service1", "localhost:8187");
 		try {
 			this.sendEventMessage(message, false);
-		} catch (JMSException e1) {
-			e1.printStackTrace();
-		} catch (NamingException e1) {
-			e1.printStackTrace();
+			System.out.println(System.currentTimeMillis());
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	}	
+		}	
 
 	/*
 	 * To override the sendMessage, you can use the following code
@@ -90,7 +98,7 @@ public class MyGlimpseProbe_One extends GlimpseAbstractProbe {
 		MyGlimpseProbe_One aGenericProbe = new
 				MyGlimpseProbe_One(Manager.createProbeSettingsPropertiesObject(
 								"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
-								"tcp://localhost:61616",
+								"tcp://atlantis.isti.cnr.it:61616",
 								"system",
 								"manager",
 								"TopicCF",
@@ -100,7 +108,15 @@ public class MyGlimpseProbe_One extends GlimpseAbstractProbe {
 								"probeTopic")
 								);
 		
-			DebugMessages.println(MyGlimpseProbe_One.class.getSimpleName(), "Executing generateAndSendExample_GlimpseBaseEvents_StringPayload method");
-			aGenericProbe.generateAndSendExample_GlimpseBaseEvents_StringPayload("SLA Violation");		
+		DebugMessages.println(MyGlimpseProbe_One.class.getName(),"Starting infinite loop");	
+		for(int i = 0; i<40;i++) {
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			aGenericProbe.generateAndSendExample_GlimpseBaseEvents_StringPayload("Triggered: load_one <= 1.5. Measured: 2.22");
+		}
 	}
 }
