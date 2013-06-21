@@ -45,7 +45,7 @@ public class MyGlimpseConsumerLauncher {
 						false,
 						"consumerTest"),
 						Manager.ReadTextFromFile(
-								System.getProperty("user.dir") + "/bin/it/cnr/isti/labse/glimpse/example/exampleRuleCallLocator.xml")
+								System.getProperty("user.dir") + "/bin/it/cnr/isti/labse/glimpse/example/metaRuleExample_Generate_NoEventFromInf_InfrastructureViol.xml")
 								);
 	}
 }

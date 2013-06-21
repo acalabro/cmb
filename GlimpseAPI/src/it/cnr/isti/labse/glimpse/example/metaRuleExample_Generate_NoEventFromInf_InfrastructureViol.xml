@@ -16,7 +16,7 @@
 	        @timestamp( timeStamp )
         end
                 
-		rule "metaRule_INFRASTRUCTUREVIOLATION"
+		rule "metaRule_INFRASTRUCTUREVIOLATION2"
 		no-loop true
 		salience 20
 		dialect "java"
