@@ -70,10 +70,10 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 	@SuppressWarnings("unused")
 	private TopicPublisher tPub;
 	private TopicSubscriber tSub;
-	private KnowledgeBase kbase;
+	private KnowledgeBase knowledgeBase;
 	private StatefulKnowledgeSession ksession;
 	private WorkingMemoryEntryPoint eventStream;
-	private KnowledgeBuilder kbuilder;
+	private KnowledgeBuilder knowledgeBuilder;
 	
 	public ComplexEventProcessorImpl(Properties settings, EventsBuffer<GlimpseBaseEvent<?>> buffer, TopicConnectionFactory connectionFact,
 			InitialContext initConn) {
@@ -108,11 +108,11 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 			DebugMessages.ok();	
 
 			DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Reading knowledge base ");
-			kbase = readKnowledgeBase();
-			ksession = kbase.newStatefulKnowledgeSession();
+			knowledgeBase = createKnowledgeBase();
+			ksession = knowledgeBase.newStatefulKnowledgeSession();
 			ksession.setGlobal("EVENTS EntryPoint", eventStream);
 			eventStream = ksession.getWorkingMemoryEntryPoint("DEFAULT");
-			cepRuleManager = new DroolsRulesManager(kbuilder, kbase, ksession);
+			cepRuleManager = new DroolsRulesManager(knowledgeBuilder, knowledgeBase, ksession);
 			DebugMessages.ok();
 			
 		} catch (JMSException e) {
@@ -177,16 +177,21 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 		}
 	}
 	
-	private KnowledgeBase readKnowledgeBase() {
+	private KnowledgeBase createKnowledgeBase() {
 		try
 			{				
 				KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
 				config.setOption(EventProcessingOption.STREAM);
 
-				kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-				kbuilder.add(ResourceFactory.newClassPathResource("startupRule.drl",getClass()), ResourceType.DRL);
+				/* Using knowledge builder to create a knowledgePackage using provided resources (drl file)
+				 * after the creation the knowledgePackage contained into the knowledge builder will be putted
+				 * into the knowledgeBase using the method addKnowledgePackages(knowledgeBuilder.getKnowledgePackages())
+				 */				
 				
-				KnowledgeBuilderErrors errors = kbuilder.getErrors();
+				knowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+				knowledgeBuilder.add(ResourceFactory.newClassPathResource("startupRule.drl",getClass()), ResourceType.DRL);
+				
+				KnowledgeBuilderErrors errors = knowledgeBuilder.getErrors();
 				if (errors.size() > 0)
 				{
 					for (KnowledgeBuilderError error : errors)
@@ -195,9 +200,9 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 					}
 					throw new IllegalArgumentException("Could not parse knowledge.");
 				}
-				kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
-				kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-				return kbase;
+				knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase(config);
+				knowledgeBase.addKnowledgePackages(knowledgeBuilder.getKnowledgePackages());
+				return knowledgeBase;
 			}
 		catch (Exception e) {
 			return null;

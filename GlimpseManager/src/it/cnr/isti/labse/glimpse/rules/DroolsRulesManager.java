@@ -57,15 +57,32 @@ public class DroolsRulesManager extends RulesManager {
 	@Override
 	public void insertRule(final String rule, final String ruleName) throws IncorrectRuleFormatException, UnknownMethodCallRuleException {
 
+		/*System.out.println("Elenco knowledgePackages presenti dentro il kbase");	
+			
+		Collection<KnowledgePackage> ass = kbase.getKnowledgePackages();
+		Object esd[] = ass.toArray();
+		for (int j = 0; j<esd.length; j++) {
+			KnowledgePackage kp = (KnowledgePackage)esd[j];
+			System.out.println("knowledgePackage presente nel kbase prima del load regola: " + kp.getName());
+			
+			Collection<Rule> qwe = kp.getRules();
+			Object gg[] = qwe.toArray();
+			System.out.println("All'interno di questo knowledgePackage sono presenti " + gg.length + " regole");
+			for (int k = 0; k<gg.length; k++){
+				Rule ru = (Rule) gg[k];
+				System.out.println("Rule: " + k + " " + ru.getName());
+			}
+		}*/
+		
 		try {
+			System.out.println();System.out.println();
 		kbuilder.add(ResourceFactory.newByteArrayResource(rule.trim().getBytes()), ResourceType.DRL);
 		} catch (RuntimeDroolsException droolsExceptionOnLoading) {
 			throw new UnknownMethodCallRuleException();
 		}
-		
+
 		if (kbuilder.getErrors().size() > 0)
-			 throw new IncorrectRuleFormatException();
-		 
+			 throw new IncorrectRuleFormatException(); 
 	}
 
 	@Override
@@ -154,8 +171,30 @@ public class DroolsRulesManager extends RulesManager {
 				e.printStackTrace();
 			}
 		}
-			kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-			this.getLoadedRulesInfo();
+		kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
+		
+		DebugMessages.println(TimeStamp.getCurrentTime(),this.getClass().getCanonicalName(), "Listing rules loaded into the knowledgeBases");
+		Collection<KnowledgePackage> ass = kbase.getKnowledgePackages();
+		Object esd[] = ass.toArray();
+		for (int i = 0; i<esd.length; i++) {
+			
+			KnowledgePackage kp = (KnowledgePackage)esd[i];
+			Collection<Rule> rls = kp.getRules();
+			Object r[] = rls.toArray();
+			DebugMessages.println(TimeStamp.getCurrentTime(),this.getClass().getCanonicalName(), "KnowledgeBase name: " + kp.getName());
+			if (r.length == 0) {
+				DebugMessages.println(TimeStamp.getCurrentTime(),this.getClass().getCanonicalName(), "--! No rules loaded into: " + kp.getName() + " knowledgeBase");
+			}
+			else
+			{
+				for (int j = 0; j<r.length;j++) {
+					Rule gg = (Rule) r[j];
+					DebugMessages.println(TimeStamp.getCurrentTime(),this.getClass().getCanonicalName(), "RuleName: " + gg.getName());	
+					}
+			}
+			DebugMessages.line();
+		}
+		
 		return kbase.getKnowledgePackages().toArray();
 	}
 	
