@@ -9,7 +9,7 @@
 	        @timestamp( timeStamp )
         end
         
-		rule "SERVICE_NAME2_INFRASTRUCTURENOTRECEIVED"
+		rule "SERVICE_NAME_MACHINE_IP_2_INFRASTRUCTURENOTRECEIVED"
 		no-loop
 		salience 1
 		dialect "java"

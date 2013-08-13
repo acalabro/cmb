@@ -9,7 +9,7 @@
 	        @timestamp( timeStamp )
         end
             
-		rule "SERVICE_NAME_INFRASTRUCTUREVIOLATION"
+		rule "SERVICE_NAME_MACHINE_IP_INFRASTRUCTUREVIOLATION"
 		no-loop
 		salience 10
 		dialect "java"
@@ -35,4 +35,5 @@
 			
 			retract($aEvent);
 			retract($bEvent);
+			
 		end
