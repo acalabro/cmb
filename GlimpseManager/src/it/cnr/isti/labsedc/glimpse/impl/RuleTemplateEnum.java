@@ -1,0 +1,8 @@
+package it.cnr.isti.labsedc.glimpse.impl;
+
+public enum RuleTemplateEnum {
+	EVENTAAFTEREVENTB,EVENTABETWEENEVENTB,INFRASTRUCTUREVIOLATION,NOEVENTFROMINFRASTRUCTURE
+}
+
+
+
