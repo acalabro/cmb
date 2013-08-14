@@ -56,6 +56,7 @@ import org.drools.builder.KnowledgeBuilderErrors;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.conf.EventProcessingOption;
+import org.drools.io.Resource;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.WorkingMemoryEntryPoint;
@@ -193,15 +194,21 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 				 */				
 				
 				knowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-
-				knowledgeBuilder.add(ResourceFactory.newUrlResource(
-						"file:///home/acalabro/Desktop/GlimpseManager/configFiles/startupRule.drl"),
-						ResourceType.DRL);
-						
 				
-				DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "startupRule Added ");
-
+				//Resource drlToLoad = ResourceFactory.newFileResource(System.getProperty("user.dir") + "/configFiles/startupRule.drl");
 				
+				String firstRuleToLoad = 
+						"import it.cnr.isti.labsedc.glimpse.event.GlimpseBaseEventAbstract; " +
+						"declare GlimpseBaseEventAbstract " +
+						"@role( event ) " +
+						"@timestamp( timeStamp ) " +
+						"end";
+				
+				byte[] firstRuleToLoadByteArray = firstRuleToLoad.getBytes();
+				Resource drlToLoad = ResourceFactory.newByteArrayResource(firstRuleToLoadByteArray);
+				
+				knowledgeBuilder.add(drlToLoad,ResourceType.DRL);
+
 				KnowledgeBuilderErrors errors = knowledgeBuilder.getErrors();
 				if (errors.size() > 0)
 				{
