@@ -195,7 +195,7 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 				
 				knowledgeBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 				
-				//Resource drlToLoad = ResourceFactory.newFileResource(System.getProperty("user.dir") + "/configFiles/startupRule.drl");
+				//Resource drlToLoad = ResourceFactory.newFileResource("startupRule.drl");
 				
 				String firstRuleToLoad = 
 						"import it.cnr.isti.labsedc.glimpse.event.GlimpseBaseEventAbstract; " +

@@ -41,6 +41,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.commons.net.ntp.TimeStamp;
+import org.apache.log4j.Logger;
 
 /**
  * @author Antonello Calabr&ograve;
@@ -115,6 +116,11 @@ public class MainMonitoring {
 			FileOutputStream fos = new FileOutputStream("glimpseLog.log");
 			PrintStream ps = new PrintStream(fos);
 			System.setErr(ps);
+			
+			Logger log = Logger.getLogger(MainMonitoring.class.getName());
+			
+			log.debug("Hello this is an debug message");
+			log.info("Hello this is an info message");
 			
 			if (MainMonitoring.initProps(args[0]) && MainMonitoring.init()) {
 	
