@@ -25,6 +25,8 @@
 			this.getMachineIP == "MACHINE_IP",
 			this after[0,10s] $aEvent);
 		then
+			$aEvent.setConsumed(true);
+			update($aEvent);
 			$bEvent.setConsumed(true);
 			update($bEvent);
 			

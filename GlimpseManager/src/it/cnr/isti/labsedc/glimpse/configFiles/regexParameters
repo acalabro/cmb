@@ -1,5 +1,5 @@
 serviceName = $$SERVICENAME$$
-machineIP = $$MACHINEIP$$
+machineIP = $$MACHINE_IP$$
 providerEndPointStart = <ns3:providerProxyEndpoint>
 providerEndPointEnd = </ns3:providerProxyEndpoint>
 name = ns2:name 

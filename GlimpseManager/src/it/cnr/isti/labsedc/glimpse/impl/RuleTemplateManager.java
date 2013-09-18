@@ -55,6 +55,13 @@ public class RuleTemplateManager {
 		      finalString = ruleSelected.substring(0, startReplace) +
 		    		  machineIP +
 		    		  ruleSelected.substring(startReplace+10,ruleSelected.length());
+		      
+		      ruleSelected = finalString;
+		      
+		      startReplace = ruleSelected.indexOf("MACHINE_IP");
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  machineIP +
+		    		  ruleSelected.substring(startReplace+10,ruleSelected.length());
 		      startReplace = finalString.indexOf("SERVICE_NAME");
 		      ruleSelected = finalString.substring(0, startReplace) +
 		    		  serviceName 
@@ -77,6 +84,14 @@ public class RuleTemplateManager {
 		      finalString = ruleSelected.substring(0, startReplace) +
 		    		  machineIP +
 		    		  ruleSelected.substring(startReplace+10,ruleSelected.length());
+		      
+		      ruleSelected = finalString;
+		      
+		      startReplace = ruleSelected.indexOf("MACHINE_IP");
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  machineIP +
+		    		  ruleSelected.substring(startReplace+10,ruleSelected.length());
+		      
 		      startReplace = finalString.indexOf("SERVICE_NAME");
 		      ruleSelected = finalString.substring(0, startReplace) +
 		    		  serviceName 
