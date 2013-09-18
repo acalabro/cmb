@@ -30,6 +30,7 @@ import it.cnr.isti.labsedc.glimpse.utils.Manager;
  * @version 3.3
  * 
  */
+
 public class MyGlimpseConsumerLauncher {
 
 	public static void main(String[] args) {
@@ -44,8 +45,7 @@ public class MyGlimpseConsumerLauncher {
 						"jms.serviceTopic",
 						false,
 						"consumerTest"),
-						Manager.ReadTextFromFile(
-								System.getProperty("user.dir") + "/bin/it/cnr/isti/labsedc/glimpse/example/exampleRuleCallLocator.xml")
-								);
+						Manager.ReadTextFromFile(System.getProperty("user.dir") + "/bin/it/cnr/isti/labsedc/glimpse/example/exampleRuleCallLocator.xml"));
+						//Manager.ReadTextFromFile(System.getProperty("user.dir") + "/bin/it/cnr/isti/labsedc/glimpse/example/test_consumer_requestResponse.xml"));
 	}
 }

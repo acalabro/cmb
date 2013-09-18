@@ -80,6 +80,7 @@ public class MyGlimpseProbe_SLAviolation extends GlimpseAbstractProbe {
 				+ "choreographySource: " + message.getChoreographySource() + "\n" 
 				+ "eventName: " + message.getEventName() + "\n"
 				+ "eventData: " + message.getEventData());
+				
 				DebugMessages.line();
 				Thread.sleep(sendingInterval);
 			}
