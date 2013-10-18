@@ -156,14 +156,16 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 				try {
 					eventStream.insert(receivedEvent);
 					if (receivedEvent instanceof GlimpseBaseEventChoreos<?>) {
-					DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"receives:\n" +
-					"eventData: " + receivedEvent.getEventData() + "\n" +
-					"eventName: " + receivedEvent.getEventName() + "\n" +
-					"timestamp: " + receivedEvent.getTimeStamp() + "\n" +
-					"machineIP: " + ((GlimpseBaseEventChoreos<?>) receivedEvent).getMachineIP() + "\n" +
-					"choreographySource: " + ((GlimpseBaseEventChoreos<?>) receivedEvent).getChoreographySource());	
+						DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),
+								"receives:\n" +
+								"eventData: " + receivedEvent.getEventData() + "\n" +
+								"eventName: " + receivedEvent.getEventName() + "\n" +
+								"timestamp: " + receivedEvent.getTimeStamp() + "\n" +
+								"machineIP: " + ((GlimpseBaseEventChoreos<?>) receivedEvent).getMachineIP() + "\n" +
+								"choreographySource: " + ((GlimpseBaseEventChoreos<?>) receivedEvent).getChoreographySource());	
 					} else {
-						DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"receives:\n" +
+						DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),
+								"receives:\n" +
 								"eventData: " + receivedEvent.getEventData() + "\n" +
 								"eventName: " + receivedEvent.getEventName() + "\n" +
 								"timestamp: " + receivedEvent.getTimeStamp());

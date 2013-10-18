@@ -121,7 +121,8 @@ public class GlimpseManager extends Thread implements MessageListener {
 		try {
 			msg = (TextMessage) arg0;
 			DebugMessages.line();			
-			DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"receive " + msg.getText());
+			DebugMessages.println(TimeStamp.getCurrentTime(), 
+					this.getClass().getSimpleName(),"receive " + msg.getText());
 			DebugMessages.line();
 			String XMLRule = msg.getText();
 			String sender = msg.getStringProperty("SENDER");		
@@ -153,7 +154,8 @@ public class GlimpseManager extends Thread implements MessageListener {
 					
 					for(int j = 0; j<singleRuleContainer.length;j++)
 					{
-						requestMap.put(singleRuleContainer[j].getName(), new ConsumerProfile(sender, answerTopic));
+						requestMap.put(singleRuleContainer[j].getName(),
+								new ConsumerProfile(sender, answerTopic));
 					}
 				}
 				DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "KnowledgeBase packages loaded: " + rulesManager.getLoadedKnowledgePackageCardinality());

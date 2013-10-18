@@ -1,6 +1,6 @@
 		import it.cnr.isti.labsedc.glimpse.event.GlimpseBaseEventChoreos;
         import it.cnr.isti.labsedc.glimpse.manager.ResponseDispatcher;
-        import it.cnr.isti.labsedc.glimpse.utils.NotifierUtils;
+        import it.cnr.isti.labsedc.glimpse.utils.MailNotification;
         import it.cnr.isti.labsedc.glimpse.impl.ServiceLocatorImpl;
 		import it.cnr.isti.labsedc.glimpse.impl.RuleTemplateEnum;
         
@@ -25,16 +25,10 @@
 			this.getMachineIP == "MACHINE_IP",
 			this after[0,10s] $aEvent);
 		then
-			$aEvent.setConsumed(true);
-			update($aEvent);
 			$bEvent.setConsumed(true);
 			update($bEvent);
 			
-			ResponseDispatcher.LogViolation(
-			"RULE",
-			"auto_generated_rule",
-			"\nSLA and Infrastructure violation by service: SERVICE_NAME" + "\npossibly due to an overload on machine: " + $bEvent.getMachineIP());
-			
+			MailNotification.NotifyToAdministrator("violation by service: SERVICE_NAME", "Violation occurred on both level, infrastructure and architecture, please check");
 			retract($aEvent);
 			retract($bEvent);
 			

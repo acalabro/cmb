@@ -54,7 +54,7 @@ public class ServiceLocatorParseViolationReceivedFromBSM extends ServiceLocator 
 		}
 	}
 	
-public static void GetMachineIP(String senderName, String serviceType, String serviceRole, RuleTemplateEnum ruleTemplateType, String payload, Long timeStamp) {
+	public static void GetMachineIP(String senderName, String filterService, String serviceRole, RuleTemplateEnum ruleTemplateType, String payload, Long timeStamp) {
 		
 		DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getCanonicalName(), "getMachineIP method called");
 		
@@ -64,14 +64,15 @@ public static void GetMachineIP(String senderName, String serviceType, String se
 			
 			String alertServiceName = slaParser.getProcessedServiceName();
 			String machineIP = slaParser.getProcessedMachineIP();
-			
+						
 			DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getCanonicalName(), "IP retrieved: " + machineIP);
 
 						
 			//generate the new rule to monitor
 			if (alertServiceName != null && machineIP != null) {
 			ComplexEventRuleActionListDocument newRule = localRuleTemplateManager
-					.generateNewRuleToInjectInKnowledgeBase(machineIP, alertServiceName, ruleTemplateType, timeStamp);
+					.generateNewRuleToInjectInKnowledgeBase(
+							machineIP, alertServiceName, ruleTemplateType, timeStamp, filterService);
 			
 			DebugMessages.println(TimeStamp.getCurrentTime(),
 					ServiceLocatorImpl.class.getName(),

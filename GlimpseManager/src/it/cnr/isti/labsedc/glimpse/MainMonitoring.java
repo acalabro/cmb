@@ -29,6 +29,7 @@ import it.cnr.isti.labsedc.glimpse.impl.RuleTemplateManager;
 import it.cnr.isti.labsedc.glimpse.manager.GlimpseManager;
 import it.cnr.isti.labsedc.glimpse.services.ServiceLocatorFactory;
 import it.cnr.isti.labsedc.glimpse.utils.DebugMessages;
+import it.cnr.isti.labsedc.glimpse.utils.MailNotification;
 import it.cnr.isti.labsedc.glimpse.utils.Manager;
 import it.cnr.isti.labsedc.glimpse.utils.SplashScreen;
 
@@ -63,12 +64,16 @@ public class MainMonitoring {
 	protected static String SOAPREQUESTFILE;
 	protected static String DROOLSRULEREQUESTTEMPLATE1;
 	protected static String DROOLSRULEREQUESTTEMPLATE2;
+	protected static String DROOLSRULEREQUESTTEMPLATE3_1;
+	protected static String DROOLSRULEREQUESTTEMPLATE3_2;
 	protected static String BSMWSDLURIFILEPATH;
 	protected static String REGEXPATTERNFILEPATH;
+	protected static String MAILNOTIFICATIONSETTINGSFILEPATH;
 	// end settings
 
 	private static TopicConnectionFactory connFact;
 	private static InitialContext initConn;
+
 
 	/**
 	 * This method reads parameters from text files
@@ -94,10 +99,16 @@ public class MainMonitoring {
 					.getProperty("DROOLSRULEREQUESTTEMPLATE1");	
 			DROOLSRULEREQUESTTEMPLATE2 = systemProps
 					.getProperty("DROOLSRULEREQUESTTEMPLATE2");	
+			DROOLSRULEREQUESTTEMPLATE3_1 = systemProps
+					.getProperty("DROOLSRULEREQUESTTEMPLATE3_1");
+			DROOLSRULEREQUESTTEMPLATE3_2 = systemProps
+					.getProperty("DROOLSRULEREQUESTTEMPLATE3_2");
 			BSMWSDLURIFILEPATH = systemProps
 					.getProperty("BSMWSDLURIFILEPATH");		
 			REGEXPATTERNFILEPATH = systemProps
 					.getProperty("REGEXPATTERNFILEPATH");
+			MAILNOTIFICATIONSETTINGSFILEPATH = systemProps
+					.getProperty("MAILNOTIFICATIONPATH");
 			return true;
 		} catch (Exception asd) {
 			System.out.println("USAGE: java -jar MainMonitoring.jar \"systemSettings\"");
@@ -143,10 +154,15 @@ public class MainMonitoring {
 					e.printStackTrace();
 				}
 
-				RuleTemplateManager templateManager = new RuleTemplateManager(DROOLSRULEREQUESTTEMPLATE1,DROOLSRULEREQUESTTEMPLATE2);
+				RuleTemplateManager templateManager = new RuleTemplateManager(DROOLSRULEREQUESTTEMPLATE1,DROOLSRULEREQUESTTEMPLATE2, DROOLSRULEREQUESTTEMPLATE3_1,DROOLSRULEREQUESTTEMPLATE3_2);
 				
 				//the component in charge to locate services and load specific rules.
 				ServiceLocatorFactory.getServiceLocatorParseViolationReceivedFromBSM(engine, templateManager, REGEXPATTERNFILEPATH).start();
+				
+				//start MailNotifier component
+				MailNotification mailer = new MailNotification(
+						Manager.Read(MAILNOTIFICATIONSETTINGSFILEPATH));
+				mailer.start();
 				
 				//the manager of all the architecture
 				GlimpseManager manager = new GlimpseManager(

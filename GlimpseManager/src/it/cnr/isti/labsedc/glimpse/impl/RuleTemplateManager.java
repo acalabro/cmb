@@ -15,24 +15,30 @@ public class RuleTemplateManager {
 
 	public static String localDroolsRequestTemplatesFilePathOne;
 	public static String localDroolsRequestTemplatesFilePathTwo;
+	public static String localDroolsRequestTemplatesFilePathThree_1;
+	public static String localDroolsRequestTemplatesFilePathThree_2;
 	public static RuleTemplateManager instance = null;
 	public static RulesManager rulesManager;
 	private String finalString;
 	private int startReplace;
 	
-	public RuleTemplateManager(String droolsRequestTemplatesFilePathOne, String droolsRequestTemplatesFilePathTwo) {
+	public RuleTemplateManager(String droolsRequestTemplatesFilePathOne, String droolsRequestTemplatesFilePathTwo, String droolsRequestTemplatesFilePathThree_1, String droolsRequestTemplatesFilePathThree_2) {
 		
 		RuleTemplateManager.localDroolsRequestTemplatesFilePathOne = droolsRequestTemplatesFilePathOne;
 		RuleTemplateManager.localDroolsRequestTemplatesFilePathTwo = droolsRequestTemplatesFilePathTwo;
+		RuleTemplateManager.localDroolsRequestTemplatesFilePathThree_1 = droolsRequestTemplatesFilePathThree_1;
+		RuleTemplateManager.localDroolsRequestTemplatesFilePathThree_2 = droolsRequestTemplatesFilePathThree_2;
 	}
 	
 	public static synchronized RuleTemplateManager getSingleton() {
         if (instance == null) 
-            instance = new RuleTemplateManager(localDroolsRequestTemplatesFilePathOne,localDroolsRequestTemplatesFilePathTwo);
+            instance = new RuleTemplateManager(localDroolsRequestTemplatesFilePathOne,localDroolsRequestTemplatesFilePathTwo, localDroolsRequestTemplatesFilePathThree_1, localDroolsRequestTemplatesFilePathThree_2);
         return instance;
     }
 
-	public String setBody(String machineIP, String serviceName, RuleTemplateEnum templateType, long timeStamp) {
+	public String setBody(String machineIP, String serviceName, 
+							RuleTemplateEnum templateType, long timeStamp,
+							String filterService) {
 		String ruleSelected;
 		switch(templateType) {
 	      case EVENTAAFTEREVENTB: {
@@ -107,7 +113,72 @@ public class RuleTemplateManager {
 		    		  ruleSelected.substring(startReplace+11,ruleSelected.length());
 	    	  }
 	    	 break;
+	    	 
+	      case CHECKSERVICESLAFAILURE3TIMES_FIRSTPART: { 
+	    	  //must use FilterService the new rule
+	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePathThree_1);
+		      
+	    	  startReplace = ruleSelected.indexOf("SERVICE_NAME");
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  serviceName +
+		    		  ruleSelected.substring(startReplace+12,ruleSelected.length());
+		      
+		      ruleSelected = finalString;
+		      
+		      startReplace = ruleSelected.indexOf("_SERVICE_FILTER_");
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  filterService +
+		    		  ruleSelected.substring(
+		    				  startReplace+16,ruleSelected.length());
+		      ruleSelected = finalString;
+		      
+		      startReplace = ruleSelected.indexOf("_SERVICE_FILTER_");
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  filterService 
+		    		  + ruleSelected.substring(startReplace+16,ruleSelected.length());
+		      ruleSelected = finalString;
 
+		      startReplace = ruleSelected.indexOf("_SERVICE_FILTER_");
+		      if (startReplace != -1) {
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  filterService 
+		    		  + ruleSelected.substring(startReplace+16,ruleSelected.length());
+		      ruleSelected = finalString;
+		      }
+		      startReplace = ruleSelected.indexOf("SERVICE_NAME");
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  serviceName 
+		    		  + ruleSelected.substring(startReplace+12,ruleSelected.length());
+		      ruleSelected = finalString;
+	    	 }
+	    	 break;
+	    	 
+	      case CHECKSERVICESLAFAILURE3TIMES_SECONDPART: {
+	    	  	
+	    	  ruleSelected = Manager.ReadTextFromFile(localDroolsRequestTemplatesFilePathThree_2);
+		      
+	    	  startReplace = ruleSelected.indexOf("SERVICE_NAME");
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  serviceName +
+		    		  ruleSelected.substring(startReplace+12,ruleSelected.length());
+		      
+		      ruleSelected = finalString;
+		      
+		      startReplace = ruleSelected.indexOf("_SERVICE_FILTER_");
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  filterService +
+		    		  ruleSelected.substring(
+		    				  startReplace+16,ruleSelected.length());
+		      ruleSelected = finalString;
+		      
+		      startReplace = ruleSelected.indexOf("SERVICE_NAME");
+		      finalString = ruleSelected.substring(0, startReplace) +
+		    		  serviceName 
+		    		  + ruleSelected.substring(startReplace+12,ruleSelected.length());
+		      ruleSelected = finalString;
+	      }
+	      break;
+	    	 
 	      default:
 	    	  ruleSelected = "";
 	    	  break;
@@ -117,7 +188,9 @@ public class RuleTemplateManager {
 	
 	
 	public ComplexEventRuleActionListDocument generateNewRuleToInjectInKnowledgeBase(
-			String machineIP, String serviceName, RuleTemplateEnum ruleTemplateType, Long timeStamp) {
+			String machineIP, String serviceName,
+			RuleTemplateEnum ruleTemplateType, 
+			Long timeStamp, String filterService) {
 		
 		ComplexEventRuleActionListDocument ruleDoc;			
 		ruleDoc = ComplexEventRuleActionListDocument.Factory.newInstance();
@@ -126,7 +199,8 @@ public class RuleTemplateManager {
 		ruleType.setRuleName(machineIP);
 		ruleType.setRuleType("drools");
 		
-		ruleType.setRuleBody(setBody(machineIP, serviceName, ruleTemplateType, timeStamp));
+		ruleType.setRuleBody(setBody(machineIP, serviceName, 
+										ruleTemplateType, timeStamp, filterService));
 		return ruleDoc;
 	}
 

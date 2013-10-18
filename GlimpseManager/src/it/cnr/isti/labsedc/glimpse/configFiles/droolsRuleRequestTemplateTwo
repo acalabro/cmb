@@ -21,7 +21,7 @@
 			not(GlimpseBaseEventChoreos(this.isConsumed == false,
 			this.getEventName == "load_one",
 			this.getMachineIP == "MACHINE_IP" ,
-			this after[0,10s] $aEvent));
+			this after[0,20s] $aEvent));
 		then
 						
 			ResponseDispatcher.LogViolation("RULE",

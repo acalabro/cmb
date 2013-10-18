@@ -215,7 +215,7 @@ public class ServiceLocatorImpl extends ServiceLocator {
 		return doc.getTextContent();
 	}
 
-	public static void GetMachineIP(String senderName, String serviceType, String serviceRole, RuleTemplateEnum ruleTemplateType, String payload, Long timeStamp) {
+	public static void GetMachineIP(String senderName, String filterService, String serviceRole, RuleTemplateEnum ruleTemplateType, String payload, Long timeStamp) {
 		
 		DebugMessages.println(TimeStamp.getCurrentTime(),ServiceLocatorImpl.class.getCanonicalName(), "getMachineIP method called");
 		ServiceLocatorImpl theLocator = ServiceLocatorImpl.getSingleton();
@@ -225,14 +225,14 @@ public class ServiceLocatorImpl extends ServiceLocator {
 			slaParser.process();
 			String alertServiceName = slaParser.getProcessedServiceName();
 			
-			String machineIP = theLocator.getMachineIPLocally(alertServiceName, serviceType, serviceRole);
+			String machineIP = theLocator.getMachineIPLocally(alertServiceName, filterService, serviceRole);
 			if (machineIP == null) {
-				machineIP = theLocator.getMachineIPQueryingDSB(alertServiceName, serviceType, serviceRole);
+				machineIP = theLocator.getMachineIPQueryingDSB(alertServiceName, filterService, serviceRole);
 			}		
 			
 			//generate the new rule to monitor
 			ComplexEventRuleActionListDocument newRule = localRuleTemplateManager
-					.generateNewRuleToInjectInKnowledgeBase(machineIP, alertServiceName, ruleTemplateType, timeStamp);
+					.generateNewRuleToInjectInKnowledgeBase(machineIP, alertServiceName, ruleTemplateType, timeStamp, filterService);
 			
 			DebugMessages.println(TimeStamp.getCurrentTime(),
 					ServiceLocatorImpl.class.getName(),
