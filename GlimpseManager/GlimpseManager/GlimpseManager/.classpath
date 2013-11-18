@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="externallib/javax.jms.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/jsr173_1.0_api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/resolver.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/saxon9he.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/xbean_xpath.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/xbean.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/xmlbeans-qname.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/xmlpublic.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ComplexEventResponse.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ComplexEventRule.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ComplexEventException.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/commons-net-3.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/axis-jaxrpc-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/activemq-all-5.7.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/jbosscx-client.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/droolsLibraries5.5"/>
+	<classpathentry exported="true" kind="lib" path="externallib/mail-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/drools-5.5.0/drools-compiler-5.5.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/drools-5.5.0/drools-core-5.5.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/drools-5.5.0/knowledge-api-5.5.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/drools-5.5.0/knowledge-internal-api-5.5.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/drools-5.5.0/drools-decisiontables-5.5.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="externallib/drools-5.5.0/drools-templates-5.5.0.Final.jar"/>
+	<classpathentry kind="lib" path="lib/machine-data.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
