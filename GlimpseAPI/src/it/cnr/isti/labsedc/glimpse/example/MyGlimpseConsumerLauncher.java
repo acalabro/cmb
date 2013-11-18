@@ -36,16 +36,7 @@ public class MyGlimpseConsumerLauncher {
 	public static void main(String[] args) {
 		
 		new MyGlimpseConsumer(
-				Manager.createConsumerSettingsPropertiesObject(
-						"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
-						"tcp://atlantis.isti.cnr.it:61616",
-						"system",
-						"manager",
-						"TopicCF",
-						"jms.serviceTopic",
-						false,
-						"consumerTest"),
-						Manager.ReadTextFromFile(System.getProperty("user.dir") + "/bin/it/cnr/isti/labsedc/glimpse/example/exampleRuleCallLocator.xml"));
-						//Manager.ReadTextFromFile(System.getProperty("user.dir") + "/bin/it/cnr/isti/labsedc/glimpse/example/test_consumer_requestResponse.xml"));
+				Manager.Read(args[0]),
+				Manager.ReadTextFromFile(args[1]));
 	}
 }

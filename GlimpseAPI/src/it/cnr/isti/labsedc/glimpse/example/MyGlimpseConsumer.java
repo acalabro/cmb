@@ -68,10 +68,12 @@ public class MyGlimpseConsumer extends GlimpseAbstractConsumer {
 			}
 			else {
 				ComplexEventResponse resp = (ComplexEventResponse) responseFromMonitoring.getObject();
-				System.out.println("Response value: " + resp.getResponseValue());
+					System.out.println("Response value: " + resp.getResponseValue());
 			}
 		}
 		catch(ClassCastException asd) {
 		}
 	}
+
+	
 }

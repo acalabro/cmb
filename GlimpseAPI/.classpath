@@ -10,5 +10,6 @@
 	<classpathentry exported="true" kind="lib" path="externallib/xstream-1.4.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="externallib/xmlpull-1.1.3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ComplexEventRule.jar"/>
+	<classpathentry kind="lib" path="externallib/mail-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

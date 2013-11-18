@@ -66,7 +66,7 @@ public class MyGlimpseProbe_InfrastructureViolation extends GlimpseAbstractProbe
 		DebugMessages.line();
 		message = new GlimpseBaseEventChoreos<String>(data, 
 						System.currentTimeMillis(), "load_one", false,
-						"chor", "service1", "localhost");
+						"chor", "service1", "gatto/127.0.1.1");
 		try {
 			this.sendEventMessage(message, false);
 			System.out.println(System.currentTimeMillis());
@@ -109,9 +109,9 @@ public class MyGlimpseProbe_InfrastructureViolation extends GlimpseAbstractProbe
 								);
 		
 		DebugMessages.println(MyGlimpseProbe_InfrastructureViolation.class.getName(),"Starting infinite loop");	
-		for(int i = 0; i<40;i++) {
+		for(int i = 0; i<3;i++) {
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
