@@ -2,14 +2,12 @@ package it.cnr.isti.labsedc.glimpse.utils;
 
 import java.util.Properties;
 
-import javax.mail.AuthenticationFailedException;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -35,27 +33,25 @@ public class MailNotification {
 			  message = new MimeMessage(session);
 			  
 			  message.setFrom(new InternetAddress(
-					  "glimpseAdministrator@nowhereatcnr.com"));
+					  "antonello.calabro@isti.cnr.it"));
 			  
 			  System.out.println(mailSettings.getProperty("notificationRecipient"));
 			  message.setRecipients(Message.RecipientType.TO,
 						InternetAddress.parse(mailSettings.getProperty("notificationRecipient")));
 			  
-			  message.setSubject("SLA and Infrastructure violation");
+			  message.setSubject("Violation");
 			  message.setText("Rule violated: " + ruleMatched + "\n" +
 					  	"Response: " + violationResponse);
 			  
 			  Transport.send(message);
+			  DebugMessages.println(
+					  TimeStamp.getCurrentTime(),
+					  MailNotification.class.getSimpleName(),
+					  "\nRule Violation\nNotification sent to the admin\n\n");
 
-			} catch(AuthenticationFailedException fail) {
-				System.out.println("Authentication failed");
-			} catch (AddressException e) {
-				System.out.println(e.getMessage());
-			} catch (MessagingException e) {
-				System.out.println(e.getMessage());
-			} 
-		  DebugMessages.println(TimeStamp.getCurrentTime(), MailNotification.class.getSimpleName(), "\n\nFAILURE\n\nNotification sent to the admin, FAILURED AT BOTH LEVEL, INFRASTRUCTURE AND BUSINESSn\n\n");
-
+			} catch(MessagingException fail) {
+				System.out.println("Authentication failed\n" + fail.getMessage());
+			}
 		  }
 
 	public void start() {
@@ -72,8 +68,6 @@ public class MailNotification {
 	}
 	
 	public static void main (String[] args) {
-	//	MailNotification asd = 
-			//	new MailNotification(Manager.Read("/home/acalabro/workspace/GlimpseManager/bin/it/cnr/isti/labsedc/glimpse/configFiles/mailSettings"));
-		//MailNotification.NotifyToAdministrator("asd", "esd");
+		
 	}
 }

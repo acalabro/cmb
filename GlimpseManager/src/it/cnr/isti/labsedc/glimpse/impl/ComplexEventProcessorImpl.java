@@ -21,9 +21,9 @@
 package it.cnr.isti.labsedc.glimpse.impl;
 
 import it.cnr.isti.labsedc.glimpse.buffer.EventsBuffer;
-
 import it.cnr.isti.labsedc.glimpse.cep.ComplexEventProcessor;
 import it.cnr.isti.labsedc.glimpse.event.GlimpseBaseEvent;
+import it.cnr.isti.labsedc.glimpse.event.GlimpseBaseEventBPMN;
 import it.cnr.isti.labsedc.glimpse.event.GlimpseBaseEventChoreos;
 import it.cnr.isti.labsedc.glimpse.exceptions.UnknownMethodCallRuleException;
 import it.cnr.isti.labsedc.glimpse.rules.DroolsRulesManager;
@@ -43,7 +43,6 @@ import javax.jms.TopicConnectionFactory;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
-
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -164,7 +163,21 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 								"timestamp: " + receivedEvent.getTimeStamp() + "\n" +
 								"machineIP: " + ((GlimpseBaseEventChoreos<?>) receivedEvent).getMachineIP() + "\n" +
 								"choreographySource: " + ((GlimpseBaseEventChoreos<?>) receivedEvent).getChoreographySource());	
-					} else {
+					} else
+						if (receivedEvent instanceof GlimpseBaseEventBPMN<?>) {
+							DebugMessages.println(
+								TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),
+								"receives:\n" +
+								"eventData: " + receivedEvent.getEventData() + "\n" +
+								"eventName: " + receivedEvent.getEventName() + "\n" +
+								"timestamp: " + receivedEvent.getTimeStamp() + "\n" +
+								"sessionID: " + ((GlimpseBaseEventBPMN<?>) receivedEvent).getSessionID() + "\n" +
+								"assigneeID: " + ((GlimpseBaseEventBPMN<?>) receivedEvent).getAssigneeID() + "\n" +
+								"taskID: " + ((GlimpseBaseEventBPMN<?>) receivedEvent).getTaskID() + "\n" +
+								"subProcessID: " + ((GlimpseBaseEventBPMN<?>) receivedEvent).getSubProcessID() + "\n" +
+								"desideredCompletionTime: " + ((GlimpseBaseEventBPMN<?>) receivedEvent).getDesideredCompletionTime()
+								);	
+						} else {
 						DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),
 								"receives:\n" +
 								"eventData: " + receivedEvent.getEventData() + "\n" +

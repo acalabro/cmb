@@ -26,12 +26,9 @@ import it.cnr.isti.labsedc.glimpse.exceptions.UnknownMethodCallRuleException;
 import it.cnr.isti.labsedc.glimpse.exceptions.UnknownRuleException;
 
 /**
- * 
- * 
- * 
  * @author Antonello Calabr&ograve;
- *
  */
+
 public abstract class RulesManager {
 	public RulesManager(Object knowledgeBuilder, Object knowledgeBase, Object knowledgeSession) {
 	}

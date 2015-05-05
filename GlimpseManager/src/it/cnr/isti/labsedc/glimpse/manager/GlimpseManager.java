@@ -60,7 +60,7 @@ public class GlimpseManager extends Thread implements MessageListener {
 	private TopicSubscriber tSub;
 	private String serviceTopic;
 	private String answerTopic;
-	private RulesManager rulesManager;
+	private RulesManager rulesManagerOne;
 	@SuppressWarnings("unused")
 	private ResponseDispatcher responder;
 	
@@ -72,11 +72,11 @@ public class GlimpseManager extends Thread implements MessageListener {
 	 * @param initConn
 	 * @param rulesManager
 	 */
-	public GlimpseManager(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn, RulesManager rulesManager)
+	public GlimpseManager(Properties settings, TopicConnectionFactory connectionFact, InitialContext initConn, RulesManager rulesManagerOne)
 	{
 		serviceTopic = settings.getProperty("serviceTopic");
 		setupConnection(connectionFact, initConn);
-		this.rulesManager = rulesManager; 
+		this.rulesManagerOne = rulesManagerOne;
 	}
 	
 	public void setupConnection(TopicConnectionFactory connectionFact, InitialContext initConn)
@@ -141,7 +141,7 @@ public class GlimpseManager extends Thread implements MessageListener {
 			
 			DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "Setting up ComplexEventProcessor with new rule.");
 			try {	
-				Object[] loadedKnowledgePackage = rulesManager.loadRules(rules);
+				Object[] loadedKnowledgePackage = rulesManagerOne.loadRules(rules);
 				//inserisco la coppia chiave valore dove la chiave è il KnowledgePackage
 				//caricato, generato da DroolsRulesManager con la loadRules
 				//e il valore è l'enabler che l'ha inviata
@@ -158,7 +158,7 @@ public class GlimpseManager extends Thread implements MessageListener {
 								new ConsumerProfile(sender, answerTopic));
 					}
 				}
-				DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "KnowledgeBase packages loaded: " + rulesManager.getLoadedKnowledgePackageCardinality());
+				DebugMessages.println(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(), "KnowledgeBase packages loaded: " + rulesManagerOne.getLoadedKnowledgePackageCardinality());
 				DebugMessages.print(TimeStamp.getCurrentTime(), this.getClass().getSimpleName(),"Communicate the answerTopic to the requester");
 				sendMessage(createMessage("AnswerTopic == " + answerTopic, sender));
 				DebugMessages.ok();

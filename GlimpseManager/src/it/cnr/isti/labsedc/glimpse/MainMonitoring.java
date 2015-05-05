@@ -1,5 +1,5 @@
  /*
-1  * GLIMPSE: A generic and flexible monitoring infrastructure.
+  * GLIMPSE: A generic and flexible monitoring infrastructure.
   * For further information: http://labsewiki.isti.cnr.it/labse/tools/glimpse/public/main
   * 
   * Copyright (C) 2011  Software Engineering Laboratory - ISTI CNR - Pisa - Italy
@@ -42,6 +42,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.commons.net.ntp.TimeStamp;
+import org.apache.log4j.Logger;
 
 /**
  * @author Antonello Calabr&ograve;
@@ -127,11 +128,11 @@ public class MainMonitoring {
 			PrintStream ps = new PrintStream(fos);
 			System.setErr(ps);
 			
-		/*	Logger log = Logger.getLogger(MainMonitoring.class.getName());
+			Logger log = Logger.getLogger(MainMonitoring.class.getName());
 			
 			log.debug("Hello this is an debug message");
 			log.info("Hello this is an info message");
-			*/
+			
 			
 			if (MainMonitoring.initProps(args[0]) && MainMonitoring.init()) {
 	
@@ -143,11 +144,11 @@ public class MainMonitoring {
 				EventsBuffer<GlimpseBaseEvent<?>> buffer = new EventsBufferImpl<GlimpseBaseEvent<?>>();
 
 				//The complex event engine that will be used (in this case drools)
-				ComplexEventProcessor engine = new ComplexEventProcessorImpl(
+				ComplexEventProcessor engineOne = new ComplexEventProcessorImpl(
 						Manager.Read(MANAGERPARAMETERFILE), buffer, connFact,
 						initConn);
-				engine.start();
-	
+				engineOne.start();
+				
 				try {
 					Thread.sleep(3000);
 				} catch (InterruptedException e) {
@@ -157,7 +158,7 @@ public class MainMonitoring {
 				RuleTemplateManager templateManager = new RuleTemplateManager(DROOLSRULEREQUESTTEMPLATE1,DROOLSRULEREQUESTTEMPLATE2, DROOLSRULEREQUESTTEMPLATE3_1,DROOLSRULEREQUESTTEMPLATE3_2);
 				
 				//the component in charge to locate services and load specific rules.
-				ServiceLocatorFactory.getServiceLocatorParseViolationReceivedFromBSM(engine, templateManager, REGEXPATTERNFILEPATH).start();
+				ServiceLocatorFactory.getServiceLocatorParseViolationReceivedFromBSM(engineOne, templateManager, REGEXPATTERNFILEPATH).start();
 				
 				//start MailNotifier component
 				MailNotification mailer = new MailNotification(
@@ -167,7 +168,7 @@ public class MainMonitoring {
 				//the manager of all the architecture
 				GlimpseManager manager = new GlimpseManager(
 						Manager.Read(MANAGERPARAMETERFILE), connFact, initConn,
-						engine.getRuleManager());
+						engineOne.getRuleManager());
 				manager.start();
 			}
 		} catch (Exception e) {
