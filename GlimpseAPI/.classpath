@@ -6,10 +6,14 @@
 	<classpathentry exported="true" kind="lib" path="externallib/xbean.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ComplexEventException.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ComplexEventResponse.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry exported="true" kind="lib" path="externallib/xstream-1.4.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="externallib/xmlpull-1.1.3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ComplexEventRule.jar"/>
 	<classpathentry kind="lib" path="externallib/mail-1.4.jar"/>
+	<classpathentry kind="lib" path="externallib/core.jar"/>
+	<classpathentry kind="lib" path="externallib/jna.jar"/>
+	<classpathentry kind="lib" path="externallib/pde.jar"/>
+	<classpathentry kind="lib" path="externallib/RXTXcomm.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
