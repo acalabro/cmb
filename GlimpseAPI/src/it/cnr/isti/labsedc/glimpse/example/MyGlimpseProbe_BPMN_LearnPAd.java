@@ -37,7 +37,7 @@ import it.cnr.isti.labsedc.glimpse.utils.Manager;
 public class MyGlimpseProbe_BPMN_LearnPAd extends GlimpseAbstractProbe {
 
 	/**
-	 * This class provides an example of how to send messages (events) to the Glimpse Monitoring Bus.
+	 * This class provides an example of how to send messages (events) to Glimpse CEP.
 	 * @author Antonello Calabr&ograve;
 	 * @version 3.3.2
 	 *
