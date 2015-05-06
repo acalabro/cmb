@@ -173,6 +173,7 @@ public class ComplexEventProcessorImpl extends ComplexEventProcessor implements 
 								"timestamp: " + receivedEvent.getTimeStamp() + "\n" +
 								"sessionID: " + ((GlimpseBaseEventBPMN<?>) receivedEvent).getSessionID() + "\n" +
 								"assigneeID: " + ((GlimpseBaseEventBPMN<?>) receivedEvent).getAssigneeID() + "\n" +
+								"roleID: " + ((GlimpseBaseEventBPMN<?>) receivedEvent).getRoleID() + "\n" +
 								"taskID: " + ((GlimpseBaseEventBPMN<?>) receivedEvent).getTaskID() + "\n" +
 								"subProcessID: " + ((GlimpseBaseEventBPMN<?>) receivedEvent).getSubProcessID() + "\n" +
 								"desideredCompletionTime: " + ((GlimpseBaseEventBPMN<?>) receivedEvent).getDesideredCompletionTime()
