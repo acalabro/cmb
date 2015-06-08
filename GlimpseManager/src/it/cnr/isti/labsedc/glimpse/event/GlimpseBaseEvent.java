@@ -1,4 +1,5 @@
- /*
+
+/*
   * GLIMPSE: A generic and flexible monitoring infrastructure.
   * For further information: http://labsewiki.isti.cnr.it/labse/tools/glimpse/public/main
   * 
@@ -36,6 +37,7 @@ package it.cnr.isti.labsedc.glimpse.event;
  * 
  * @param <T> The type of the data on the payload of the GlimpseBaseEvent, see method {@link #getData()} and {@link #setData(Object)}
  */
+
 public interface GlimpseBaseEvent <T> {
 	
 	public T getEventData();
